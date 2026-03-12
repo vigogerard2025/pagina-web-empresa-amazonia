@@ -1,370 +1,1109 @@
 "use client";
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
+import {
+  FaMapMarkerAlt,
+  FaPhoneAlt,
+  FaWhatsapp,
+  FaTimes,
+  FaArrowRight,
+  FaSearch,
+  FaFilter,
+} from "react-icons/fa";
+// import { supabase } from "@/lib/supabase";
+
+// ── Datos oficiales completos — extraídos del Excel RELACION_DE_OFICINAS_BUS_UNIVERSO ──
+const agencies = [
+  // ── Áncash ──────────────────────────────────────────────────
+  {
+    id: 1,
+    city: "Chimbote",
+    region: "Áncash",
+    regionColor: "#d42b2b",
+    address: "Terminal El Chimbador — Stand Q-7",
+    phones: ["993 767 433"],
+    maps: "https://www.google.com/maps/search/?api=1&query=-9.1047793,-78.5578073",
+    dot: "#e53e3e",
+    img: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=600&q=80",
+  },
+
+  // ── La Libertad ─────────────────────────────────────────────
+  {
+    id: 2,
+    city: "Chao",
+    region: "La Libertad",
+    regionColor: "#1a4fa0",
+    address: "Av. Víctor Raúl 458 — al lado de Botica Medina",
+    phones: ["968 499 740", "987 455 023"],
+    maps: "https://maps.google.com/?q=Chao+La+Libertad+Peru",
+    dot: "#60a5fa",
+    img: "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&q=80",
+  },
+  {
+    id: 3,
+    city: "Virú",
+    region: "La Libertad",
+    regionColor: "#1a4fa0",
+    address: "Av. Panamericana 396 — Puente Virú",
+    phones: ["968 499 740"],
+    maps: "https://maps.google.com/?q=Viru+La+Libertad+Peru",
+    dot: "#60a5fa",
+    img: "https://images.unsplash.com/photo-1425913397330-cf8af2ff40a1?w=600&q=80",
+  },
+  {
+    id: 4,
+    city: "Paiján",
+    region: "La Libertad",
+    regionColor: "#1a4fa0",
+    address: "Carretera Panamericana 1319 — Sector Manco Cápac",
+    phones: ["937 512 954"],
+    maps: "https://maps.google.com/?q=Paijan+La+Libertad+Peru",
+    dot: "#f5c518",
+    img: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&q=80",
+  },
+  {
+    id: 5,
+    city: "Paiján 2",
+    region: "La Libertad",
+    regionColor: "#1a4fa0",
+    address: "Av. Panamericana Norte 657",
+    phones: ["957 954 622"],
+    maps: "https://maps.google.com/?q=Paijan+La+Libertad+Peru",
+    dot: "#f5c518",
+    img: "https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=600&q=80",
+  },
+  {
+    id: 6,
+    city: "Pacasmayo",
+    region: "La Libertad",
+    regionColor: "#1a4fa0",
+    address:
+      "1ra cdra. de Leoncio Prado — Terminal Terrestre Pacasmayo Stand 3 y 13",
+    phones: ["981 911 766", "980 947 832"],
+    maps: "https://www.google.com/maps/search/?api=1&query=-7.3969310,-79.5672956",
+    dot: "#60a5fa",
+    img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80",
+  },
+  {
+    id: 7,
+    city: "Ciudad de Dios",
+    region: "La Libertad",
+    regionColor: "#1a4fa0",
+    address: "Panamericana Norte — Kiosko N°4",
+    phones: ["959 998 794"],
+    maps: "https://maps.google.com/?q=Ciudad+de+Dios+Guadalupe+La+Libertad",
+    dot: "#93c5fd",
+    img: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=600&q=80",
+  },
+  {
+    id: 8,
+    city: "Guadalupe",
+    region: "La Libertad",
+    regionColor: "#1a4fa0",
+    address: "Jr. Zoila Bay 181 — Cafetal II, costado del Parque San Isidro",
+    phones: ["942 873 849"],
+    maps: "https://maps.google.com/?q=Guadalupe+Pacasmayo+La+Libertad+Peru",
+    dot: "#bfdbfe",
+    img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80",
+  },
+  {
+    id: 9,
+    city: "Chepén Terminal",
+    region: "La Libertad",
+    regionColor: "#1a4fa0",
+    address:
+      "Av. Ezequiel Gonzáles Cáceda 188 Stand-22 — Terminal Terrestre de Chepén",
+    phones: ["999 157 937", "952 510 976"],
+    maps: "https://maps.google.com/?q=Terminal+Terrestre+Chepen+La+Libertad",
+    dot: "#3b82f6",
+    img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80",
+  },
+  {
+    id: 10,
+    city: "Chepén Panamericana",
+    region: "La Libertad",
+    regionColor: "#1a4fa0",
+    address: "Panamericana Norte JM 709 — a media cuadra del Hospital",
+    phones: ["966 188 103"],
+    maps: "https://maps.google.com/?q=Chepen+La+Libertad+Peru",
+    dot: "#3b82f6",
+    img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80",
+  },
+  {
+    id: 11,
+    city: "Pacanguilla",
+    region: "La Libertad",
+    regionColor: "#1a4fa0",
+    address:
+      "Calle Bolívar 290 — Pacanguilla, a una esquina del paradero de autos Chepén",
+    phones: ["939 797 326"],
+    maps: "https://maps.google.com/?q=Pacanguilla+La+Libertad+Peru",
+    dot: "#93c5fd",
+    img: "https://images.unsplash.com/photo-1431794062232-2a99a5431c6c?w=600&q=80",
+  },
+
+  // ── Lambayeque ──────────────────────────────────────────────
+  {
+    id: 12,
+    city: "Chiclayo Nor Oriente",
+    region: "Lambayeque",
+    regionColor: "#7c3aed",
+    address: "Panamericana Norte Km 774 — Terminal Gacela",
+    phones: ["944 671 146"],
+    maps: "https://www.google.com/maps/search/?api=1&query=-6.7558086,-79.8636393",
+    dot: "#a78bfa",
+    img: "https://images.unsplash.com/photo-1520454974749-a795929c4f99?w=600&q=80",
+  },
+  {
+    id: 13,
+    city: "Chiclayo Plaza Norte",
+    region: "Lambayeque",
+    regionColor: "#7c3aed",
+    address: "Av. Augusto B. Leguía 2590 Stand 30 — Terminal Plaza Norte",
+    phones: ["935 788 639"],
+    maps: "https://maps.google.com/?q=Terminal+Plaza+Norte+Chiclayo",
+    dot: "#c4b5fd",
+    img: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=600&q=80",
+  },
+  {
+    id: 14,
+    city: "Illimo",
+    region: "Lambayeque",
+    regionColor: "#7c3aed",
+    address: "Av. Panamericana 478 — al lado de Expreso Jireh",
+    phones: ["964 755 681"],
+    maps: "https://maps.google.com/?q=Illimo+Lambayeque+Peru",
+    dot: "#ddd6fe",
+    img: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80",
+  },
+  {
+    id: 15,
+    city: "Olmos",
+    region: "Lambayeque",
+    regionColor: "#7c3aed",
+    address: "Caserío Nuevo Cruce Jaén — referencia a la cochera CCHISA",
+    phones: ["991 598 645"],
+    maps: "https://maps.google.com/?q=Olmos+Lambayeque+Peru",
+    dot: "#ede9fe",
+    img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600&q=80",
+  },
+
+  // ── Amazonas ────────────────────────────────────────────────
+  {
+    id: 16,
+    city: "Chamaya",
+    region: "Amazonas",
+    regionColor: "#065f46",
+    address: "Av. Chachapoyas 2840 — Terminal Leiva",
+    phones: ["914 420 313"],
+    maps: "https://maps.google.com/?q=Chamaya+Jaen+Cajamarca+Peru",
+    dot: "#6ee7b7",
+    img: "https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=600&q=80",
+  },
+  {
+    id: 17,
+    city: "Bagua Grande",
+    region: "Amazonas",
+    regionColor: "#065f46",
+    address: "Av. Chachapoyas 2840 — Terminal Leiva",
+    phones: ["959 544 152"],
+    maps: "https://www.google.com/maps/search/?api=1&query=-5.7576547,-78.4357215",
+    dot: "#4ade80",
+    img: "https://plus.unsplash.com/premium_photo-1686810855843-cb595b8418bd?w=600&q=80",
+  },
+  {
+    id: 18,
+    city: "Pedro Ruiz",
+    region: "Amazonas",
+    regionColor: "#065f46",
+    address: "Carr. Fernando Belaúnde Terry S/N",
+    phones: ["982 772 303", "922 210 161"],
+    maps: "https://www.google.com/maps/search/?api=1&query=-5.9386330,-77.9736189",
+    dot: "#34d399",
+    img: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80",
+  },
+  {
+    id: 19,
+    city: "Pomacochas",
+    region: "Amazonas",
+    regionColor: "#065f46",
+    address: "Av. Marginal S/N — a cuadra y media de la Comisaría",
+    phones: ["988 040 498"],
+    maps: "https://maps.google.com/?q=Pomacochas+Amazonas+Peru",
+    dot: "#6ee7b7",
+    img: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&q=80",
+  },
+  {
+    id: 20,
+    city: "Buenos Aires",
+    region: "Amazonas",
+    regionColor: "#065f46",
+    address:
+      "Carr. Fernando Belaúnde Terry 1246 — frente a la Comisaría (entre Pomacochas y Naranjos)",
+    phones: ["913 574 460"],
+    maps: "https://maps.google.com/?q=Buenos+Aires+Bongara+Amazonas+Peru",
+    dot: "#a7f3d0",
+    img: "https://images.unsplash.com/photo-1431794062232-2a99a5431c6c?w=600&q=80",
+  },
+
+  // ── San Martín ──────────────────────────────────────────────
+  {
+    id: 21,
+    city: "Naranjos",
+    region: "San Martín",
+    regionColor: "#92400e",
+    address: "Av. Marginal 314 — al costado de Turismo Cajamarca",
+    phones: ["942 444 294"],
+    maps: "https://maps.google.com/?q=Naranjos+Rioja+San+Martin+Peru",
+    dot: "#fb923c",
+    img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80",
+  },
+  {
+    id: 22,
+    city: "Naranjillo",
+    region: "San Martín",
+    regionColor: "#92400e",
+    address: "Carr. Fernando Belaúnde Terry S/N — Naranjillo",
+    phones: ["975 790 400"],
+    maps: "https://maps.google.com/?q=Naranjillo+Rioja+San+Martin+Peru",
+    dot: "#fdba74",
+    img: "https://images.unsplash.com/photo-1425913397330-cf8af2ff40a1?w=600&q=80",
+  },
+  {
+    id: 23,
+    city: "N. Cajamarca",
+    region: "San Martín",
+    regionColor: "#92400e",
+    address: "Av. Cajamarca Norte — Terminal Terrestre La Molina",
+    phones: ["931 703 571"],
+    maps: "https://www.google.com/maps/search/?api=1&query=-5.9281701,-77.3154473",
+    dot: "#f97316",
+    img: "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&q=80",
+  },
+  {
+    id: 24,
+    city: "Segunda Jerusalén",
+    region: "San Martín",
+    regionColor: "#92400e",
+    address:
+      "Av. Samaria Cdra. 1 — al costado de la Iglesia Pentecostés Misionera",
+    phones: ["939 083 805"],
+    maps: "https://maps.google.com/?q=Segunda+Jerusalen+Rioja+San+Martin",
+    dot: "#fb923c",
+    img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600&q=80",
+  },
+  {
+    id: 25,
+    city: "Rioja",
+    region: "San Martín",
+    regionColor: "#92400e",
+    address:
+      "Av. Campo Ferial #100 — Terminal Terrestre Stand 8, costado de TSP",
+    phones: ["941 583 051"],
+    maps: "https://www.google.com/maps/search/?api=1&query=-6.05516,-77.1659029",
+    dot: "#f97316",
+    img: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=600&q=80",
+  },
+  {
+    id: 26,
+    city: "Moyobamba",
+    region: "San Martín",
+    regionColor: "#92400e",
+    address: "Av. Miguel Grau 555 — Terminal Terrestre Municipal",
+    phones: ["995 454 537"],
+    maps: "https://www.google.com/maps/search/?api=1&query=-6.0451601,-76.9704046",
+    dot: "#fb923c",
+    img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600&q=80",
+  },
+  {
+    id: 27,
+    city: "Tabalosos",
+    region: "San Martín",
+    regionColor: "#92400e",
+    address:
+      "Carr. Fernando Belaúnde Terry Km. 40 — junto al Restaurante Mi Elva, frente al grifo",
+    phones: ["979 050 445"],
+    maps: "https://maps.google.com/?q=Tabalosos+Lamas+San+Martin+Peru",
+    dot: "#fdba74",
+    img: "https://images.unsplash.com/photo-1442120108414-42e7ea50d0b5?w=600&q=80",
+  },
+  {
+    id: 28,
+    city: "Tarapoto Santa Anita",
+    region: "San Martín",
+    regionColor: "#92400e",
+    address:
+      "Terminal Santa Anita Stand 20 — costado del Mercado Santa Anita, Carr. Atupampa Morales",
+    phones: ["996 454 609"],
+    maps: "https://maps.google.com/?q=Terminal+Santa+Anita+Tarapoto",
+    dot: "#22c55e",
+    img: "https://images.unsplash.com/photo-1442120108414-42e7ea50d0b5?w=600&q=80",
+  },
+  {
+    id: 29,
+    city: "Tarapoto Morales",
+    region: "San Martín",
+    regionColor: "#92400e",
+    address: "Terminal Morales — Jr. 1 de Mayo Cdra. 3",
+    phones: ["995 454 609"],
+    maps: "https://www.google.com/maps/search/?api=1&query=-6.479374,-76.3836955",
+    dot: "#16a34a",
+    img: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&q=80",
+  },
+  {
+    id: 30,
+    city: "Picota",
+    region: "San Martín",
+    regionColor: "#92400e",
+    address: "Carr. Fernando Belaúnde Terry S/N — costado Hotel Mateo",
+    phones: ["924 290 846"],
+    maps: "https://maps.google.com/?q=Picota+San+Martin+Peru",
+    dot: "#fb923c",
+    img: "https://images.unsplash.com/photo-1431794062232-2a99a5431c6c?w=600&q=80",
+  },
+  {
+    id: 31,
+    city: "San Hilarión",
+    region: "San Martín",
+    regionColor: "#92400e",
+    address: "Carr. Fernando Belaúnde Terry S/N",
+    phones: ["998 031 404"],
+    maps: "https://www.google.com/maps/search/?api=1&query=-6.9993336,-76.4430630",
+    dot: "#22c55e",
+    img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80",
+  },
+  {
+    id: 32,
+    city: "San Hilarión 2",
+    region: "San Martín",
+    regionColor: "#92400e",
+    address:
+      "Carr. Fernando Belaúnde Terry 222 — al costado de la Comisaría, en el Restaurante",
+    phones: ["952 567 353"],
+    maps: "https://maps.google.com/?q=San+Hilarion+Picota+San+Martin+Peru",
+    dot: "#4ade80",
+    img: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=600&q=80",
+  },
+  {
+    id: 33,
+    city: "Bellavista",
+    region: "San Martín",
+    regionColor: "#92400e",
+    address: "Av. Lima Cdra. 6 con Jr. Loreto — Tercer Piso",
+    phones: ["942 135 150"],
+    maps: "https://www.google.com/maps/search/?api=1&query=-7.0594,-76.5801",
+    dot: "#a78bfa",
+    img: "https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=600&q=80",
+  },
+  {
+    id: 34,
+    city: "Sacanche",
+    region: "San Martín",
+    regionColor: "#92400e",
+    address: "Carr. Fernando Belaúnde Terry S/N — Km. 737",
+    phones: ["929 855 077"],
+    maps: "https://www.google.com/maps/search/?api=1&query=-7.0807418,-76.7394833",
+    dot: "#fb923c",
+    img: "https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=600&q=80",
+  },
+  {
+    id: 35,
+    city: "Saposoa",
+    region: "San Martín",
+    regionColor: "#92400e",
+    address: "Jr. Chorrillos 516",
+    phones: ["969 182 663"],
+    maps: "https://maps.google.com/?q=Saposoa+Huallaga+San+Martin+Peru",
+    dot: "#fbbf24",
+    img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80",
+  },
+  {
+    id: 36,
+    city: "Juanjuí",
+    region: "San Martín",
+    regionColor: "#92400e",
+    address: "Jr. Arica 103 — Terminal Tobías Ruiz",
+    phones: ["988 394 622"],
+    maps: "https://www.google.com/maps/search/?api=1&query=-7.1821376,-76.7353093",
+    dot: "#4ade80",
+    img: "https://images.unsplash.com/photo-1546412414-8035e1776c9a?w=600&q=80",
+  },
+  {
+    id: 37,
+    city: "Yurimaguas",
+    region: "San Martín",
+    regionColor: "#92400e",
+    address: "Jr. Mariscal Cáceres 230",
+    phones: ["972 851 055"],
+    maps: "https://maps.google.com/?q=Yurimaguas+Alto+Amazonas+Loreto+Peru",
+    dot: "#22c55e",
+    img: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&q=80",
+  },
+];
+
+const regions = [
+  "Todas",
+  ...Array.from(new Set(agencies.map((a) => a.region))),
+];
+
 export default function AgenciasPage() {
-  const agencias = [
-    {
-      ciudad: "Trujillo",
-      region: "La Libertad",
-      principal: true,
-      dir: "Av. Nicolás de Piérola N° 1230 Urb. San Fernando",
-      tel: "999 333 419",
-      color: "#1a4fa0",
-      foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Plaza_de_Armas_de_Trujillo_%28Per%C3%BA%29.jpg/800px-Plaza_de_Armas_de_Trujillo_%28Per%C3%BA%29.jpg",
-      mapsUrl:
-        "https://www.google.com/maps/search/?api=1&query=-8.097581,-79.0376331",
-    },
-    {
-      ciudad: "Chimbote",
-      region: "Áncash",
-      dir: 'Terminal Terrestre "El Chimbador" - Módulo Q-17',
-      tel: "993 767 433",
-      color: "#0891b2",
-      foto: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",
-      // lat:-9.1047793 lng:-78.5578073
-      mapsUrl:
-        "https://www.google.com/maps/search/?api=1&query=-9.1047793,-78.5578073&query_place_id=ChIJpcZlVwSEq5ERVnf4olojnNk",
-    },
-    {
-      ciudad: "Paijàn",
-      region: "La Libertad",
-      dir: "Av. Panamericana Norte 657",
-      tel: "998 391 250",
-      color: "#d97706",
-      foto: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80",
-      // lat:-7.7339852 lng:-79.3008360
-      mapsUrl:
-        "https://www.google.com/maps/search/?api=1&query=-7.7339852,-79.3008360&query_place_id=ChIJ5Z7jLQZUrZERp6Zitj1gqWo",
-    },
-    {
-      ciudad: "Pacasmayo",
-      region: "La Libertad",
-      dir: "Terrapuerto Pacasmayo Stand N°9",
-      tel: "980 947 832 / 981 911 766",
-      color: "#0284c7",
-      foto: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80",
-      // lat:-7.3969310 lng:-79.5672956
-      mapsUrl:
-        "https://www.google.com/maps/search/?api=1&query=-7.3969310,-79.5672956&query_place_id=ChIJ3weMpiNHTZARC4lCTFYlaM0",
-    },
-    {
-      ciudad: "Chiclayo",
-      region: "Lambayeque",
-      dir: "Panamericana Norte Km 774 Terminal Gasela",
-      tel: "944 671 146 / 979 695 508",
-      color: "#7c3aed",
-      foto: "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=600&q=80",
-      // lat:-6.7558086 lng:-79.8636393
-      mapsUrl:
-        "https://www.google.com/maps/search/?api=1&query=-6.7558086,-79.8636393&query_place_id=ChIJy-Cq-PHuTJARMwz2xDWyxT4",
-    },
-    {
-      ciudad: "Bagua Grande",
-      region: "Amazonas",
-      dir: "Av. Chachapoyas 2840 Terminal Leiva",
-      tel: "959 544 152",
-      color: "#16a34a",
-      foto: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80",
-      // lat:-5.7576547 lng:-78.4357215
-      mapsUrl:
-        "https://www.google.com/maps/search/?api=1&query=-5.7576547,-78.4357215&query_place_id=ChIJAQAAAL1PtJEReM5cLxDn4M4",
-    },
-    {
-      ciudad: "Pedro Ruiz",
-      region: "Amazonas",
-      dir: "Carr. Fernando Belaúnde Terry S/N",
-      tel: "982 772 303 / 922 210 161",
-      color: "#65a30d",
-      foto: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80",
-      // lat:-5.9386330 lng:-77.9736189
-      mapsUrl:
-        "https://www.google.com/maps/search/?api=1&query=-5.9386330,-77.9736189",
-    },
-    {
-      ciudad: "N. Cajamarca",
-      region: "San Martín",
-      dir: "Av. Cajamarca Norte 456 (Terminal Molina Stand N°8)",
-      tel: "931 703 571",
-      color: "#b45309",
-      foto: "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&q=80",
-      // lat:-5.9281701 lng:-77.3154473
-      mapsUrl:
-        "https://www.google.com/maps/search/?api=1&query=-5.9281701,-77.3154473&query_place_id=ChIJg_img47dtpERHheY6FsSZBM",
-    },
-    {
-      ciudad: "Rioja",
-      region: "San Martín",
-      dir: "Av. Campo Ferial #100 Term. Terrestre Std. 8 (costado de TSP)",
-      tel: "941 583 051",
-      color: "#dc2626",
-      foto: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=600&q=80",
-      // lat:-6.05516 lng:-77.1659029
-      mapsUrl:
-        "https://www.google.com/maps/search/?api=1&query=-6.05516,-77.1659029&query_place_id=ChIJy2uad7wnt5ERhSqP2QN1MUY",
-    },
-    {
-      ciudad: "Moyobamba",
-      region: "San Martín",
-      dir: "Av. Miguel Grau 555 Term. Terrestre municipal",
-      tel: "956 078 715 / 995 454 537",
-      color: "#0891b2",
-      foto: "https://images.unsplash.com/photo-1546514355-7fdc90ccbd03?w=600&q=80",
-      // lat:-6.0451601 lng:-76.9704046
-      mapsUrl:
-        "https://www.google.com/maps/search/?api=1&query=-6.0451601,-76.9704046&query_place_id=ChIJ885BOxA7t5ERshT5E5fH-1E",
-    },
-    {
-      ciudad: "Tarapoto",
-      region: "San Martín",
-      dir: "Jr. Primero de Mayo Cdr. 3 Terminal Morales",
-      tel: "995 454 609",
-      color: "#16a34a",
-      foto: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80",
-      // lat:-6.479374 lng:-76.3836955 (Morales - Tarapoto)
-      mapsUrl:
-        "https://www.google.com/maps/search/?api=1&query=-6.479374,-76.3836955",
-    },
-    {
-      ciudad: "San Hilarion",
-      region: "San Martín",
-      dir: "Carr. Fernando Belaúnde Terry S/N",
-      tel: "998 031 404",
-      color: "#15803d",
-      foto: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&q=80",
-      // lat:-6.9993336 lng:-76.4430630
-      mapsUrl:
-        "https://www.google.com/maps/search/?api=1&query=-6.9993336,-76.4430630",
-    },
-    {
-      ciudad: "Bellavista",
-      region: "San Martín",
-      dir: "Av. Lima con Jr. Junín Tercer Piso",
-      tel: "942 135 150",
-      color: "#7c3aed",
-      foto: "https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=600&q=80",
-      // lat:-7.0594 lng:-76.5801 (Bellavista San Martin)
-      mapsUrl:
-        "https://www.google.com/maps/search/?api=1&query=-7.0594,-76.5801",
-    },
-    {
-      ciudad: "Sacanche",
-      region: "San Martín",
-      dir: "Carr. Fernando Belaúnde Terry S/N Km. 737",
-      tel: "927 113 725 / 972 080 038",
-      color: "#d97706",
-      foto: "https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=600&q=80",
-      // lat:-7.0807418 lng:-76.7394833 (Carr Belaunde - Sacanche zona)
-      mapsUrl:
-        "https://www.google.com/maps/search/?api=1&query=-7.0807418,-76.7394833",
-    },
-    {
-      ciudad: "Juanjuí",
-      region: "San Martín",
-      dir: "Jr. Arica 103",
-      tel: "950 641 480 / 988 394 622",
-      color: "#0284c7",
-      foto: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=600&q=80",
-      // lat:-7.1821376 lng:-76.7353093
-      mapsUrl:
-        "https://www.google.com/maps/search/?api=1&query=-7.1821376,-76.7353093&query_place_id=ChIJh_2wQ4prsJERRbPjz_lM1t0",
-    },
-  ];
+  const [search, setSearch] = useState("");
+  const [activeRegion, setActiveRegion] = useState("Todas");
 
-  const MapIcon = () => (
-    <svg
-      width="13"
-      height="13"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.5"
-    >
-      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-      <circle cx="12" cy="10" r="3" />
-    </svg>
-  );
-
-  const principal = agencias.find((a) => a.principal)!;
-  const resto = agencias.filter((a) => !a.principal);
-
+  const filtered = agencies.filter((a) => {
+    const q = search.toLowerCase();
+    const matchSearch =
+      a.city.toLowerCase().includes(q) ||
+      a.region.toLowerCase().includes(q) ||
+      a.address.toLowerCase().includes(q) ||
+      a.phones.some((p) => p.includes(q));
+    const matchRegion = activeRegion === "Todas" || a.region === activeRegion;
+    return matchSearch && matchRegion;
+  });
+  useEffect(() => {
+    // supabase
+    //   .from("agencias")
+    //   .select("*")
+    //   .then(({ data, error }) => {
+    //     if (error) {
+    //       console.error("❌ ERROR DETALLADO:", JSON.stringify(error, null, 2));
+    //     } else {
+    //       console.log("✅ Datos recibidos:", data);
+    //       console.log("📊 Total registros:", data?.length);
+    //     }
+    //   });
+  }, []);
   return (
-    <>
+    <div
+      style={{
+        fontFamily: "'Inter', sans-serif",
+        background: "#f8f9fa",
+        minHeight: "100vh",
+        color: "#111",
+        overflowX: "hidden",
+      }}
+    >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400;1,700&family=DM+Sans:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap');
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .ag-page { font-family:'DM Sans',sans-serif; background:#f8f6f1; min-height:100vh; color:#1a1a1a; }
+        @keyframes slideUp  { from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);} }
+        @keyframes pulseDot { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.6);} }
+        @keyframes cardIn   { from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);} }
 
-        /* Hero */
-        .ag-hero { background:#0d1117; position:relative; overflow:hidden; padding:72px 48px 60px; text-align:center; }
-        .ag-hero::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-45deg,transparent,transparent 18px,rgba(26,140,60,.04) 18px,rgba(26,140,60,.04) 19px); }
-        .ag-hero-strip { display:flex; height:4px; border-radius:2px; overflow:hidden; max-width:160px; margin:0 auto 36px; }
-        .ag-hero h1 { font-family:'Crimson Pro',serif; font-size:clamp(32px,5vw,52px); font-weight:700; color:#fff; letter-spacing:-.02em; line-height:1.15; position:relative; margin-bottom:14px; }
-        .ag-hero h1 em { font-style:italic; color:#f5c518; }
-        .ag-hero p { color:rgba(255,255,255,.5); font-size:14px; position:relative; letter-spacing:.04em; text-transform:uppercase; font-weight:500; }
-        .ag-hero-count { display:inline-flex; align-items:center; gap:8px; background:rgba(26,140,60,.15); border:1px solid rgba(26,140,60,.3); border-radius:20px; padding:6px 16px; margin-top:20px; font-size:13px; font-weight:600; color:#4ade80; position:relative; }
-        .ag-hero-count span { width:7px; height:7px; background:#4ade80; border-radius:50%; display:inline-block; animation:agPulse 1.5s ease-in-out infinite; }
-        @keyframes agPulse { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.5);} }
+        .agency-card {
+          background: #fff; border-radius: 18px; overflow: hidden;
+          border: 1.5px solid #e5e7eb;
+          transition: transform .22s ease, box-shadow .22s ease;
+          animation: cardIn .45s ease both;
+        }
+        .agency-card:hover { transform: translateY(-5px); box-shadow: 0 20px 50px rgba(0,0,0,.10); }
+        .agency-img-wrap { position: relative; height: 160px; overflow: hidden; }
+        .agency-img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+        .agency-card:hover .agency-img { transform: scale(1.06); }
 
-        /* Body */
-        .ag-body { max-width:1280px; margin:0 auto; padding:56px 24px 80px; }
-        .ag-section-label { font-size:10px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:#1a8c3c; margin-bottom:28px; display:flex; align-items:center; gap:10px; }
-        .ag-section-label::after { content:''; flex:1; height:1px; background:#d4d0c8; }
+        .region-badge {
+          position: absolute; top: 12px; right: 12px;
+          background: rgba(0,0,0,.55); backdrop-filter: blur(8px);
+          border: 1px solid rgba(255,255,255,.18); color: #fff;
+          font-size: 10px; font-weight: 700; letter-spacing: .1em;
+          text-transform: uppercase; padding: 4px 10px; border-radius: 6px;
+        }
+        .city-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex-shrink: 0; box-shadow: 0 0 0 3px rgba(255,255,255,.35); }
 
-        /* Card principal */
-        .ag-card-principal { background:#0d1117; border-radius:20px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,.2); margin-bottom:48px; display:grid; grid-template-columns:1fr 1fr; }
-        .ag-card-principal-img { position:relative; overflow:hidden; min-height:280px; }
-        .ag-card-principal-img img { width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
-        .ag-card-principal:hover .ag-card-principal-img img { transform:scale(1.05); }
-        .ag-card-principal-img::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(13,17,23,.4),transparent); }
-        .ag-card-principal-body { padding:44px 48px; display:flex; flex-direction:column; justify-content:center; gap:18px; }
-        .ag-badge-sede { display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg,#1a8c3c,#0f5c28); color:#fff; font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; padding:4px 12px; border-radius:20px; width:fit-content; }
-        .ag-principal-ciudad { font-family:'Crimson Pro',serif; font-size:38px; font-weight:700; color:#fff; letter-spacing:-.02em; line-height:1.1; }
-        .ag-principal-ciudad em { font-style:italic; color:#f5c518; }
-        .ag-principal-region { font-size:11px; color:rgba(255,255,255,.4); font-weight:600; text-transform:uppercase; letter-spacing:.1em; margin-bottom:4px; }
-        .ag-info-line { display:flex; align-items:flex-start; gap:10px; font-size:13.5px; color:rgba(255,255,255,.7); line-height:1.55; }
-        .ag-maps-btn-dark { display:inline-flex; align-items:center; gap:8px; background:rgba(26,140,60,.15); border:1.5px solid rgba(26,140,60,.4); color:#4ade80; text-decoration:none; padding:11px 22px; border-radius:10px; font-size:13px; font-weight:700; letter-spacing:.04em; transition:background .2s,transform .15s; width:fit-content; margin-top:4px; }
-        .ag-maps-btn-dark:hover { background:rgba(26,140,60,.28); transform:translateY(-1px); }
+        .phone-chip {
+          display: inline-flex; align-items: center; gap: 6px;
+          background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px;
+          padding: 5px 10px; font-size: 12px; font-weight: 700; color: #166534;
+          text-decoration: none; transition: background .15s, transform .1s; white-space: nowrap;
+        }
+        .phone-chip:hover { background: #dcfce7; transform: translateY(-1px); }
 
-        /* Grid cards */
-        .ag-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:18px; }
-        .ag-card { background:#fff; border-radius:16px; overflow:hidden; border:1.5px solid #e8e4db; box-shadow:0 2px 12px rgba(0,0,0,.06); transition:transform .2s,box-shadow .2s,border-color .2s; }
-        .ag-card:hover { transform:translateY(-4px); box-shadow:0 12px 36px rgba(0,0,0,.12); border-color:#c8c4bb; }
-        .ag-card-img { position:relative; height:148px; overflow:hidden; }
-        .ag-card-img img { width:100%; height:100%; object-fit:cover; transition:transform .4s ease; }
-        .ag-card:hover .ag-card-img img { transform:scale(1.08); }
-        .ag-card-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,.58) 0%,transparent 60%); }
-        .ag-card-region-tag { position:absolute; top:10px; right:10px; background:rgba(0,0,0,.45); backdrop-filter:blur(6px); border-radius:6px; padding:3px 8px; font-size:10px; font-weight:600; color:rgba(255,255,255,.85); letter-spacing:.06em; text-transform:uppercase; }
-        .ag-card-city-badge { position:absolute; bottom:12px; left:14px; display:flex; align-items:center; gap:6px; }
-        .ag-card-city-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; box-shadow:0 0 0 2px rgba(255,255,255,.3); }
-        .ag-card-city-name { font-family:'Crimson Pro',serif; font-size:20px; font-weight:700; color:#fff; text-shadow:0 1px 8px rgba(0,0,0,.5); }
-        .ag-card-body { padding:16px 18px 18px; display:flex; flex-direction:column; gap:8px; }
-        .ag-card-dir { font-size:12.5px; color:#555; line-height:1.55; display:flex; gap:7px; align-items:flex-start; }
-        .ag-card-tel { font-size:12.5px; color:#15803d; font-weight:700; display:flex; gap:7px; align-items:center; }
-        .ag-card-maps { display:flex; align-items:center; justify-content:center; gap:7px; background:#f0fdf4; border:1.5px solid #bbf7d0; color:#166534; text-decoration:none; padding:9px 14px; border-radius:10px; font-size:12px; font-weight:700; letter-spacing:.04em; transition:background .2s,transform .1s; width:100%; margin-top:4px; }
-        .ag-card-maps:hover { background:#dcfce7; transform:translateY(-1px); }
+        .maps-btn {
+          display: flex; align-items: center; gap: 6px;
+          background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+          border: 1.5px solid #86efac; border-radius: 8px; padding: 9px 14px;
+          font-size: 11px; font-weight: 700; letter-spacing: .06em;
+          text-transform: uppercase; color: #166534; text-decoration: none;
+          transition: all .15s;
+        }
+        .maps-btn:hover { background: linear-gradient(135deg, #dcfce7, #bbf7d0); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,140,60,.15); }
 
-        /* Responsive */
-        @media (max-width:860px) { .ag-card-principal{grid-template-columns:1fr;} .ag-card-principal-img{min-height:200px;} .ag-card-principal-body{padding:28px 24px;} .ag-hero{padding:56px 24px 44px;} }
-        @media (max-width:600px) { .ag-body{padding:36px 16px 60px;} .ag-grid{grid-template-columns:1fr;} }
+        .filter-chip {
+          padding: 7px 16px; border-radius: 20px; font-size: 12px; font-weight: 700;
+          letter-spacing: .05em; border: 1.5px solid #e5e7eb; background: #fff;
+          color: rgba(0,0,0,.5); cursor: pointer; transition: all .15s; white-space: nowrap;
+        }
+        .filter-chip:hover { border-color: #1a8c3c; color: #1a8c3c; }
+        .filter-chip.active { background: #1a8c3c; border-color: #1a8c3c; color: #fff; }
+
+        .search-input {
+          border: 1.5px solid #e5e7eb; border-radius: 12px;
+          padding: 12px 16px 12px 42px; font-size: 14px; font-weight: 500;
+          color: #111; background: #fff; outline: none; width: 100%; max-width: 340px;
+          transition: border-color .2s, box-shadow .2s;
+        }
+        .search-input:focus { border-color: #1a8c3c; box-shadow: 0 0 0 3px rgba(26,140,60,.10); }
+        .search-input::placeholder { color: rgba(0,0,0,.35); }
+
+        .wsp-btn {
+          display: inline-flex; align-items: center; gap: 8px;
+          background: linear-gradient(135deg, #25D366, #128C7E);
+          color: #fff; border: none; border-radius: 10px; padding: 10px 18px;
+          font-size: 12px; font-weight: 700; letter-spacing: .04em;
+          cursor: pointer; box-shadow: 0 4px 16px rgba(37,211,102,.35);
+          transition: opacity .2s, transform .15s; text-decoration: none; white-space: nowrap;
+        }
+        .wsp-btn:hover { opacity: .9; transform: translateY(-1px); }
+
+        @media (max-width: 768px) {
+          .hero-pad { padding: 48px 20px 60px !important; }
+          .agencies-grid { grid-template-columns: 1fr !important; }
+          .toolbar { flex-direction: column !important; align-items: flex-start !important; }
+          .section-inner { padding: 32px 16px 48px !important; }
+          .cta-banner { flex-direction: column !important; padding: 28px 20px !important; }
+        }
       `}</style>
 
-      <div className="ag-page">
-        {/* Hero */}
-        <div className="ag-hero">
-          <div className="ag-hero-strip">
-            <div style={{ flex: 2, background: "#1a8c3c" }} />
-            <div style={{ flex: 1, background: "#d42b2b" }} />
-            <div style={{ flex: 1, background: "#1a4fa0" }} />
-            <div style={{ flex: 1, background: "#f5c518" }} />
-          </div>
-          <h1>
-            Nuestras <em>Agencias</em>
-            <br />a Nivel Nacional
-          </h1>
-          <p>Transportes Universo S.A.C. · Puntos de atención</p>
-          <div>
-            <div className="ag-hero-count">
-              <span />
-              15 oficinas activas en todo el norte del Perú
+      {/* ════ HERO ════ */}
+      <section
+        style={{
+          background:
+            "linear-gradient(135deg,#0d1117 0%,#0f2a1a 50%,#0d1117 100%)",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            opacity: 0.04,
+            backgroundImage: "radial-gradient(circle,#fff 1px,transparent 1px)",
+            backgroundSize: "28px 28px",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            top: -80,
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: 700,
+            height: 320,
+            background:
+              "radial-gradient(ellipse,rgba(26,140,60,.22) 0%,transparent 70%)",
+          }}
+        />
+
+        <div
+          className="hero-pad"
+          style={{
+            maxWidth: 1200,
+            margin: "0 auto",
+            padding: "68px 48px 76px",
+            position: "relative",
+            zIndex: 1,
+            textAlign: "center",
+          }}
+        >
+          <div style={{ animation: "slideUp .65s ease forwards" }}>
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                background: "rgba(255,255,255,.07)",
+                border: "1px solid rgba(255,255,255,.18)",
+                borderRadius: 20,
+                padding: "6px 18px",
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: ".12em",
+                color: "#e2e8f0",
+                textTransform: "uppercase",
+                marginBottom: 24,
+                backdropFilter: "blur(10px)",
+              }}
+            >
+              <span
+                style={{
+                  width: 7,
+                  height: 7,
+                  background: "#4ade80",
+                  borderRadius: "50%",
+                  animation: "pulseDot 1.5s ease-in-out infinite",
+                  display: "inline-block",
+                }}
+              />
+              Puntos de venta oficiales
+            </div>
+
+            <h1
+              style={{
+                fontFamily: "'Playfair Display',serif",
+                fontSize: "clamp(32px,5vw,56px)",
+                fontWeight: 800,
+                color: "#fff",
+                lineHeight: 1.12,
+                marginBottom: 18,
+                textShadow: "0 2px 28px rgba(0,0,0,.4)",
+              }}
+            >
+              Nuestras{" "}
+              <span style={{ fontStyle: "italic", color: "#f5c518" }}>
+                agencias
+              </span>{" "}
+              en el norte del Perú
+            </h1>
+
+            <div
+              style={{
+                display: "flex",
+                gap: 4,
+                marginBottom: 22,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {["#1a8c3c", "#f5c518", "#d42b2b"].map((c, i) => (
+                <div
+                  key={i}
+                  style={{
+                    width: i === 0 ? 36 : i === 1 ? 18 : 10,
+                    height: 3,
+                    background: c,
+                    borderRadius: 2,
+                  }}
+                />
+              ))}
+            </div>
+
+            <p
+              style={{
+                color: "rgba(215,225,240,.78)",
+                fontSize: 16,
+                lineHeight: 1.8,
+                maxWidth: 540,
+                margin: "0 auto 32px",
+              }}
+            >
+              Contamos con{" "}
+              <strong style={{ color: "#f5c518" }}>
+                37 puntos de atención
+              </strong>{" "}
+              distribuidos en 5 regiones del norte del Perú. Compra tu pasaje
+              directamente en la agencia más cercana.
+            </p>
+
+            {/* Stats */}
+            <div
+              style={{
+                display: "flex",
+                gap: 0,
+                background: "rgba(5,12,28,.48)",
+                borderRadius: 14,
+                overflow: "hidden",
+                backdropFilter: "blur(14px)",
+                border: "1px solid rgba(255,255,255,.10)",
+                maxWidth: 520,
+                margin: "0 auto",
+                boxShadow: "0 8px 32px rgba(0,0,0,.35)",
+              }}
+            >
+              {[
+                { value: "37", label: "Agencias", color: "#4ade80" },
+                { value: "5", label: "Regiones", color: "#fbbf24" },
+                { value: "50+", label: "Rutas", color: "#60a5fa" },
+                { value: "6am", label: "Apertura", color: "#f87171" },
+              ].map((s, i) => (
+                <div
+                  key={s.label}
+                  style={{
+                    flex: 1,
+                    padding: "16px 8px",
+                    textAlign: "center",
+                    borderRight:
+                      i < 3 ? "1px solid rgba(255,255,255,.08)" : "none",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: "'Playfair Display',serif",
+                      fontSize: 22,
+                      fontWeight: 700,
+                      color: s.color,
+                      lineHeight: 1,
+                    }}
+                  >
+                    {s.value}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 10,
+                      color: "rgba(255,255,255,.48)",
+                      marginTop: 4,
+                      textTransform: "uppercase",
+                      letterSpacing: ".07em",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {s.label}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
+      </section>
 
-        <div className="ag-body">
-          {/* Sede principal */}
-          <div className="ag-section-label">Sede principal</div>
-          <div className="ag-card-principal">
-            <div className="ag-card-principal-img">
-              <img
-                src={principal.foto}
-                alt="Trujillo"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src =
-                    "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80";
+      {/* ════ COLOR STRIP ════ */}
+      <div style={{ display: "flex", height: 5 }}>
+        {["#1a8c3c", "#d42b2b", "#1a4fa0", "#f5c518", "#1a8c3c"].map(
+          (c, i, a) => (
+            <div
+              key={i}
+              style={{
+                flex: i === 0 || i === a.length - 1 ? 2 : 1,
+                background: c,
+              }}
+            />
+          ),
+        )}
+      </div>
+
+      {/* ════ TOOLBAR ════ */}
+      <div
+        style={{
+          background: "#fff",
+          borderBottom: "1px solid #e5e7eb",
+          position: "sticky",
+          top: 68,
+          zIndex: 40,
+          boxShadow: "0 2px 12px rgba(0,0,0,.06)",
+        }}
+      >
+        <div style={{ maxWidth: 1296, margin: "0 auto", padding: "14px 48px" }}>
+          <div
+            className="toolbar"
+            style={{
+              display: "flex",
+              gap: 16,
+              alignItems: "center",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+            }}
+          >
+            {/* Buscador */}
+            <div style={{ position: "relative", flexShrink: 0 }}>
+              <div
+                style={{
+                  position: "absolute",
+                  left: 14,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  pointerEvents: "none",
                 }}
+              >
+                <FaSearch size={13} color="#aaa" />
+              </div>
+              <input
+                className="search-input"
+                placeholder="Buscar ciudad, región o teléfono..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            <div className="ag-card-principal-body">
-              <div className="ag-badge-sede">⭐ Sede Principal</div>
-              <div>
-                <div className="ag-principal-region">{principal.region}</div>
-                <div className="ag-principal-ciudad">
-                  Trujillo, <em>Perú</em>
-                </div>
-              </div>
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: 10 }}
+
+            {/* Filtros */}
+            <div
+              style={{
+                display: "flex",
+                gap: 8,
+                flexWrap: "wrap",
+                alignItems: "center",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  color: "rgba(0,0,0,.4)",
+                  letterSpacing: ".08em",
+                  textTransform: "uppercase",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 4,
+                  whiteSpace: "nowrap",
+                }}
               >
-                <div className="ag-info-line">
-                  <span>📍</span>
-                  <span>{principal.dir}</span>
-                </div>
-                <div className="ag-info-line">
-                  <span>📞</span>
-                  <span style={{ color: "#4ade80", fontWeight: 700 }}>
-                    (+51) {principal.tel}
-                  </span>
-                </div>
-              </div>
-              <a
-                className="ag-maps-btn-dark"
-                href={principal.mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <MapIcon /> Ver en Google Maps
-              </a>
+                <FaFilter size={9} /> Región:
+              </span>
+              {regions.map((r) => (
+                <button
+                  key={r}
+                  className={`filter-chip${activeRegion === r ? " active" : ""}`}
+                  onClick={() => setActiveRegion(r)}
+                >
+                  {r}
+                </button>
+              ))}
+            </div>
+
+            <div
+              style={{
+                fontSize: 12,
+                fontWeight: 600,
+                color: "rgba(0,0,0,.4)",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {filtered.length} {filtered.length === 1 ? "agencia" : "agencias"}
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Todas las agencias */}
-          <div className="ag-section-label" style={{ marginTop: 8 }}>
-            Todas nuestras agencias
+      {/* ════ GRID ════ */}
+      <section
+        className="section-inner"
+        style={{ maxWidth: 1296, margin: "0 auto", padding: "40px 48px 72px" }}
+      >
+        {filtered.length === 0 ? (
+          <div style={{ textAlign: "center", padding: "80px 0" }}>
+            <div style={{ fontSize: 48, marginBottom: 16 }}>🔍</div>
+            <p
+              style={{ fontSize: 16, fontWeight: 600, color: "rgba(0,0,0,.4)" }}
+            >
+              No se encontraron agencias
+            </p>
           </div>
-          <div className="ag-grid">
-            {resto.map((ag) => (
-              <div key={ag.ciudad} className="ag-card">
-                <div className="ag-card-img">
+        ) : (
+          <div
+            className="agencies-grid"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))",
+              gap: 20,
+            }}
+          >
+            {filtered.map((agency, i) => (
+              <div
+                key={agency.id}
+                className="agency-card"
+                style={{
+                  animationDelay: `${i * 40}ms`,
+                  animationFillMode: "forwards",
+                }}
+              >
+                {/* Imagen */}
+                <div className="agency-img-wrap">
                   <img
-                    src={ag.foto}
-                    alt={ag.ciudad}
+                    src={agency.img}
+                    alt={agency.city}
+                    className="agency-img"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src =
-                        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80";
+                        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80";
                     }}
                   />
-                  <div className="ag-card-overlay" />
-                  <div className="ag-card-region-tag">{ag.region}</div>
-                  <div className="ag-card-city-badge">
-                    <div
-                      className="ag-card-city-dot"
-                      style={{ background: ag.color }}
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background:
+                        "linear-gradient(to top,rgba(0,0,0,.45) 0%,transparent 60%)",
+                    }}
+                  />
+                  <div className="region-badge">{agency.region}</div>
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: 14,
+                      left: 16,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                    }}
+                  >
+                    <span
+                      className="city-dot"
+                      style={{ background: agency.dot }}
                     />
-                    <span className="ag-card-city-name">{ag.ciudad}</span>
+                    <span
+                      style={{
+                        fontFamily: "'Playfair Display',serif",
+                        fontSize: 20,
+                        fontWeight: 700,
+                        color: "#fff",
+                        textShadow: "0 1px 12px rgba(0,0,0,.6)",
+                      }}
+                    >
+                      {agency.city}
+                    </span>
                   </div>
                 </div>
-                <div className="ag-card-body">
-                  <div className="ag-card-dir">
-                    <span>📍</span>
-                    <span>{ag.dir}</span>
-                  </div>
-                  <div className="ag-card-tel">
-                    <span>📞</span>
-                    <span>{ag.tel}</span>
-                  </div>
-                  <a
-                    className="ag-card-maps"
-                    href={ag.mapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+
+                {/* Info */}
+                <div style={{ padding: "18px 18px 20px" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: 10,
+                      alignItems: "flex-start",
+                      marginBottom: 14,
+                    }}
                   >
-                    <MapIcon /> Ver en Google Maps
-                  </a>
+                    <div
+                      style={{
+                        width: 28,
+                        height: 28,
+                        borderRadius: 8,
+                        background: "#fee2e2",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                        marginTop: 1,
+                      }}
+                    >
+                      <FaMapMarkerAlt size={12} color="#e53e3e" />
+                    </div>
+                    <p
+                      style={{
+                        fontSize: 13,
+                        color: "rgba(0,0,0,.65)",
+                        lineHeight: 1.55,
+                        fontWeight: 500,
+                      }}
+                    >
+                      {agency.address}
+                    </p>
+                  </div>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: 6,
+                      marginBottom: 14,
+                    }}
+                  >
+                    {agency.phones.map((phone) => (
+                      <a
+                        key={phone}
+                        className="phone-chip"
+                        href={`tel:+51${phone.replace(/\s/g, "")}`}
+                      >
+                        <FaPhoneAlt size={10} color="#25D366" />
+                        {phone}
+                      </a>
+                    ))}
+                  </div>
+
+                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                    {agency.maps && (
+                      <a
+                        className="maps-btn"
+                        href={agency.maps}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FaMapMarkerAlt size={11} /> Maps{" "}
+                        <FaArrowRight size={10} />
+                      </a>
+                    )}
+                    <a
+                      className="wsp-btn"
+                      href={`https://wa.me/51999333419?text=Hola!%20Estoy%20en%20${encodeURIComponent(agency.city)}%20y%20quiero%20consultar%20sobre%20pasajes%20%F0%9F%9A%8D`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FaWhatsapp size={13} /> WhatsApp
+                    </a>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
+        )}
+
+        {/* CTA Banner */}
+        <div
+          className="cta-banner"
+          style={{
+            marginTop: 56,
+            background: "linear-gradient(135deg,#0d1117 0%,#0f2a1a 100%)",
+            borderRadius: 20,
+            padding: "40px 48px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: 24,
+            position: "relative",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              right: -60,
+              top: -60,
+              width: 280,
+              height: 280,
+              background: "rgba(26,140,60,.08)",
+              borderRadius: "50%",
+            }}
+          />
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <div
+              style={{
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: ".12em",
+                textTransform: "uppercase",
+                color: "#4ade80",
+                marginBottom: 8,
+              }}
+            >
+              ¿No encontraste tu ciudad?
+            </div>
+            <h3
+              style={{
+                fontFamily: "'Playfair Display',serif",
+                fontSize: "clamp(20px,3vw,26px)",
+                fontWeight: 700,
+                color: "#fff",
+                marginBottom: 6,
+              }}
+            >
+              Escríbenos por WhatsApp
+            </h3>
+            <p
+              style={{
+                fontSize: 13,
+                color: "rgba(255,255,255,.5)",
+                lineHeight: 1.65,
+              }}
+            >
+              Te informamos de rutas, horarios y precios desde cualquier punto
+              del norte del Perú.
+            </p>
+          </div>
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <a
+              href="https://wa.me/51999333419?text=Hola!%20Quiero%20informaci%C3%B3n%20sobre%20rutas%20y%20pasajes%20%F0%9F%9A%8D"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="wsp-btn"
+              style={{ padding: "14px 24px", fontSize: 14, borderRadius: 12 }}
+            >
+              <FaWhatsapp size={18} /> Escribir ahora <FaArrowRight size={13} />
+            </a>
+          </div>
         </div>
-      </div>
-    </>
+      </section>
+    </div>
   );
 }

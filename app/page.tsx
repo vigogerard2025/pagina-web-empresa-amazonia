@@ -1,21 +1,24 @@
 "use client";
 import { useState, useEffect } from "react";
 import { FaBus, FaSearch, FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
+// app/page.tsx — agrega esto arriba del componente
+import { supabase } from "@/lib/supabase";
 
-// ── Slideshow: fotos de destinos ──────────────────────────────────────────────
+// Dentro del componente, en un useEffect:
+
 const slides = [
   {
-    url: "https://plus.unsplash.com/premium_photo-1686810855843-cb595b8418bd?q=80&w=1025&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    url: "https://plus.unsplash.com/premium_photo-1686810855843-cb595b8418bd?q=80&w=1025&auto=format&fit=crop",
     ciudad: "Bagua Grande",
     region: "Amazonas",
   },
   {
-    url: "https://images.unsplash.com/photo-1442120108414-42e7ea50d0b5?q=80&w=1249&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    url: "https://images.unsplash.com/photo-1442120108414-42e7ea50d0b5?q=80&w=1249&auto=format&fit=crop",
     ciudad: "Tarapoto",
     region: "San Martín",
   },
   {
-    url: "https://plus.unsplash.com/premium_photo-1673288456151-4f7b871863c9?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    url: "https://plus.unsplash.com/premium_photo-1673288456151-4f7b871863c9?q=80&w=1170&auto=format&fit=crop",
     ciudad: "Moyobamba",
     region: "San Martín",
   },
@@ -25,46 +28,52 @@ const slides = [
     region: "La Libertad",
   },
   {
-    url: "https://images.unsplash.com/photo-1565983965700-a31031a213d8?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    url: "https://images.unsplash.com/photo-1565983965700-a31031a213d8?q=80&w=1170&auto=format&fit=crop",
     ciudad: "Chachapoyas",
     region: "Amazonas",
   },
   {
-    url: "https://aventuras.pe/blog/wp-content/uploads/2023/11/guacamayo-macao-e1650594697991.jpg ",
+    url: "https://aventuras.pe/blog/wp-content/uploads/2023/11/guacamayo-macao-e1650594697991.jpg",
     ciudad: "Tarapoto",
     region: "Amazonas",
   },
   {
-    url: "https://images.unsplash.com/photo-1578072551784-7edf375aa306?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    url: "https://images.unsplash.com/photo-1578072551784-7edf375aa306?q=80&w=1074&auto=format&fit=crop",
     ciudad: "Jaén",
     region: "Cajamarca",
   },
 ];
 
 const routes = [
-  { id: 1, from: "Trujillo", to: "Chiclayo", price: 30, duration: "12h" },
-  { id: 2, from: "Trujillo", to: "Bagua Grande", price: 80, duration: "12h" },
-  { id: 3, from: "Trujillo", to: "Nva Cajamarca", price: 80, duration: "8h" },
-  { id: 4, from: "Trujillo", to: "Moyobamba", price: 90, duration: "12h" },
-  { id: 5, from: "Trujillo", to: "Tarapoto", price: 100, duration: "6h" },
-  { id: 6, from: "Trujillo", to: "Picota", price: 120, duration: "10h" },
-  { id: 7, from: "Trujillo", to: "Bellavista", price: 120, duration: "10h" },
-  { id: 8, from: "Trujillo", to: "Saposoa", price: 130, duration: "10h" },
-  { id: 9, from: "Trujillo", to: "Juanjí", price: 130, duration: "10h" },
+  { id: 1, from: "Trujillo", to: "Chiclayo", price: 40, duration: "4h" },
+  {
+    id: 2,
+    from: "Trujillo",
+    to: "Paijan",
+    price: 20,
+    duration: "1h y 30 minutos",
+  },
+  { id: 3, from: "Trujillo", to: "Nva Cajamarca", price: 80, duration: "12h" },
+  { id: 4, from: "Trujillo", to: "Moyobamba", price: 90, duration: "13h" },
+  { id: 5, from: "Trujillo", to: "Tarapoto", price: 100, duration: "14h" },
+  { id: 6, from: "Trujillo", to: "Picota", price: 120, duration: "15h" },
+  { id: 7, from: "Trujillo", to: "Bellavista", price: 120, duration: "16h" },
+  { id: 8, from: "Trujillo", to: "Saposoa", price: 130, duration: "17h" },
+  { id: 9, from: "Trujillo", to: "Juanjí", price: 130, duration: "17h" },
   { id: 10, from: "Trujillo", to: "Pucara", price: 70, duration: "10h" },
   { id: 11, from: "Trujillo", to: "Chamaya", price: 70, duration: "10h" },
   { id: 12, from: "Trujillo", to: "Jaen", price: 80, duration: "10h" },
-  { id: 13, from: "Trujillo", to: "Pedro Ruiz", price: 80, duration: "10h" },
-  { id: 14, from: "Trujillo", to: "Pomacochas", price: 80, duration: "10h" },
+  { id: 13, from: "Trujillo", to: "Pedro Ruiz", price: 80, duration: "11h" },
+  { id: 14, from: "Trujillo", to: "Pomacochas", price: 80, duration: "13h" },
   { id: 15, from: "Trujillo", to: "Aguas Verdes", price: 80, duration: "10h" },
-  { id: 16, from: "Trujillo", to: "Naranjos", price: 80, duration: "10h" },
-  { id: 17, from: "Trujillo", to: "Naranjillo", price: 80, duration: "10h" },
+  { id: 16, from: "Trujillo", to: "Naranjos", price: 80, duration: "12h" },
+  { id: 17, from: "Trujillo", to: "Naranjillo", price: 80, duration: "12h" },
   {
     id: 18,
     from: "Trujillo",
     to: "Segunda Jerusalen",
     price: 80,
-    duration: "10h",
+    duration: "12h",
   },
   { id: 19, from: "Trujillo", to: "Rioja", price: 90, duration: "10h" },
   { id: 20, from: "Trujillo", to: "Tabalosos", price: 100, duration: "10h" },
@@ -113,32 +122,35 @@ const routes = [
 
 const cities = [
   "Trujillo",
+  "Paijan",
+  "Pacasmayo",
+  "Ciudad de Dios",
+  "Guadalupe",
+  "Chepen",
+  "Pacanguilla",
   "Chiclayo",
+  "Illimo",
+  "Olmos",
   "Bagua Grande",
-  "Nva Cajamarca",
-  "Moyobamba",
-  "Tarapoto",
-  "Picota",
-  "Bellavista",
-  "Saposoa",
-  "Juanjí",
-  "Pucara",
-  "Chamaya",
-  "Jaen",
   "Pedro Ruiz",
-  "Pomacochas",
-  "Aguas Verdes",
   "Naranjos",
   "Naranjillo",
+  "Nueva Cajamarca",
   "Segunda Jerusalen",
   "Rioja",
+  "Moyobamba",
   "Tabalosos",
-  "Alianza",
-  "Yurimaguas",
+  "Tarapoto",
+  "Picota",
   "San Hilarion",
+  "Bellavista",
   "Sacanche",
-  "Tocache",
+  "Saposoa",
+  "Juanjui",
+  "Yurimaguas",
 ];
+
+const F = "'Poppins', sans-serif";
 
 export default function BusTransportPage() {
   const [origin, setOrigin] = useState("");
@@ -147,36 +159,23 @@ export default function BusTransportPage() {
   const [returnDate, setReturnDate] = useState("");
   const [searched, setSearched] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState<number | null>(null);
-
-  // ── Slideshow state ──
   const [current, setCurrent] = useState(0);
-  const [prev, setPrev] = useState<number | null>(null);
-  const [fading, setFading] = useState(false);
-
   useEffect(() => {
-    const interval = setInterval(() => {
-      setPrev(current);
-      setFading(true);
-      const next = (current + 1) % slides.length;
-      setTimeout(() => {
-        setCurrent(next);
-        setFading(false);
-        setPrev(null);
-      }, 800); // duración del crossfade
-    }, 2000); // cada 2 segundos
+    supabase
+      .from("agencias")
+      .select("*")
+      .then(({ data, error }) => {
+        console.log("✅ Conexión exitosa:", data);
+        console.log("❌ Error:", error);
+      });
+  }, []);
+  useEffect(() => {
+    const interval = setInterval(
+      () => setCurrent((p) => (p + 1) % slides.length),
+      4000,
+    );
     return () => clearInterval(interval);
-  }, [current]);
-
-  const goTo = (idx: number) => {
-    if (idx === current) return;
-    setPrev(current);
-    setFading(true);
-    setTimeout(() => {
-      setCurrent(idx);
-      setFading(false);
-      setPrev(null);
-    }, 800);
-  };
+  }, []);
 
   const filteredRoutes = routes.filter((r) => {
     if (origin && r.from !== origin) return false;
@@ -187,17 +186,19 @@ export default function BusTransportPage() {
   const handleSearch = () => {
     setSearched(true);
     setSelectedRoute(null);
-    setTimeout(() => {
-      document
-        .getElementById("results-section")
-        ?.scrollIntoView({ behavior: "smooth" });
-    }, 100);
+    setTimeout(
+      () =>
+        document
+          .getElementById("results-section")
+          ?.scrollIntoView({ behavior: "smooth" }),
+      100,
+    );
   };
 
   return (
     <div
       style={{
-        fontFamily: "'Inter',sans-serif",
+        fontFamily: F,
         background: "#fff",
         minHeight: "100vh",
         color: "#111",
@@ -205,81 +206,43 @@ export default function BusTransportPage() {
       }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600;1,700&display=swap');
         * { box-sizing:border-box; margin:0; padding:0; }
 
-        @keyframes slideUp   { from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);} }
-        @keyframes pulseDot  { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.5);} }
-        @keyframes slideDown { from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);} }
-        @keyframes resultsIn { from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);} }
-
-        /* ── Slideshow ── */
+        @keyframes slideUp  { from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);} }
+        @keyframes pulseDot { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.5);} }
+        @keyframes resultsIn{ from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);} }
         @keyframes zoomSlow { from{transform:scale(1);}to{transform:scale(1.08);} }
-        .slide-bg {
-          position:absolute;inset:0;width:100%;height:100%;
-          object-fit:cover;object-position:center;
-          transition:opacity 0.8s ease;
-          animation:zoomSlow 7s ease forwards;
-        }
-        .slide-bg.visible  { opacity:1; }
-        .slide-bg.hidden   { opacity:0; }
 
-        /* Pill destino actual */
-        @keyframes fadeSlideUp { from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);} }
-        .slide-label {
-          position:absolute;bottom:80px;right:28px;z-index:4;
-          background:rgba(5,12,28,.65);border:1px solid rgba(255,255,255,.18);
-          backdrop-filter:blur(10px);border-radius:10px;
-          padding:10px 16px;display:flex;flex-direction:column;gap:2px;
-          animation:fadeSlideUp .5s ease forwards;
-        }
-        .slide-label-city  { font-size:15px;font-weight:700;color:#fff;letter-spacing:-.01em; }
-        .slide-label-region{ font-size:10px;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em; }
-
-        /* Dots */
-        .slide-dots {
-          position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
-          z-index:4;display:flex;gap:8px;align-items:center;
-        }
-        .slide-dot {
-          width:8px;height:8px;border-radius:4px;
-          background:rgba(255,255,255,.35);border:none;cursor:pointer;padding:0;
-          transition:background .3s,width .3s;
-        }
-        .slide-dot.active {
-          background:#f5c518;width:24px;
-        }
-
+        .slide-bg { position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transition:opacity .8s ease;animation:zoomSlow 7s ease forwards; }
+        .slide-bg.visible{opacity:1;} .slide-bg.hidden{opacity:0;}
         .animate-up { animation:slideUp .7s ease forwards; }
 
-        /* Search card */
-        .search-card { background:rgba(255,255,255,.97);border-radius:20px;padding:24px 28px 22px;box-shadow:0 24px 64px rgba(0,0,0,.22);max-width:880px;width:100%;margin:0 auto; }
-        .search-fields-row { display:flex;align-items:stretch;background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:14px;overflow:hidden; }
-        .search-field { display:flex;flex-direction:column;gap:4px;flex:1;padding:14px 18px; }
-        .search-field label { font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,0,0,.4); }
-        .search-select { border:none;outline:none;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:#111;background:transparent;cursor:pointer;padding:4px 0;appearance:none;-webkit-appearance:none;width:100%; }
-        .search-select option { background:#fff;color:#111; }
-        .search-date { border:none;outline:none;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:#111;background:transparent;cursor:pointer;padding:4px 0;width:100%; }
-        .search-date::-webkit-calendar-picker-indicator { opacity:.5;cursor:pointer; }
-        .field-divider { width:1px;background:#e5e7eb;align-self:stretch;margin:0;flex-shrink:0; }
-        .btn-search { background:linear-gradient(135deg,#1a8c3c,#0f5c28);color:#fff;border:none;border-radius:12px;padding:14px 24px;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;white-space:nowrap;box-shadow:0 4px 18px rgba(26,140,60,.4);transition:opacity .2s,transform .1s;display:flex;align-items:center;gap:8px; }
-        .btn-search:hover { opacity:.88;transform:translateY(-1px); }
+        .search-card{background:rgba(255,255,255,.97);border-radius:20px;padding:24px 28px 22px;box-shadow:0 24px 64px rgba(0,0,0,.22);max-width:880px;width:100%;margin:0 auto;}
+        .search-fields-row{display:flex;align-items:stretch;background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:14px;overflow:hidden;}
+        .search-field{display:flex;flex-direction:column;gap:4px;flex:1;padding:14px 18px;}
+        .search-field label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(0,0,0,.4);font-family:'Poppins',sans-serif;}
+        .search-select{border:none;outline:none;font-family:'Poppins',sans-serif;font-size:13.5px;font-weight:600;color:#111;background:transparent;cursor:pointer;padding:4px 0;appearance:none;-webkit-appearance:none;width:100%;}
+        .search-select option{background:#fff;color:#111;}
+        .search-date{border:none;outline:none;font-family:'Poppins',sans-serif;font-size:13.5px;font-weight:600;color:#111;background:transparent;cursor:pointer;padding:4px 0;width:100%;}
+        .search-date::-webkit-calendar-picker-indicator{opacity:.5;cursor:pointer;}
+        .field-divider{width:1px;background:#e5e7eb;align-self:stretch;margin:0;flex-shrink:0;}
+        .btn-search{background:linear-gradient(135deg,#1a8c3c,#0f5c28);color:#fff;border:none;border-radius:12px;padding:14px 24px;font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap;box-shadow:0 4px 18px rgba(26,140,60,.4);transition:opacity .2s,transform .1s;display:flex;align-items:center;gap:8px;}
+        .btn-search:hover{opacity:.88;transform:translateY(-1px);}
 
-        /* Route cards */
-        .route-card { background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px 22px;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .15s;animation:resultsIn .4s ease forwards;opacity:0; }
-        .route-card:hover { border-color:#1a8c3c;box-shadow:0 6px 24px rgba(26,140,60,.1);transform:translateY(-2px); }
-        .route-card.selected { border-color:#1a8c3c;box-shadow:0 6px 24px rgba(26,140,60,.15);background:#f0fdf4; }
-        .btn-primary { background:linear-gradient(135deg,#1a8c3c,#0f5c28);color:#fff;border:none;padding:12px 24px;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border-radius:8px;transition:opacity .2s,transform .1s;box-shadow:0 4px 14px rgba(26,140,60,.3); }
-        .btn-primary:hover { opacity:.88;transform:translateY(-1px); }
+        .route-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px 22px;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .15s;animation:resultsIn .4s ease forwards;opacity:0;}
+        .route-card:hover{border-color:#1a8c3c;box-shadow:0 6px 24px rgba(26,140,60,.1);transform:translateY(-2px);}
+        .route-card.selected{border-color:#1a8c3c;box-shadow:0 6px 24px rgba(26,140,60,.15);background:#f0fdf4;}
+        .btn-primary{background:linear-gradient(135deg,#1a8c3c,#0f5c28);color:#fff;border:none;padding:12px 24px;font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:8px;transition:opacity .2s,transform .1s;box-shadow:0 4px 14px rgba(26,140,60,.3);}
+        .btn-primary:hover{opacity:.88;transform:translateY(-1px);}
 
-        .feat-icon { width:48px;height:48px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px; }
-        .feat-card { border-radius:14px;padding:24px;display:flex;gap:16px;align-items:flex-start;transition:transform .2s,box-shadow .2s; }
-        .feat-card:hover { transform:translateY(-3px); }
+        .feat-icon{width:48px;height:48px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;}
+        .feat-card{border-radius:14px;padding:24px;display:flex;gap:16px;align-items:flex-start;transition:transform .2s,box-shadow .2s;}
 
-        @media (max-width:768px) {
+        @media(max-width:768px){
           .hero-content{padding:60px 20px 100px!important;}
-          .hero-title{font-size:clamp(32px,8vw,48px)!important;}
-          .hero-desc{font-size:14px!important;max-width:100%!important;}
+          .hero-title{font-size:clamp(28px,8vw,44px)!important;}
+          .hero-desc{font-size:13px!important;max-width:100%!important;}
           .hero-line{display:none!important;}
           .search-card{padding:16px!important;border-radius:14px!important;}
           .search-fields-row{flex-direction:column!important;}
@@ -289,9 +252,8 @@ export default function BusTransportPage() {
           .features-section{padding:48px 16px!important;}
           .features-grid{grid-template-columns:1fr!important;}
           .footer-inner{flex-direction:column!important;align-items:flex-start!important;padding:24px 16px!important;gap:20px!important;}
-          .slide-label{display:none!important;}
         }
-        @media (max-width:480px) {
+        @media(max-width:480px){
           .hero-stats{flex-direction:column!important;border-radius:10px!important;}
           .hero-stats>div{border-right:none!important;border-bottom:1px solid rgba(255,255,255,.08)!important;}
           .hero-stats>div:last-child{border-bottom:none!important;}
@@ -308,7 +270,6 @@ export default function BusTransportPage() {
           overflow: "hidden",
         }}
       >
-        {/* ── Slideshow de fondos ── */}
         {slides.map((slide, i) => (
           <img
             key={i}
@@ -318,8 +279,6 @@ export default function BusTransportPage() {
             style={{ zIndex: i === current ? 1 : 0 }}
           />
         ))}
-
-        {/* Overlays */}
         <div
           style={{
             position: "absolute",
@@ -340,8 +299,6 @@ export default function BusTransportPage() {
             background: "linear-gradient(to top,rgba(0,0,0,.45),transparent)",
           }}
         />
-
-        {/* Línea vertical decorativa */}
         <div
           className="hero-line"
           style={{
@@ -358,36 +315,6 @@ export default function BusTransportPage() {
           }}
         />
 
-        {/* ── Etiqueta del destino actual ── */}
-        <div className="slide-label" key={current}>
-          <span
-            style={{
-              fontSize: 10,
-              color: "rgba(255,255,255,.45)",
-              textTransform: "uppercase",
-              letterSpacing: ".1em",
-              fontWeight: 600,
-            }}
-          >
-            📍 Destino
-          </span>
-          <span className="slide-label-city">{slides[current].ciudad}</span>
-          <span className="slide-label-region">{slides[current].region}</span>
-        </div>
-
-        {/* ── Dots de navegación ── */}
-        <div className="slide-dots">
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              className={`slide-dot${i === current ? " active" : ""}`}
-              onClick={() => goTo(i)}
-              aria-label={`Ir a ${slides[i].ciudad}`}
-            />
-          ))}
-        </div>
-
-        {/* ── Contenido ── */}
         <div
           className="hero-content"
           style={{
@@ -417,6 +344,7 @@ export default function BusTransportPage() {
                 textTransform: "uppercase",
                 marginBottom: 24,
                 backdropFilter: "blur(10px)",
+                fontFamily: F,
               }}
             >
               <span
@@ -432,14 +360,15 @@ export default function BusTransportPage() {
               Servicio Nacional
             </div>
 
+            {/* H1 — Poppins 800, tight tracking */}
             <h1
               className="hero-title"
               style={{
-                fontFamily: "'Playfair Display',serif",
-                fontSize: "clamp(36px,5.5vw,66px)",
+                fontFamily: F,
+                fontSize: "clamp(36px,5.5vw,62px)",
                 fontWeight: 800,
-                lineHeight: 1.1,
-                letterSpacing: "-.01em",
+                lineHeight: 1.15,
+                letterSpacing: "-0.02em",
                 marginBottom: 18,
                 color: "#fff",
                 textShadow: "0 2px 28px rgba(0,0,0,.45)",
@@ -492,12 +421,13 @@ export default function BusTransportPage() {
             <p
               className="hero-desc"
               style={{
-                fontFamily: "'Inter',sans-serif",
+                fontFamily: F,
                 color: "rgba(215,225,240,.85)",
-                fontSize: 16,
+                fontSize: 15.5,
                 lineHeight: 1.85,
                 maxWidth: 490,
                 marginBottom: 36,
+                fontWeight: 400,
               }}
             >
               🌄✨ Es hora de aventurarse hacia el norte ✨🚍 Nuevos paisajes,
@@ -519,8 +449,8 @@ export default function BusTransportPage() {
                 <FaBus size={17} color="#1a8c3c" />
                 <span
                   style={{
-                    fontFamily: "'Inter',sans-serif",
-                    fontSize: 14,
+                    fontFamily: F,
+                    fontSize: 13.5,
                     fontWeight: 700,
                     color: "#111",
                   }}
@@ -536,9 +466,10 @@ export default function BusTransportPage() {
                         alignItems: "center",
                         gap: 6,
                         cursor: "pointer",
-                        fontSize: 13,
+                        fontSize: 12.5,
                         fontWeight: 500,
                         color: idx === 0 ? "#1a8c3c" : "#999",
+                        fontFamily: F,
                       }}
                     >
                       <span
@@ -696,18 +627,19 @@ export default function BusTransportPage() {
                 >
                   <div
                     style={{
-                      fontFamily: "'Playfair Display',serif",
-                      fontSize: 24,
-                      fontWeight: 700,
+                      fontFamily: F,
+                      fontSize: 26,
+                      fontWeight: 800,
                       color: s.color,
                       lineHeight: 1,
+                      letterSpacing: "-0.02em",
                     }}
                   >
                     {s.value}
                   </div>
                   <div
                     style={{
-                      fontFamily: "'Inter',sans-serif",
+                      fontFamily: F,
                       fontSize: 10,
                       color: "rgba(255,255,255,.48)",
                       marginTop: 4,
@@ -720,49 +652,6 @@ export default function BusTransportPage() {
                   </div>
                 </div>
               ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Badge Golden Class */}
-        <div
-          style={{
-            position: "absolute",
-            bottom: 80,
-            right: 24,
-            zIndex: 4,
-            background: "linear-gradient(135deg,#f5c518,#d4a017)",
-            borderRadius: 10,
-            padding: "10px 16px",
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            boxShadow: "0 6px 28px rgba(212,160,23,.50)",
-          }}
-        >
-          <span style={{ fontSize: 16 }}>⭐</span>
-          <div>
-            <div
-              style={{
-                fontFamily: "'Inter',sans-serif",
-                fontSize: 10,
-                fontWeight: 800,
-                color: "#1a1a1a",
-                letterSpacing: ".1em",
-                textTransform: "uppercase",
-              }}
-            >
-              Golden Class
-            </div>
-            <div
-              style={{
-                fontFamily: "'Inter',sans-serif",
-                fontSize: 9,
-                color: "rgba(0,0,0,.6)",
-                fontWeight: 600,
-              }}
-            >
-              Servicio VIP
             </div>
           </div>
         </div>
@@ -802,20 +691,22 @@ export default function BusTransportPage() {
             <div>
               <h2
                 style={{
-                  fontFamily: "'Playfair Display',serif",
+                  fontFamily: F,
                   fontSize: "clamp(22px,4vw,28px)",
                   fontWeight: 700,
                   color: "#111",
+                  letterSpacing: "-0.01em",
                 }}
               >
                 Resultados de búsqueda
               </h2>
               <p
                 style={{
-                  fontFamily: "'Inter',sans-serif",
+                  fontFamily: F,
                   color: "rgba(0,0,0,.45)",
                   fontSize: 13,
                   marginTop: 5,
+                  fontWeight: 400,
                 }}
               >
                 {filteredRoutes.length}{" "}
@@ -842,7 +733,7 @@ export default function BusTransportPage() {
                 borderRadius: 8,
                 cursor: "pointer",
                 fontSize: 12,
-                fontFamily: "'Inter',sans-serif",
+                fontFamily: F,
                 fontWeight: 600,
               }}
             >
@@ -854,7 +745,7 @@ export default function BusTransportPage() {
               <div style={{ fontSize: 48, marginBottom: 16 }}>🔍</div>
               <p
                 style={{
-                  fontFamily: "'Inter',sans-serif",
+                  fontFamily: F,
                   fontSize: 16,
                   fontWeight: 600,
                   color: "rgba(0,0,0,.5)",
@@ -864,10 +755,11 @@ export default function BusTransportPage() {
               </p>
               <p
                 style={{
-                  fontFamily: "'Inter',sans-serif",
+                  fontFamily: F,
                   fontSize: 13,
                   color: "rgba(0,0,0,.35)",
                   marginTop: 6,
+                  fontWeight: 400,
                 }}
               >
                 Intenta con otro origen o destino
@@ -907,11 +799,11 @@ export default function BusTransportPage() {
                     <div>
                       <div
                         style={{
-                          fontFamily: "'Inter',sans-serif",
+                          fontFamily: F,
                           display: "flex",
                           alignItems: "center",
                           gap: 8,
-                          fontSize: 16,
+                          fontSize: 14.5,
                           fontWeight: 700,
                           color: "#111",
                         }}
@@ -924,10 +816,11 @@ export default function BusTransportPage() {
                       </div>
                       <div
                         style={{
-                          fontFamily: "'Inter',sans-serif",
+                          fontFamily: F,
                           fontSize: 12,
                           color: "rgba(0,0,0,.4)",
                           marginTop: 3,
+                          fontWeight: 400,
                         }}
                       >
                         Duración: {route.duration}
@@ -936,19 +829,21 @@ export default function BusTransportPage() {
                     <div style={{ textAlign: "right" }}>
                       <div
                         style={{
-                          fontFamily: "'Playfair Display',serif",
+                          fontFamily: F,
                           fontSize: 22,
-                          fontWeight: 700,
+                          fontWeight: 800,
                           color: "#1a8c3c",
+                          letterSpacing: "-0.02em",
                         }}
                       >
                         S/ {route.price}
                       </div>
                       <div
                         style={{
-                          fontFamily: "'Inter',sans-serif",
+                          fontFamily: F,
                           fontSize: 11,
                           color: "rgba(0,0,0,.4)",
+                          fontWeight: 400,
                         }}
                       >
                         por persona
@@ -1026,7 +921,7 @@ export default function BusTransportPage() {
         <div style={{ textAlign: "center", marginBottom: 40 }}>
           <div
             style={{
-              fontFamily: "'Inter',sans-serif",
+              fontFamily: F,
               fontSize: 11,
               fontWeight: 700,
               letterSpacing: ".15em",
@@ -1039,10 +934,11 @@ export default function BusTransportPage() {
           </div>
           <h2
             style={{
-              fontFamily: "'Playfair Display',serif",
+              fontFamily: F,
               fontSize: "clamp(24px,4vw,32px)",
               fontWeight: 700,
               color: "#111",
+              letterSpacing: "-0.01em",
             }}
           >
             Viaja con{" "}
@@ -1118,9 +1014,9 @@ export default function BusTransportPage() {
               <div>
                 <div
                   style={{
-                    fontFamily: "'Inter',sans-serif",
+                    fontFamily: F,
                     fontWeight: 700,
-                    fontSize: 15,
+                    fontSize: 14.5,
                     marginBottom: 6,
                     color: "#111",
                   }}
@@ -1129,10 +1025,11 @@ export default function BusTransportPage() {
                 </div>
                 <div
                   style={{
-                    fontFamily: "'Inter',sans-serif",
+                    fontFamily: F,
                     fontSize: 13,
                     color: "rgba(0,0,0,.55)",
                     lineHeight: 1.65,
+                    fontWeight: 400,
                   }}
                 >
                   {f.desc}
@@ -1169,9 +1066,10 @@ export default function BusTransportPage() {
             />
             <span
               style={{
-                fontFamily: "'Inter',sans-serif",
+                fontFamily: F,
                 color: "rgba(255,255,255,.3)",
                 fontSize: 12,
+                fontWeight: 400,
               }}
             >
               — ¡Siempre pensando en usted!
@@ -1179,9 +1077,10 @@ export default function BusTransportPage() {
           </div>
           <div
             style={{
-              fontFamily: "'Inter',sans-serif",
+              fontFamily: F,
               color: "rgba(255,255,255,.28)",
               fontSize: 12,
+              fontWeight: 400,
             }}
           >
             © 2025 Transportes Universo S.A.C. · Todos los derechos reservados
@@ -1192,10 +1091,11 @@ export default function BusTransportPage() {
                 key={l}
                 href="#"
                 style={{
-                  fontFamily: "'Inter',sans-serif",
+                  fontFamily: F,
                   color: "rgba(255,255,255,.35)",
                   textDecoration: "none",
                   fontSize: 12,
+                  fontWeight: 500,
                   transition: "color .2s",
                 }}
                 onMouseEnter={(e) => {

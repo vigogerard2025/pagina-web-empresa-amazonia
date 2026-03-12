@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FaFacebook,
   FaInstagram,
@@ -12,285 +12,604 @@ import {
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+  }, [menuOpen]);
+
+  const navItems = [
+    { label: "Inicio", href: "/" },
+    { label: "Cláusulas", href: "/clausulas" },
+    { label: "Agencias", href: "/agencias" },
+    { label: "Contáctanos", href: "/contactanos" },
+  ];
 
   return (
     <>
       <style>{`
-        .topbar-link { color:rgba(30,30,30,.65);text-decoration:none;font-size:12px;font-weight:500;transition:color .2s;display:flex;align-items:center;gap:5px; }
-        .topbar-link:hover { color:#1a8c3c; }
-        .topbar-div { width:1px;height:14px;background:rgba(0,0,0,.12); }
-        .soc-top { width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:background .2s,transform .15s;cursor:pointer;background:transparent; }
-        .soc-top:hover { background:rgba(0,0,0,.06);transform:translateY(-1px); }
-        .nav-link { color:rgba(255,255,255,.88);text-decoration:none;font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:8px 2px;border-bottom:2px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:4px;transition:color .2s,border-bottom-color .2s; }
-        .nav-link:hover { color:#f5c518;border-bottom-color:#f5c518; }
-        .nav-link-mobile { color:rgba(255,255,255,.88);text-decoration:none;font-size:15px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:14px 24px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.06);transition:background .2s,color .2s; }
-        .nav-link-mobile:hover { background:rgba(255,255,255,.05);color:#f5c518; }
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600&display=swap');
 
-        @keyframes slideDown { from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);} }
-
-        @media (max-width:768px) { .topbar { display:none !important; } }
-        .nav-links-desktop { display:flex; }
-        .nav-logo-bus { display:flex; }
-        .hamburger { display:none; }
-        @media (max-width:900px) {
-          .nav-links-desktop { display:none !important; }
-          .nav-logo-bus { display:none !important; }
-          .hamburger { display:flex !important; }
+        :root {
+          --gold: #C9A84C;
+          --gold-light: #E8C97A;
+          --gold-dim: rgba(201,168,76,0.15);
+          --dark: #0B0E13;
+          --dark-mid: #111419;
+          --dark-card: #161A22;
+          --cream: #F5F0E8;
+          --muted: rgba(245,240,232,0.5);
+          --border: rgba(201,168,76,0.18);
         }
-        .mobile-menu { display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:#0d1117;z-index:999;flex-direction:column;animation:slideDown .25s ease forwards; }
-        .mobile-menu.open { display:flex; }
+
+        * { box-sizing: border-box; }
+
+        .nb-topbar {
+          background: var(--cream);
+          border-bottom: 1px solid rgba(0,0,0,0.08);
+          padding: 0 52px;
+          height: 38px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          font-family: 'Outfit', sans-serif;
+        }
+
+        .nb-top-left {
+          display: flex;
+          align-items: center;
+          gap: 22px;
+        }
+
+        .nb-top-link {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          text-decoration: none;
+          font-size: 11.5px;
+          font-weight: 400;
+          color: #555;
+          letter-spacing: 0.02em;
+          transition: color 0.2s;
+        }
+        .nb-top-link:hover { color: #111; }
+
+        .nb-divider {
+          width: 1px;
+          height: 12px;
+          background: rgba(0,0,0,0.15);
+        }
+
+        .nb-top-right {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .nb-soc {
+          width: 28px;
+          height: 28px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 6px;
+          text-decoration: none;
+          transition: background 0.2s, transform 0.15s;
+        }
+        .nb-soc:hover {
+          background: rgba(0,0,0,0.06);
+          transform: translateY(-1px);
+        }
+
+        .nb-provider-badge {
+          margin-left: 8px;
+          padding: 3px 10px;
+          border: 1px solid rgba(0,0,0,0.12);
+          border-radius: 20px;
+          font-size: 9.5px;
+          font-weight: 600;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: rgba(0,0,0,0.4);
+        }
+
+        /* ─── NAV ─── */
+        .nb-nav {
+          position: sticky;
+          top: 0;
+          z-index: 100;
+          background: var(--dark);
+          transition: box-shadow 0.3s, background 0.3s;
+          font-family: 'Outfit', sans-serif;
+        }
+        .nb-nav.scrolled {
+          background: rgba(11,14,19,0.96);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          box-shadow: 0 1px 0 var(--border), 0 8px 40px rgba(0,0,0,0.55);
+        }
+
+        .nb-nav-inner {
+          display: flex;
+          align-items: stretch;
+          justify-content: space-between;
+          min-height: 72px;
+          padding: 0 28px;
+          border-bottom: 1px solid var(--border);
+        }
+
+        /* Gold accent line top */
+        .nb-nav::before {
+          content: '';
+          display: block;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, transparent);
+        }
+
+        .nb-logo-wrap {
+          display: flex;
+          align-items: center;
+          padding-right: 24px;
+        }
+
+        .nb-logo {
+          height: 44px;
+          width: auto;
+          object-fit: contain;
+        }
+
+        /* ─── Desktop links ─── */
+        .nb-links {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
+        }
+
+        .nb-link {
+          position: relative;
+          text-decoration: none;
+          color: var(--muted);
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          padding: 8px 16px;
+          border-radius: 6px;
+          transition: color 0.22s, background 0.22s;
+          white-space: nowrap;
+        }
+        .nb-link::after {
+          content: '';
+          position: absolute;
+          bottom: 4px;
+          left: 16px;
+          right: 16px;
+          height: 1px;
+          background: var(--gold);
+          transform: scaleX(0);
+          transform-origin: center;
+          transition: transform 0.28s cubic-bezier(0.25,0.46,0.45,0.94);
+        }
+        .nb-link:hover {
+          color: var(--gold-light);
+          background: var(--gold-dim);
+        }
+        .nb-link:hover::after {
+          transform: scaleX(1);
+        }
+
+        /* CTA button */
+        .nb-cta {
+          display: flex;
+          align-items: center;
+          gap: 7px;
+          text-decoration: none;
+          background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+          color: #0B0E13;
+          font-family: 'Outfit', sans-serif;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          padding: 9px 22px;
+          border-radius: 6px;
+          transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+          box-shadow: 0 2px 16px rgba(201,168,76,0.28);
+          margin-left: 8px;
+          white-space: nowrap;
+        }
+        .nb-cta:hover {
+          opacity: 0.9;
+          transform: translateY(-1px);
+          box-shadow: 0 6px 24px rgba(201,168,76,0.4);
+        }
+
+        /* Bus logo */
+        .nb-bus-wrap {
+          display: flex;
+          align-items: center;
+          padding-left: 12px;
+        }
+        .nb-bus-img {
+          height: 68px;
+          width: auto;
+          object-fit: contain;
+          opacity: 0.92;
+          filter: drop-shadow(0 2px 12px rgba(201,168,76,0.18));
+        }
+
+        /* Hamburger */
+        .nb-hamburger {
+          display: none;
+          background: none;
+          border: 1px solid var(--border);
+          border-radius: 8px;
+          cursor: pointer;
+          color: var(--muted);
+          padding: 8px 10px;
+          align-items: center;
+          justify-content: center;
+          transition: border-color 0.2s, color 0.2s, background 0.2s;
+          align-self: center;
+        }
+        .nb-hamburger:hover {
+          border-color: var(--gold);
+          color: var(--gold);
+          background: var(--gold-dim);
+        }
+
+        /* ─── Mobile Menu ─── */
+        .nb-mobile {
+          display: none;
+          position: fixed;
+          inset: 0;
+          z-index: 999;
+          flex-direction: column;
+          background: var(--dark-mid);
+        }
+        .nb-mobile.open {
+          display: flex;
+          animation: mobileIn 0.3s cubic-bezier(0.22,1,0.36,1) forwards;
+        }
+
+        @keyframes mobileIn {
+          from { opacity: 0; transform: translateX(100%); }
+          to   { opacity: 1; transform: translateX(0); }
+        }
+
+        .nb-mobile-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 18px 24px;
+          border-bottom: 1px solid var(--border);
+          background: var(--dark);
+        }
+        .nb-mobile-header::before {
+          content: '';
+          position: absolute;
+          top: 0; left: 0; right: 0;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, var(--gold) 40%, var(--gold-light) 60%, transparent);
+        }
+        .nb-mobile-close {
+          background: none;
+          border: 1px solid var(--border);
+          border-radius: 8px;
+          cursor: pointer;
+          color: var(--muted);
+          padding: 8px 10px;
+          display: flex;
+          align-items: center;
+          transition: border-color 0.2s, color 0.2s;
+        }
+        .nb-mobile-close:hover { border-color: var(--gold); color: var(--gold); }
+
+        .nb-mobile-links {
+          flex: 1;
+          overflow-y: auto;
+          padding: 16px 0;
+        }
+
+        .nb-mobile-link {
+          display: flex;
+          align-items: center;
+          text-decoration: none;
+          color: var(--muted);
+          font-family: 'Outfit', sans-serif;
+          font-size: 13px;
+          font-weight: 500;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          padding: 16px 28px;
+          border-bottom: 1px solid rgba(255,255,255,0.04);
+          transition: background 0.2s, color 0.2s, padding-left 0.2s;
+          gap: 12px;
+        }
+        .nb-mobile-link:hover {
+          background: var(--gold-dim);
+          color: var(--gold-light);
+          padding-left: 36px;
+        }
+        .nb-mobile-link-dot {
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          background: var(--gold);
+          opacity: 0.5;
+          flex-shrink: 0;
+          transition: opacity 0.2s;
+        }
+        .nb-mobile-link:hover .nb-mobile-link-dot { opacity: 1; }
+
+        .nb-mobile-cta {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+          background: linear-gradient(135deg, var(--gold), var(--gold-light));
+          color: #0B0E13;
+          font-family: 'Outfit', sans-serif;
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          padding: 16px 28px;
+          margin: 16px 24px 0;
+          border-radius: 8px;
+          gap: 8px;
+          box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+          transition: opacity 0.2s, transform 0.15s;
+        }
+        .nb-mobile-cta:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        .nb-mobile-footer {
+          padding: 20px 24px;
+          border-top: 1px solid var(--border);
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          background: var(--dark);
+        }
+
+        .nb-mobile-contact {
+          display: flex;
+          align-items: center;
+          gap: 7px;
+          text-decoration: none;
+          color: var(--muted);
+          font-family: 'Outfit', sans-serif;
+          font-size: 12.5px;
+          font-weight: 400;
+          transition: color 0.2s;
+        }
+        .nb-mobile-contact:hover { color: #fff; }
+
+        .nb-mobile-socials {
+          margin-left: auto;
+          display: flex;
+          gap: 10px;
+          align-items: center;
+        }
+        .nb-mobile-soc {
+          width: 34px;
+          height: 34px;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+          border: 1px solid var(--border);
+          transition: border-color 0.2s, background 0.2s, transform 0.15s;
+        }
+        .nb-mobile-soc:hover {
+          border-color: var(--gold);
+          background: var(--gold-dim);
+          transform: translateY(-2px);
+        }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 768px) {
+          .nb-topbar { display: none !important; }
+        }
+
+        @media (max-width: 960px) {
+          .nb-links { display: none !important; }
+          .nb-bus-wrap { display: none !important; }
+          .nb-hamburger { display: flex !important; }
+          .nb-nav-inner { padding: 0 20px; }
+        }
+
+        @media (min-width: 961px) {
+          .nb-hamburger { display: none !important; }
+        }
       `}</style>
 
       {/* ════ TOP BAR ════ */}
-      <div
-        className="topbar"
-        style={{
-          background: "#fff",
-          padding: "6px 48px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          borderBottom: "1px solid #e8e8e8",
-        }}
-      >
-        <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
+      <div className="nb-topbar">
+        <div className="nb-top-left">
           <a
-            className="topbar-link"
-            href="https://wa.me/999333419"
+            className="nb-top-link"
+            href="https://wa.me/51966198771"
             target="_blank"
             rel="noopener noreferrer"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 7,
-              color: "rgba(30,30,30,.65)",
-              textDecoration: "none",
-              fontSize: 12,
-              fontWeight: 500,
-            }}
           >
-            <FaWhatsapp size={15} color="#25D366" />
-            <span>(+51) 999 333 419</span>
+            <FaWhatsapp size={13} color="#25D366" />
+            (+51) 966 198 771
           </a>
-          <div className="topbar-div" />
+          <div className="nb-divider" />
           <a
-            className="topbar-link"
+            className="nb-top-link"
             href="https://www.google.com/maps/place/Turismo+Universo+Trujillo"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <FaMapMarkerAlt size={13} color="#e53e3e" />
-            <span>
-              Av. Nicolás de Piérola N° 1230 Urb. San Fernando, Trujillo–Perú
-            </span>
+            <FaMapMarkerAlt size={12} color="#C9A84C" />
+            Av. Nicolás de Piérola N° 1230, San Fernando — Trujillo, Perú
           </a>
         </div>
-        <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
-          <div className="topbar-div" style={{ marginRight: 6 }} />
+
+        <div className="nb-top-right">
+          <div className="nb-divider" style={{ marginRight: 4 }} />
           <a
-            className="soc-top"
+            className="nb-soc"
             href="https://www.facebook.com/turismobusuniverso/?locale=es_LA"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <FaFacebook size={17} color="#1877F2" />
+            <FaFacebook size={15} color="#1877F2" />
           </a>
           <a
-            className="soc-top"
+            className="nb-soc"
             href="https://www.instagram.com/turismobusuniverso/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <FaInstagram size={17} color="#E1306C" />
+            <FaInstagram size={15} color="#E1306C" />
           </a>
-          <div
-            style={{
-              marginLeft: 10,
-              padding: "3px 10px",
-              background: "#f4f4f4",
-              borderRadius: 4,
-              fontSize: 10,
-              fontWeight: 700,
-              letterSpacing: ".1em",
-              color: "rgba(0,0,0,.4)",
-              textTransform: "uppercase",
-            }}
-          >
-            Proveedores
-          </div>
+          <div className="nb-provider-badge">Proveedores</div>
         </div>
       </div>
 
-      {/* ════ NAV ════ */}
-      <nav
-        style={{
-          background: "#0d1117",
-          padding: "0 24px",
-          display: "flex",
-          alignItems: "stretch",
-          justifyContent: "space-between",
-          position: "sticky",
-          top: 0,
-          zIndex: 100,
-          minHeight: 68,
-          boxShadow: "0 4px 24px rgba(0,0,0,.35)",
-        }}
-      >
-        <div
-          style={{ display: "flex", alignItems: "center", paddingRight: 20 }}
-        >
+      {/* ════ MAIN NAV ════ */}
+      <nav className={`nb-nav${scrolled ? " scrolled" : ""}`}>
+        <div className="nb-nav-inner">
+          {/* Logo */}
+          <div className="nb-logo-wrap">
+            <img
+              src="/logonombreuniverso.png"
+              alt="Turismo Universo"
+              className="nb-logo"
+            />
+          </div>
+
+          {/* Desktop Links */}
+          <div className="nb-links">
+            {[
+              { label: "Inicio", href: "/" },
+              { label: "Cláusulas", href: "/clausulas" },
+              { label: "Agencias", href: "/agencias" },
+            ].map((item) => (
+              <a key={item.label} className="nb-link" href={item.href}>
+                {item.label}
+              </a>
+            ))}
+            <a className="nb-cta" href="/contactanos">
+              Contáctanos
+              <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor">
+                <path
+                  d="M0 4h6M3 1l3 3-3 3"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+              </svg>
+            </a>
+          </div>
+
+          {/* Bus logo right */}
+          <div className="nb-bus-wrap">
+            <img src="/logobus.png" alt="Bus Universo" className="nb-bus-img" />
+          </div>
+
+          {/* Hamburger */}
+          <button
+            className="nb-hamburger"
+            onClick={() => setMenuOpen(true)}
+            aria-label="Abrir menú"
+          >
+            <FaBars size={18} />
+          </button>
+        </div>
+      </nav>
+
+      {/* ════ MOBILE MENU ════ */}
+      <div className={`nb-mobile${menuOpen ? " open" : ""}`}>
+        <div className="nb-mobile-header" style={{ position: "relative" }}>
           <img
             src="/logonombreuniverso.png"
-            alt="Universo"
-            style={{ height: 46, width: "auto", objectFit: "contain" }}
+            alt="Turismo Universo"
+            style={{ height: 38, objectFit: "contain" }}
           />
+          <button
+            className="nb-mobile-close"
+            onClick={() => setMenuOpen(false)}
+            aria-label="Cerrar menú"
+          >
+            <FaTimes size={18} />
+          </button>
         </div>
 
-        {/* Links desktop */}
-        <div
-          className="nav-links-desktop"
-          style={{
-            alignItems: "center",
-            gap: 24,
-            flex: 1,
-            justifyContent: "center",
-          }}
-        >
+        <div className="nb-mobile-links">
           {[
             { label: "Inicio", href: "/" },
-            { label: "Clausulas", href: "/clausulas" },
+            { label: "Cláusulas", href: "/clausulas" },
             { label: "Agencias", href: "/agencias" },
           ].map((item) => (
-            <a key={item.label} className="nav-link" href={item.href}>
+            <a
+              key={item.label}
+              className="nb-mobile-link"
+              href={item.href}
+              onClick={() => setMenuOpen(false)}
+            >
+              <span className="nb-mobile-link-dot" />
               {item.label}
             </a>
           ))}
-          <a className="nav-link" href="/contactanos">
+          <a
+            className="nb-mobile-cta"
+            href="/contactanos"
+            onClick={() => setMenuOpen(false)}
+          >
             Contáctanos
-            <svg
-              width="9"
-              height="5"
-              viewBox="0 0 10 6"
-              fill="currentColor"
-              style={{ marginTop: 1 }}
-            >
-              <path d="M0 0l5 6 5-6z" />
+            <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+              <path
+                d="M0 4h6M3 1l3 3-3 3"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </a>
         </div>
 
-        {/* Logo bus derecho */}
-        <div className="nav-logo-bus" style={{ alignItems: "center" }}>
-          <img
-            src="/logobus.png"
-            alt="logo-bus"
-            style={{ height: 72, width: "auto", objectFit: "contain" }}
-          />
-        </div>
-
-        {/* Hamburger */}
-        <button
-          className="hamburger"
-          onClick={() => setMenuOpen(true)}
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            color: "#fff",
-            padding: "8px",
-            display: "none",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <FaBars size={22} />
-        </button>
-      </nav>
-
-      {/* ════ MOBILE MENU ════ */}
-      <div className={`mobile-menu${menuOpen ? " open" : ""}`}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "16px 24px",
-            borderBottom: "1px solid rgba(255,255,255,.08)",
-          }}
-        >
-          <img
-            src="/logonombreuniverso.png"
-            alt="Universo"
-            style={{ height: 40, objectFit: "contain" }}
-          />
-          <button
-            onClick={() => setMenuOpen(false)}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              color: "rgba(255,255,255,.7)",
-              padding: 8,
-            }}
-          >
-            <FaTimes size={22} />
-          </button>
-        </div>
-        <div style={{ flex: 1, overflowY: "auto", paddingTop: 8 }}>
-          {[
-            { label: "Inicio", href: "/" },
-            { label: "Clausulas", href: "/clausulas" },
-            { label: "Agencias", href: "/agencias" },
-            { label: "Contáctanos", href: "/contactanos" },
-          ].map((item) => (
-            <a
-              key={item.label}
-              className="nav-link-mobile"
-              href={item.href}
-              onClick={() => setMenuOpen(false)}
-            >
-              {item.label}
-            </a>
-          ))}
-        </div>
-        <div
-          style={{
-            padding: "20px 24px",
-            borderTop: "1px solid rgba(255,255,255,.08)",
-            display: "flex",
-            gap: 16,
-            alignItems: "center",
-          }}
-        >
+        <div className="nb-mobile-footer">
           <a
-            href="https://wa.me/999333419"
+            href="https://wa.me/51966198771"
             target="_blank"
             rel="noopener noreferrer"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              color: "rgba(255,255,255,.6)",
-              textDecoration: "none",
-              fontSize: 13,
-            }}
+            className="nb-mobile-contact"
           >
-            <FaWhatsapp size={16} color="#25D366" /> (+51) 999 333 419
+            <FaWhatsapp size={15} color="#25D366" />
+            (+51) 966 198 771
           </a>
-          <div style={{ marginLeft: "auto", display: "flex", gap: 10 }}>
+          <div className="nb-mobile-socials">
             <a
+              className="nb-mobile-soc"
               href="https://www.facebook.com/turismobusuniverso/?locale=es_LA"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaFacebook size={20} color="#1877F2" />
+              <FaFacebook size={16} color="#1877F2" />
             </a>
             <a
+              className="nb-mobile-soc"
               href="https://www.instagram.com/turismobusuniverso/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaInstagram size={20} color="#E1306C" />
+              <FaInstagram size={16} color="#E1306C" />
             </a>
           </div>
         </div>

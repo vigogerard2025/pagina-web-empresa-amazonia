@@ -6,17 +6,144 @@ import {
   FaInstagram,
   FaWhatsapp,
   FaMapMarkerAlt,
-  FaBars,
   FaTimes,
   FaPhoneAlt,
   FaClock,
   FaCheckCircle,
   FaArrowRight,
+  FaUser,
+  FaIdCard,
+  FaCalendarAlt,
+  FaUsers,
+  FaPaperPlane,
+  FaExchangeAlt,
 } from "react-icons/fa";
+
+// ── Precios base desde Trujillo (lógica de proximidad) ───────────────────────
+const CITY_PRICES: Record<string, number> = {
+  Trujillo: 0,
+  Chiclayo: 30,
+  Pucara: 70,
+  Chamaya: 70,
+  Jaen: 80,
+  Bagua: 80,
+  "Pedro Ruiz": 80,
+  Pomacochas: 80,
+  "Aguas Verdes": 80,
+  Naranjos: 80,
+  Naranjillo: 80,
+  "Nueva Cajamarca": 80,
+  "Segunda Jerusalen": 80,
+  Rioja: 90,
+  Moyobamba: 90,
+  Tabalosos: 100,
+  Tarapoto: 100,
+  Alianza: 120,
+  Yurimaguas: 130,
+  Picota: 120,
+  "San Hilarion": 120,
+  Bellavista: 120,
+  Sacanche: 120,
+  Saposoa: 130,
+  Juanjui: 130,
+  Tocache: 200,
+  // Agencias adicionales
+  Chimbote: 40,
+  Paijan: 15,
+  Pacasmayo: 20,
+};
+
+// Ciudades CON AGENCIA OFICIAL (sólo estas pueden ser origen)
+const OFFICE_CITIES = [
+  "Trujillo",
+  "Chimbote",
+  "Paijan",
+  "Pacasmayo",
+  "Chiclayo",
+  "Bagua",
+  "Pedro Ruiz",
+  "Nueva Cajamarca",
+  "Rioja",
+  "Moyobamba",
+  "Tarapoto",
+  "San Hilarion",
+  "Bellavista",
+  "Sacanche",
+  "Juanjui",
+];
+
+const cities = Object.keys(CITY_PRICES);
+
+function calcPrice(from: string, to: string): number {
+  const diff = Math.abs((CITY_PRICES[from] ?? 0) - (CITY_PRICES[to] ?? 0));
+  return diff <= 20 ? diff + 10 : diff;
+}
 
 export default function ContactanosPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+
+  // Formulario
+  const [origin, setOrigin] = useState("Trujillo");
+  const [selectedDest, setSelectedDest] = useState<string | null>(null);
+  const [destSearch, setDestSearch] = useState("");
+  const [showDestList, setShowDestList] = useState(false);
+  const [nombre, setNombre] = useState("");
+  const [dni, setDni] = useState("");
+  const [fecha, setFecha] = useState("");
+  const [pasajeros, setPasajeros] = useState("1");
+  const [formStep, setFormStep] = useState<"dest" | "data">("dest");
+
+  const availableDests = cities.filter((c) => c !== origin);
+  const filteredDest = availableDests.filter((c) =>
+    c.toLowerCase().includes(destSearch.toLowerCase()),
+  );
+
+  const routePrice =
+    origin && selectedDest ? calcPrice(origin, selectedDest) : 0;
+  const totalPrice = routePrice * parseInt(pasajeros || "1");
+
+  const handleSelectDest = (city: string) => {
+    setSelectedDest(city);
+    setDestSearch(city);
+    setShowDestList(false);
+    setFormStep("data");
+  };
+
+  const handleOriginChange = (newOrigin: string) => {
+    setOrigin(newOrigin);
+    setSelectedDest(null);
+    setDestSearch("");
+    setFormStep("dest");
+  };
+
+  const swapOriginDest = () => {
+    if (!selectedDest) return;
+    const prevOrigin = origin;
+    const prevDest = selectedDest;
+    setOrigin(prevDest);
+    setSelectedDest(prevOrigin);
+    setDestSearch(prevOrigin);
+  };
+
+  const buildWspMessage = () => {
+    const lines = [
+      `🚍 *SOLICITUD DE RESERVA*`,
+      ``,
+      `👤 *Pasajero:* ${nombre}`,
+      `🪪 *DNI:* ${dni}`,
+      `📍 *Ruta:* ${origin} → ${selectedDest}`,
+      `📅 *Fecha de viaje:* ${fecha}`,
+      `👥 *Pasajeros:* ${pasajeros}`,
+      `💰 *Precio estimado:* S/ ${totalPrice} (${pasajeros} × S/ ${routePrice})`,
+      ``,
+      `Por favor confirmarme disponibilidad y horarios. ¡Gracias! 😊`,
+    ];
+    return encodeURIComponent(lines.join("\n"));
+  };
+
+  const canSend =
+    nombre.trim() && dni.trim() && fecha && selectedDest && pasajeros && origin;
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -44,33 +171,10 @@ export default function ContactanosPage() {
         @keyframes pulseRing { 0%{box-shadow:0 0 0 0 rgba(37,211,102,.45);}70%{box-shadow:0 0 0 18px rgba(37,211,102,0);}100%{box-shadow:0 0 0 0 rgba(37,211,102,0);} }
         @keyframes slideDown { from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);} }
         @keyframes float     { 0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);} }
+        @keyframes dropIn    { from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);} }
 
-        .animate-up   { animation: slideUp .65s ease forwards; }
-        .animate-fade { animation: fadeIn .8s ease forwards; }
+        .animate-up { animation: slideUp .65s ease forwards; }
 
-        /* ── Topbar ── */
-        .topbar-link {
-          color: rgba(30,30,30,.65); text-decoration: none; font-size: 12px;
-          font-weight: 500; transition: color .2s; display: flex; align-items: center; gap: 5px;
-        }
-        .topbar-link:hover { color: #1a8c3c; }
-        .topbar-div { width: 1px; height: 14px; background: rgba(0,0,0,.12); }
-        .soc-top {
-          width: 30px; height: 30px; border-radius: 6px;
-          display: flex; align-items: center; justify-content: center;
-          text-decoration: none; transition: background .2s, transform .15s; cursor: pointer; background: transparent;
-        }
-        .soc-top:hover { background: rgba(0,0,0,.06); transform: translateY(-1px); }
-
-        /* ── Nav ── */
-        .nav-link {
-          color: rgba(255,255,255,.88); text-decoration: none; font-size: 12.5px;
-          font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
-          padding: 8px 2px; border-bottom: 2px solid transparent; white-space: nowrap;
-          display: flex; align-items: center; gap: 4px;
-          transition: color .2s, border-bottom-color .2s;
-        }
-        .nav-link:hover, .nav-link.active { color: #f5c518; border-bottom-color: #f5c518; }
         .nav-link-mobile {
           color: rgba(255,255,255,.88); text-decoration: none; font-size: 15px;
           font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
@@ -80,42 +184,21 @@ export default function ContactanosPage() {
         }
         .nav-link-mobile:hover { background: rgba(255,255,255,.05); color: #f5c518; }
 
-        .nav-links-desktop { display: flex; }
-        .nav-logo-bus { display: flex; }
-        .hamburger { display: none; }
-        @media (max-width: 900px) {
-          .nav-links-desktop { display: none !important; }
-          .nav-logo-bus { display: none !important; }
-          .hamburger { display: flex !important; }
-        }
-
         .mobile-menu {
-          display: none; position: fixed;
-          top: 0; left: 0; right: 0; bottom: 0;
-          background: #0d1117; z-index: 999;
-          flex-direction: column; animation: slideDown .25s ease forwards;
+          display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+          background: #0d1117; z-index: 999; flex-direction: column;
+          animation: slideDown .25s ease forwards;
         }
         .mobile-menu.open { display: flex; }
 
-        /* ── Cards de contacto ── */
         .contact-card {
-          background: #fff;
-          border-radius: 20px;
-          padding: 32px 28px;
+          background: #fff; border-radius: 20px; padding: 32px 28px;
           border: 1.5px solid #e5e7eb;
           transition: transform .2s, box-shadow .2s, border-color .2s;
-          cursor: pointer;
-          text-decoration: none;
-          color: inherit;
-          display: flex;
-          flex-direction: column;
-          gap: 0;
+          cursor: pointer; text-decoration: none; color: inherit;
+          display: flex; flex-direction: column; gap: 0;
         }
-        .contact-card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 16px 48px rgba(0,0,0,.10);
-        }
-        .contact-card.wsp:hover { border-color: #25D366; box-shadow: 0 16px 48px rgba(37,211,102,.15); }
+        .contact-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,.10); }
         .contact-card.fb:hover  { border-color: #1877F2; box-shadow: 0 16px 48px rgba(24,119,242,.15); }
         .contact-card.ig:hover  { border-color: #E1306C; box-shadow: 0 16px 48px rgba(225,48,108,.15); }
         .contact-card.tel:hover { border-color: #1a8c3c; box-shadow: 0 16px 48px rgba(26,140,60,.15); }
@@ -138,8 +221,7 @@ export default function ContactanosPage() {
           width: 28px; height: 28px; border-radius: 50%;
           background: linear-gradient(135deg, #1a8c3c, #0f5c28);
           color: #fff; font-size: 12px; font-weight: 800;
-          display: flex; align-items: center; justify-content: center;
-          flex-shrink: 0;
+          display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
 
         .copy-btn {
@@ -164,19 +246,72 @@ export default function ContactanosPage() {
           text-transform: uppercase; cursor: pointer; display: flex;
           align-items: center; gap: 8px;
           box-shadow: 0 4px 16px rgba(26,79,160,.3);
-          transition: opacity .2s, transform .1s;
-          text-decoration: none;
+          transition: opacity .2s, transform .1s; text-decoration: none;
         }
         .map-btn:hover { opacity: .88; transform: translateY(-1px); }
 
+        /* Formulario */
+        .form-input {
+          width: 100%; border: 1.5px solid #e5e7eb; border-radius: 10px;
+          padding: 12px 14px 12px 38px; font-family: 'Inter', sans-serif;
+          font-size: 14px; font-weight: 500; color: #111;
+          background: #fff; outline: none;
+          transition: border-color .2s, box-shadow .2s;
+        }
+        .form-input:focus { border-color: #1a8c3c; box-shadow: 0 0 0 3px rgba(26,140,60,.10); }
+        .form-input::placeholder { color: rgba(0,0,0,.35); font-weight: 400; }
+
+        .dest-item {
+          display: flex; justify-content: space-between; align-items: center;
+          padding: 10px 14px; cursor: pointer; border-radius: 8px;
+          transition: background .15s;
+          font-family: 'Inter', sans-serif; font-size: 13px;
+        }
+        .dest-item:hover { background: #f0fdf4; }
+        .dest-item.selected { background: #dcfce7; }
+
+        .dest-dropdown {
+          position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+          background: #fff; border: 1.5px solid #e5e7eb; border-radius: 12px;
+          box-shadow: 0 12px 40px rgba(0,0,0,.12);
+          z-index: 50; max-height: 260px; overflow-y: auto;
+          animation: dropIn .2s ease forwards;
+          padding: 6px;
+        }
+        .dest-dropdown::-webkit-scrollbar { width: 4px; }
+        .dest-dropdown::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
+
+        .form-step-tab {
+          flex: 1; padding: 10px; text-align: center;
+          font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700;
+          letter-spacing: .06em; text-transform: uppercase;
+          border: none; cursor: pointer; transition: background .2s, color .2s;
+        }
+
+        .preview-box {
+          background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 12px;
+          padding: 16px 18px; font-family: 'Inter', sans-serif; font-size: 13px;
+          line-height: 1.7; color: #1a1a1a;
+        }
+        .preview-box strong { color: #166534; }
+
+        .city-chip {
+          display: inline-flex; justify-content: space-between; align-items: center;
+          padding: 8px 10px; border-radius: 8px; cursor: pointer;
+          border: 1.5px solid #e5e7eb; background: #fafafa;
+          transition: all .15s; font-family: 'Inter',sans-serif; font-size: 12px;
+        }
+        .city-chip:hover { border-color: #86efac; }
+        .city-chip.selected { border-color: #1a8c3c; background: #f0fdf4; }
+
         @media (max-width: 768px) {
-          .topbar { display: none !important; }
           .hero-pad { padding: 48px 20px 56px !important; }
           .hero-title { font-size: clamp(28px,7vw,40px) !important; }
           .main-grid { grid-template-columns: 1fr !important; }
           .cards-grid { grid-template-columns: 1fr !important; }
           .section-pad { padding: 40px 16px !important; }
           .footer-inner { flex-direction: column !important; align-items: flex-start !important; padding: 24px 16px !important; gap: 20px !important; }
+          .form-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
 
@@ -238,7 +373,7 @@ export default function ContactanosPage() {
           }}
         >
           <a
-            href="https://wa.me/51999333419"
+            href="https://wa.me/51966198771"
             target="_blank"
             rel="noopener noreferrer"
             style={{
@@ -250,7 +385,7 @@ export default function ContactanosPage() {
               fontSize: 13,
             }}
           >
-            <FaWhatsapp size={16} color="#25D366" /> (+51) 999 333 419
+            <FaWhatsapp size={16} color="#25D366" /> (+51) 966198771
           </a>
         </div>
       </div>
@@ -264,7 +399,6 @@ export default function ContactanosPage() {
           overflow: "hidden",
         }}
       >
-        {/* Dot pattern */}
         <div
           style={{
             position: "absolute",
@@ -275,7 +409,6 @@ export default function ContactanosPage() {
             backgroundSize: "28px 28px",
           }}
         />
-        {/* Glow */}
         <div
           style={{
             position: "absolute",
@@ -288,7 +421,6 @@ export default function ContactanosPage() {
               "radial-gradient(ellipse, rgba(26,140,60,.25) 0%, transparent 70%)",
           }}
         />
-
         <div
           className="hero-pad"
           style={{
@@ -301,7 +433,6 @@ export default function ContactanosPage() {
           }}
         >
           <div className="animate-up">
-            {/* Pill */}
             <div
               style={{
                 display: "inline-flex",
@@ -332,7 +463,6 @@ export default function ContactanosPage() {
               />
               Atención al pasajero
             </div>
-
             <h1
               className="hero-title"
               style={{
@@ -350,7 +480,6 @@ export default function ContactanosPage() {
                 ayudarte?
               </span>
             </h1>
-
             <div
               style={{
                 display: "flex",
@@ -385,7 +514,6 @@ export default function ContactanosPage() {
                 }}
               />
             </div>
-
             <p
               style={{
                 fontFamily: "'Inter', sans-serif",
@@ -393,7 +521,7 @@ export default function ContactanosPage() {
                 fontSize: 16,
                 lineHeight: 1.8,
                 maxWidth: 520,
-                margin: "0 auto 0",
+                margin: "0 auto",
               }}
             >
               Reserva tu pasaje fácil y rápido por WhatsApp, o contáctanos por
@@ -412,12 +540,903 @@ export default function ContactanosPage() {
         <div style={{ flex: 2, background: "#1a8c3c" }} />
       </div>
 
+      {/* ════ FORMULARIO DE RESERVA ════ */}
+      <section
+        style={{
+          background: "linear-gradient(180deg,#f0fdf4 0%,#fff 100%)",
+          borderBottom: "1px solid #e5e7eb",
+        }}
+      >
+        <div
+          className="section-pad"
+          style={{
+            maxWidth: 1100,
+            margin: "0 auto",
+            padding: "60px 48px 68px",
+          }}
+        >
+          {/* Header */}
+          <div style={{ textAlign: "center", marginBottom: 40 }}>
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                background: "#dcfce7",
+                border: "1px solid #86efac",
+                borderRadius: 20,
+                padding: "5px 16px",
+                fontSize: 11,
+                fontWeight: 700,
+                letterSpacing: ".12em",
+                color: "#166534",
+                textTransform: "uppercase",
+                marginBottom: 16,
+              }}
+            >
+              <FaWhatsapp size={12} color="#25D366" /> Reserva rápida · 650+
+              rutas disponibles
+            </div>
+            <h2
+              style={{
+                fontFamily: "'Playfair Display',serif",
+                fontSize: "clamp(24px,4vw,34px)",
+                fontWeight: 700,
+                color: "#111",
+                marginBottom: 10,
+              }}
+            >
+              Arma tu reserva y{" "}
+              <span style={{ fontStyle: "italic", color: "#1a8c3c" }}>
+                envíala por WhatsApp
+              </span>
+            </h2>
+            <p
+              style={{
+                fontFamily: "'Inter',sans-serif",
+                fontSize: 14,
+                color: "rgba(0,0,0,.5)",
+                maxWidth: 480,
+                margin: "0 auto",
+              }}
+            >
+              Elige cualquier origen y destino. Calculamos el precio
+              automáticamente y generamos el mensaje listo para enviar.
+            </p>
+          </div>
+
+          <div
+            className="main-grid"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: 40,
+              alignItems: "start",
+            }}
+          >
+            {/* ── COLUMNA IZQUIERDA: Formulario ── */}
+            <div
+              style={{
+                background: "#fff",
+                borderRadius: 24,
+                border: "1.5px solid #e5e7eb",
+                overflow: "hidden",
+                boxShadow: "0 8px 32px rgba(0,0,0,.06)",
+              }}
+            >
+              {/* Tabs */}
+              <div
+                style={{
+                  display: "flex",
+                  background: "#f9fafb",
+                  borderBottom: "1.5px solid #e5e7eb",
+                }}
+              >
+                <button
+                  className="form-step-tab"
+                  onClick={() => setFormStep("dest")}
+                  style={{
+                    background: formStep === "dest" ? "#fff" : "transparent",
+                    color: formStep === "dest" ? "#1a8c3c" : "rgba(0,0,0,.4)",
+                    borderBottom:
+                      formStep === "dest"
+                        ? "2px solid #1a8c3c"
+                        : "2px solid transparent",
+                  }}
+                >
+                  1 · Origen & Destino
+                </button>
+                <button
+                  className="form-step-tab"
+                  onClick={() => selectedDest && setFormStep("data")}
+                  style={{
+                    background: formStep === "data" ? "#fff" : "transparent",
+                    color: formStep === "data" ? "#1a8c3c" : "rgba(0,0,0,.4)",
+                    borderBottom:
+                      formStep === "data"
+                        ? "2px solid #1a8c3c"
+                        : "2px solid transparent",
+                    opacity: !selectedDest ? 0.5 : 1,
+                  }}
+                >
+                  2 · Tus datos
+                </button>
+              </div>
+
+              <div style={{ padding: "28px 28px 32px" }}>
+                {/* ── PASO 1: ORIGEN Y DESTINO ── */}
+                {formStep === "dest" && (
+                  <div>
+                    {/* Selector de ORIGEN */}
+                    <div style={{ marginBottom: 20 }}>
+                      <label
+                        style={{
+                          fontFamily: "'Inter',sans-serif",
+                          fontSize: 11,
+                          fontWeight: 700,
+                          letterSpacing: ".08em",
+                          textTransform: "uppercase",
+                          color: "rgba(0,0,0,.45)",
+                          display: "block",
+                          marginBottom: 8,
+                        }}
+                      >
+                        📍 Ciudad de origen
+                      </label>
+                      <div style={{ position: "relative" }}>
+                        <div
+                          style={{
+                            position: "absolute",
+                            left: 12,
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            pointerEvents: "none",
+                            zIndex: 1,
+                          }}
+                        >
+                          <FaMapMarkerAlt size={13} color="#1a8c3c" />
+                        </div>
+                        <select
+                          className="form-input"
+                          value={origin}
+                          onChange={(e) => handleOriginChange(e.target.value)}
+                          style={{ appearance: "none" }}
+                        >
+                          {OFFICE_CITIES.map((c) => (
+                            <option key={c} value={c}>
+                              {c}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* Botón swap */}
+                    {selectedDest && (
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          marginBottom: 12,
+                        }}
+                      >
+                        <button
+                          onClick={swapOriginDest}
+                          style={{
+                            background: "#f0fdf4",
+                            border: "1.5px solid #86efac",
+                            borderRadius: 8,
+                            padding: "6px 14px",
+                            fontFamily: "'Inter',sans-serif",
+                            fontSize: 11,
+                            fontWeight: 700,
+                            color: "#166534",
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 6,
+                          }}
+                        >
+                          <FaExchangeAlt size={11} /> Intercambiar
+                          origen/destino
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Selector de DESTINO */}
+                    <div style={{ marginBottom: 18 }}>
+                      <label
+                        style={{
+                          fontFamily: "'Inter',sans-serif",
+                          fontSize: 11,
+                          fontWeight: 700,
+                          letterSpacing: ".08em",
+                          textTransform: "uppercase",
+                          color: "rgba(0,0,0,.45)",
+                          display: "block",
+                          marginBottom: 8,
+                        }}
+                      >
+                        🏁 Ciudad de destino
+                      </label>
+                      <div style={{ position: "relative" }}>
+                        <div
+                          style={{
+                            position: "absolute",
+                            left: 12,
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            pointerEvents: "none",
+                            zIndex: 1,
+                          }}
+                        >
+                          <FaMapMarkerAlt size={13} color="#e53e3e" />
+                        </div>
+                        <input
+                          className="form-input"
+                          placeholder="Buscar destino..."
+                          value={destSearch}
+                          onChange={(e) => {
+                            setDestSearch(e.target.value);
+                            setShowDestList(true);
+                            if (!e.target.value) setSelectedDest(null);
+                          }}
+                          onFocus={() => setShowDestList(true)}
+                          onBlur={() =>
+                            setTimeout(() => setShowDestList(false), 150)
+                          }
+                        />
+                        {showDestList && (
+                          <div className="dest-dropdown">
+                            {filteredDest.length === 0 ? (
+                              <div
+                                style={{
+                                  padding: "10px 14px",
+                                  fontFamily: "'Inter',sans-serif",
+                                  fontSize: 13,
+                                  color: "rgba(0,0,0,.4)",
+                                }}
+                              >
+                                Sin resultados
+                              </div>
+                            ) : (
+                              filteredDest.map((city) => (
+                                <div
+                                  key={city}
+                                  className={`dest-item${selectedDest === city ? " selected" : ""}`}
+                                  onMouseDown={() => handleSelectDest(city)}
+                                >
+                                  <span
+                                    style={{ fontWeight: 600, color: "#111" }}
+                                  >
+                                    {city}
+                                  </span>
+                                  <span
+                                    style={{
+                                      fontWeight: 700,
+                                      color: "#1a8c3c",
+                                      fontSize: 14,
+                                    }}
+                                  >
+                                    S/ {calcPrice(origin, city)}
+                                  </span>
+                                </div>
+                              ))
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Grilla de destinos */}
+                    <div
+                      style={{
+                        fontFamily: "'Inter',sans-serif",
+                        fontSize: 11,
+                        fontWeight: 700,
+                        letterSpacing: ".1em",
+                        textTransform: "uppercase",
+                        color: "rgba(0,0,0,.4)",
+                        marginBottom: 10,
+                      }}
+                    >
+                      Destinos disponibles desde{" "}
+                      <strong style={{ color: "#1a8c3c" }}>{origin}</strong>
+                    </div>
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr",
+                        gap: 7,
+                        maxHeight: 280,
+                        overflowY: "auto",
+                        paddingRight: 4,
+                      }}
+                    >
+                      {availableDests.map((city) => (
+                        <div
+                          key={city}
+                          className={`city-chip${selectedDest === city ? " selected" : ""}`}
+                          onClick={() => handleSelectDest(city)}
+                        >
+                          <span
+                            style={{
+                              fontWeight: 600,
+                              color: "#111",
+                              fontSize: 11,
+                            }}
+                          >
+                            {city}
+                          </span>
+                          <span
+                            style={{
+                              fontWeight: 800,
+                              color: "#1a8c3c",
+                              fontSize: 12,
+                              marginLeft: 6,
+                            }}
+                          >
+                            S/{calcPrice(origin, city)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {selectedDest && (
+                      <button
+                        onClick={() => setFormStep("data")}
+                        style={{
+                          marginTop: 18,
+                          width: "100%",
+                          background: "linear-gradient(135deg,#1a8c3c,#0f5c28)",
+                          color: "#fff",
+                          border: "none",
+                          borderRadius: 12,
+                          padding: "13px",
+                          fontFamily: "'Inter',sans-serif",
+                          fontSize: 13,
+                          fontWeight: 700,
+                          letterSpacing: ".06em",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: 8,
+                          boxShadow: "0 4px 16px rgba(26,140,60,.3)",
+                        }}
+                      >
+                        Continuar: {origin} → {selectedDest} · S/{routePrice}{" "}
+                        <FaArrowRight size={12} />
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                {/* ── PASO 2: DATOS ── */}
+                {formStep === "data" && (
+                  <div>
+                    {selectedDest && (
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          background: "#f0fdf4",
+                          border: "1.5px solid #86efac",
+                          borderRadius: 12,
+                          padding: "12px 16px",
+                          marginBottom: 24,
+                        }}
+                      >
+                        <div>
+                          <div
+                            style={{
+                              fontFamily: "'Inter',sans-serif",
+                              fontSize: 11,
+                              fontWeight: 700,
+                              color: "#166534",
+                              textTransform: "uppercase",
+                              letterSpacing: ".08em",
+                            }}
+                          >
+                            Ruta seleccionada
+                          </div>
+                          <div
+                            style={{
+                              fontFamily: "'Inter',sans-serif",
+                              fontSize: 15,
+                              fontWeight: 700,
+                              color: "#111",
+                              marginTop: 2,
+                            }}
+                          >
+                            {origin} → {selectedDest}
+                          </div>
+                        </div>
+                        <div style={{ textAlign: "right" }}>
+                          <div
+                            style={{
+                              fontFamily: "'Playfair Display',serif",
+                              fontSize: 22,
+                              fontWeight: 700,
+                              color: "#1a8c3c",
+                            }}
+                          >
+                            S/ {routePrice}
+                          </div>
+                          <div
+                            style={{
+                              fontFamily: "'Inter',sans-serif",
+                              fontSize: 10,
+                              color: "rgba(0,0,0,.4)",
+                            }}
+                          >
+                            por persona
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    <div
+                      className="form-grid"
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr",
+                        gap: 14,
+                      }}
+                    >
+                      <div style={{ gridColumn: "1/-1" }}>
+                        <label
+                          style={{
+                            fontFamily: "'Inter',sans-serif",
+                            fontSize: 11,
+                            fontWeight: 700,
+                            letterSpacing: ".08em",
+                            textTransform: "uppercase",
+                            color: "rgba(0,0,0,.45)",
+                            display: "block",
+                            marginBottom: 6,
+                          }}
+                        >
+                          Nombre completo
+                        </label>
+                        <div style={{ position: "relative" }}>
+                          <div
+                            style={{
+                              position: "absolute",
+                              left: 12,
+                              top: "50%",
+                              transform: "translateY(-50%)",
+                            }}
+                          >
+                            <FaUser size={12} color="#aaa" />
+                          </div>
+                          <input
+                            className="form-input"
+                            placeholder="Ej. Juan Pérez García"
+                            value={nombre}
+                            onChange={(e) => setNombre(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label
+                          style={{
+                            fontFamily: "'Inter',sans-serif",
+                            fontSize: 11,
+                            fontWeight: 700,
+                            letterSpacing: ".08em",
+                            textTransform: "uppercase",
+                            color: "rgba(0,0,0,.45)",
+                            display: "block",
+                            marginBottom: 6,
+                          }}
+                        >
+                          DNI
+                        </label>
+                        <div style={{ position: "relative" }}>
+                          <div
+                            style={{
+                              position: "absolute",
+                              left: 12,
+                              top: "50%",
+                              transform: "translateY(-50%)",
+                            }}
+                          >
+                            <FaIdCard size={12} color="#aaa" />
+                          </div>
+                          <input
+                            className="form-input"
+                            placeholder="12345678"
+                            value={dni}
+                            onChange={(e) =>
+                              setDni(
+                                e.target.value.replace(/\D/g, "").slice(0, 8),
+                              )
+                            }
+                            maxLength={8}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label
+                          style={{
+                            fontFamily: "'Inter',sans-serif",
+                            fontSize: 11,
+                            fontWeight: 700,
+                            letterSpacing: ".08em",
+                            textTransform: "uppercase",
+                            color: "rgba(0,0,0,.45)",
+                            display: "block",
+                            marginBottom: 6,
+                          }}
+                        >
+                          Pasajeros
+                        </label>
+                        <div style={{ position: "relative" }}>
+                          <div
+                            style={{
+                              position: "absolute",
+                              left: 12,
+                              top: "50%",
+                              transform: "translateY(-50%)",
+                            }}
+                          >
+                            <FaUsers size={12} color="#aaa" />
+                          </div>
+                          <select
+                            className="form-input"
+                            value={pasajeros}
+                            onChange={(e) => setPasajeros(e.target.value)}
+                            style={{ appearance: "none" }}
+                          >
+                            {[1, 2, 3, 4, 5, 6].map((n) => (
+                              <option key={n} value={n}>
+                                {n} pasajero{n > 1 ? "s" : ""}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                      <div style={{ gridColumn: "1/-1" }}>
+                        <label
+                          style={{
+                            fontFamily: "'Inter',sans-serif",
+                            fontSize: 11,
+                            fontWeight: 700,
+                            letterSpacing: ".08em",
+                            textTransform: "uppercase",
+                            color: "rgba(0,0,0,.45)",
+                            display: "block",
+                            marginBottom: 6,
+                          }}
+                        >
+                          Fecha de viaje
+                        </label>
+                        <div style={{ position: "relative" }}>
+                          <div
+                            style={{
+                              position: "absolute",
+                              left: 12,
+                              top: "50%",
+                              transform: "translateY(-50%)",
+                            }}
+                          >
+                            <FaCalendarAlt size={12} color="#aaa" />
+                          </div>
+                          <input
+                            type="date"
+                            className="form-input"
+                            value={fecha}
+                            onChange={(e) => setFecha(e.target.value)}
+                            min={new Date().toISOString().split("T")[0]}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        background: "#fffbeb",
+                        border: "1.5px solid #fde68a",
+                        borderRadius: 12,
+                        padding: "14px 18px",
+                        marginTop: 20,
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontFamily: "'Inter',sans-serif",
+                          fontSize: 13,
+                          fontWeight: 600,
+                          color: "#92400e",
+                        }}
+                      >
+                        Total estimado ({pasajeros} × S/ {routePrice})
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: "'Playfair Display',serif",
+                          fontSize: 22,
+                          fontWeight: 700,
+                          color: "#d4a017",
+                        }}
+                      >
+                        S/ {totalPrice}
+                      </span>
+                    </div>
+
+                    <button
+                      onClick={() => setFormStep("dest")}
+                      style={{
+                        marginTop: 14,
+                        background: "transparent",
+                        border: "none",
+                        fontFamily: "'Inter',sans-serif",
+                        fontSize: 12,
+                        fontWeight: 600,
+                        color: "rgba(0,0,0,.4)",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 4,
+                      }}
+                    >
+                      ← Cambiar ruta
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* ── COLUMNA DERECHA: Preview + Botón ── */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+              <div
+                style={{
+                  background: "#fff",
+                  borderRadius: 24,
+                  border: "1.5px solid #e5e7eb",
+                  padding: "28px",
+                  boxShadow: "0 8px 32px rgba(0,0,0,.06)",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    marginBottom: 18,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: 10,
+                      background: "linear-gradient(135deg,#25D366,#128C7E)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <FaWhatsapp size={18} color="#fff" />
+                  </div>
+                  <div>
+                    <div
+                      style={{
+                        fontFamily: "'Inter',sans-serif",
+                        fontSize: 11,
+                        fontWeight: 700,
+                        letterSpacing: ".1em",
+                        textTransform: "uppercase",
+                        color: "#166534",
+                      }}
+                    >
+                      Vista previa
+                    </div>
+                    <div
+                      style={{
+                        fontFamily: "'Inter',sans-serif",
+                        fontSize: 13,
+                        fontWeight: 600,
+                        color: "#111",
+                      }}
+                    >
+                      Mensaje que se enviará
+                    </div>
+                  </div>
+                </div>
+                <div className="preview-box">
+                  <div>
+                    🚍 <strong>SOLICITUD DE RESERVA</strong>
+                  </div>
+                  <div style={{ marginTop: 8 }}>
+                    👤 <strong>Pasajero:</strong>{" "}
+                    {nombre || (
+                      <span style={{ color: "#aaa", fontStyle: "italic" }}>
+                        Tu nombre
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    🪪 <strong>DNI:</strong>{" "}
+                    {dni || (
+                      <span style={{ color: "#aaa", fontStyle: "italic" }}>
+                        Tu DNI
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    📍 <strong>Ruta:</strong> {origin} →{" "}
+                    {selectedDest || (
+                      <span style={{ color: "#aaa", fontStyle: "italic" }}>
+                        Destino
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    📅 <strong>Fecha:</strong>{" "}
+                    {fecha || (
+                      <span style={{ color: "#aaa", fontStyle: "italic" }}>
+                        Fecha de viaje
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    👥 <strong>Pasajeros:</strong> {pasajeros}
+                  </div>
+                  <div>
+                    💰 <strong>Precio est.:</strong>{" "}
+                    {selectedDest ? (
+                      `S/ ${totalPrice} (${pasajeros} × S/ ${routePrice})`
+                    ) : (
+                      <span style={{ color: "#aaa", fontStyle: "italic" }}>
+                        —
+                      </span>
+                    )}
+                  </div>
+                  <div style={{ marginTop: 8, color: "#555" }}>
+                    Por favor confirmarme disponibilidad y horarios. ¡Gracias!
+                    😊
+                  </div>
+                </div>
+              </div>
+
+              <a
+                className="wsp-main-btn"
+                href={
+                  canSend
+                    ? `https://wa.me/51966198771?text=${buildWspMessage()}`
+                    : "#"
+                }
+                target={canSend ? "_blank" : undefined}
+                rel="noopener noreferrer"
+                onClick={(e) => {
+                  if (!canSend) e.preventDefault();
+                }}
+                style={{
+                  opacity: canSend ? 1 : 0.45,
+                  pointerEvents: canSend ? "auto" : "none",
+                  animation: canSend ? undefined : "none",
+                }}
+              >
+                <FaPaperPlane size={17} />
+                {canSend
+                  ? "Enviar reserva por WhatsApp"
+                  : "Completa todos los campos"}
+                {canSend && <FaArrowRight size={13} />}
+              </a>
+
+              {!canSend && (
+                <div
+                  style={{
+                    fontFamily: "'Inter',sans-serif",
+                    fontSize: 12,
+                    color: "rgba(0,0,0,.4)",
+                    textAlign: "center",
+                    marginTop: -8,
+                  }}
+                >
+                  Selecciona origen, destino, nombre, DNI y fecha
+                </div>
+              )}
+
+              <div
+                style={{
+                  background: "#fff",
+                  borderRadius: 16,
+                  border: "1.5px solid #e5e7eb",
+                  padding: "20px 22px",
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: "'Inter',sans-serif",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: ".1em",
+                    textTransform: "uppercase",
+                    color: "#166534",
+                    marginBottom: 14,
+                  }}
+                >
+                  ¿Cómo funciona?
+                </div>
+                {[
+                  {
+                    n: "1",
+                    title: "Elige tu ruta",
+                    desc: "Selecciona origen y destino. El precio se calcula solo.",
+                  },
+                  {
+                    n: "2",
+                    title: "Completa tus datos",
+                    desc: "Nombre, DNI, fecha y número de pasajeros.",
+                  },
+                  {
+                    n: "3",
+                    title: "Envía el mensaje",
+                    desc: "Se abre WhatsApp con todo listo. ¡Solo da click!",
+                  },
+                  {
+                    n: "4",
+                    title: "Confirmamos en minutos",
+                    desc: "Te respondemos con horarios y asientos disponibles.",
+                  },
+                ].map((step) => (
+                  <div
+                    key={step.n}
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: 12,
+                      marginBottom: 12,
+                    }}
+                  >
+                    <div
+                      className="step-badge"
+                      style={{ width: 24, height: 24, fontSize: 11 }}
+                    >
+                      {step.n}
+                    </div>
+                    <div>
+                      <div
+                        style={{
+                          fontFamily: "'Inter',sans-serif",
+                          fontSize: 12,
+                          fontWeight: 700,
+                          color: "#111",
+                        }}
+                      >
+                        {step.title}
+                      </div>
+                      <div
+                        style={{
+                          fontFamily: "'Inter',sans-serif",
+                          fontSize: 11,
+                          color: "rgba(0,0,0,.45)",
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        {step.desc}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ════ SECCIÓN PRINCIPAL ════ */}
       <section
         className="section-pad"
         style={{ maxWidth: 1200, margin: "0 auto", padding: "64px 48px 72px" }}
       >
-        {/* ── WhatsApp destacado ── */}
         <div
           style={{
             background: "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)",
@@ -429,7 +1448,6 @@ export default function ContactanosPage() {
             overflow: "hidden",
           }}
         >
-          {/* Decoración fondo */}
           <div
             style={{
               position: "absolute",
@@ -452,7 +1470,6 @@ export default function ContactanosPage() {
               borderRadius: "50%",
             }}
           />
-
           <div
             className="main-grid"
             style={{
@@ -464,7 +1481,6 @@ export default function ContactanosPage() {
               zIndex: 1,
             }}
           >
-            {/* Izquierda */}
             <div>
               <div
                 style={{
@@ -516,7 +1532,6 @@ export default function ContactanosPage() {
                   </h2>
                 </div>
               </div>
-
               <p
                 style={{
                   fontFamily: "'Inter',sans-serif",
@@ -530,8 +1545,6 @@ export default function ContactanosPage() {
                 ruta, fecha y número de pasajeros y te confirmamos en minutos.
                 Atención todos los días.
               </p>
-
-              {/* Número con copy */}
               <div
                 style={{
                   display: "flex",
@@ -555,29 +1568,25 @@ export default function ContactanosPage() {
                     letterSpacing: ".02em",
                   }}
                 >
-                  (+51) 999 333 419
+                  (+51) 966198771
                 </span>
                 <button
                   className="copy-btn"
-                  onClick={() => handleCopy("51999333419")}
+                  onClick={() => handleCopy("51966198771")}
                 >
                   {copied ? "✓ Copiado" : "Copiar"}
                 </button>
               </div>
-
               <a
                 className="wsp-main-btn"
-                href="https://wa.me/51999333419?text=Hola!%20Quiero%20reservar%20un%20pasaje%20con%20Transportes%20Universo%20%F0%9F%9A%8D"
+                href="https://wa.me/51966198771?text=Hola!%20Quiero%20reservar%20un%20pasaje%20con%20Transportes%20Universo%20%F0%9F%9A%8D"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <FaWhatsapp size={20} />
-                Escribir por WhatsApp ahora
+                <FaWhatsapp size={20} /> Escribir por WhatsApp ahora{" "}
                 <FaArrowRight size={14} />
               </a>
             </div>
-
-            {/* Derecha — pasos */}
             <div>
               <div
                 style={{
@@ -656,7 +1665,7 @@ export default function ContactanosPage() {
           </div>
         </div>
 
-        {/* ── Grid de otros canales ── */}
+        {/* Otros canales */}
         <div style={{ marginBottom: 16 }}>
           <div
             style={{
@@ -682,7 +1691,6 @@ export default function ContactanosPage() {
             También puedes encontrarnos en
           </h3>
         </div>
-
         <div
           className="cards-grid"
           style={{
@@ -691,7 +1699,6 @@ export default function ContactanosPage() {
             gap: 16,
           }}
         >
-          {/* Facebook */}
           <a
             className="contact-card fb"
             href="https://www.facebook.com/turismobusuniverso/?locale=es_LA"
@@ -773,8 +1780,6 @@ export default function ContactanosPage() {
               Ver página <FaArrowRight size={11} />
             </div>
           </a>
-
-          {/* Instagram */}
           <a
             className="contact-card ig"
             href="https://www.instagram.com/turismobusuniverso/"
@@ -857,9 +1862,7 @@ export default function ContactanosPage() {
               Ver perfil <FaArrowRight size={11} />
             </div>
           </a>
-
-          {/* Teléfono */}
-          <a className="contact-card tel" href="tel:+51999333419">
+          <a className="contact-card tel" href="tel:+51966198771">
             <div
               style={{
                 display: "flex",
@@ -905,7 +1908,7 @@ export default function ContactanosPage() {
                     color: "#111",
                   }}
                 >
-                  +51 999 333 419
+                  +51 966198771
                 </div>
               </div>
             </div>
@@ -959,7 +1962,6 @@ export default function ContactanosPage() {
               alignItems: "start",
             }}
           >
-            {/* Dirección */}
             <div>
               <div
                 style={{
@@ -985,7 +1987,6 @@ export default function ContactanosPage() {
               >
                 Nuestras oficinas
               </h3>
-
               <div className="info-row">
                 <div
                   style={{
@@ -1027,7 +2028,6 @@ export default function ContactanosPage() {
                   </div>
                 </div>
               </div>
-
               <div className="info-row">
                 <div
                   style={{
@@ -1071,7 +2071,6 @@ export default function ContactanosPage() {
                   </div>
                 </div>
               </div>
-
               <div className="info-row">
                 <div
                   style={{
@@ -1115,21 +2114,17 @@ export default function ContactanosPage() {
                   </div>
                 </div>
               </div>
-
               <a
                 className="map-btn"
-                href="https://www.google.com/maps/place/Turismo+Universo+Trujillo/@-8.097581,-79.0376331,944m"
+                href="https://www.google.com/maps/place/Turismo+Universo+Trujillo/@-8.0973113,-79.0404205,914m"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ marginTop: 24, display: "inline-flex" }}
               >
-                <FaMapMarkerAlt size={14} />
-                Ver en Google Maps
+                <FaMapMarkerAlt size={14} /> Ver en Google Maps{" "}
                 <FaArrowRight size={12} />
               </a>
             </div>
-
-            {/* Por qué elegirnos para contacto */}
             <div>
               <div
                 style={{
@@ -1155,7 +2150,6 @@ export default function ContactanosPage() {
               >
                 Lo que nos diferencia
               </h3>
-
               <div
                 style={{ display: "flex", flexDirection: "column", gap: 14 }}
               >
@@ -1173,7 +2167,7 @@ export default function ContactanosPage() {
                   {
                     icon: "📍",
                     title: "Múltiples destinos",
-                    desc: "Más de 50 rutas activas al norte del Perú desde Trujillo y viceversa.",
+                    desc: "Más de 650 rutas activas al norte del Perú desde cualquier ciudad.",
                   },
                   {
                     icon: "💬",
@@ -1310,13 +2304,12 @@ export default function ContactanosPage() {
           </p>
           <a
             className="wsp-main-btn"
-            href="https://wa.me/51999333419?text=Hola!%20Quiero%20reservar%20un%20pasaje%20con%20Transportes%20Universo%20%F0%9F%9A%8D"
+            href="https://wa.me/51966198771?text=Hola!%20Quiero%20reservar%20un%20pasaje%20con%20Transportes%20Universo%20%F0%9F%9A%8D"
             target="_blank"
             rel="noopener noreferrer"
             style={{ maxWidth: 380, margin: "0 auto" }}
           >
-            <FaWhatsapp size={20} />
-            Reservar mi pasaje ahora
+            <FaWhatsapp size={20} /> Reservar mi pasaje ahora{" "}
             <FaArrowRight size={14} />
           </a>
         </div>
