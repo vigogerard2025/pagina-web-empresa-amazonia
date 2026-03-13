@@ -374,11 +374,12 @@ export default function BusTransportPage() {
                 textShadow: "0 2px 28px rgba(0,0,0,.45)",
               }}
             >
-              Viaja por el <br />
-              norte del
+              Viaja por la <br />
+              ruta nor oriental
+              <br />
               <span style={{ fontStyle: "italic", color: "#f5c518" }}>
                 {" "}
-                Perú
+                del Perú
               </span>
               <br />
               con confianza
@@ -611,7 +612,7 @@ export default function BusTransportPage() {
               }}
             >
               {[
-                { value: "50+", label: "Rutas activas", color: "#4ade80" },
+                { value: "35+", label: "Oficinas", color: "#4ade80" },
                 { value: "4200", label: "Pasajeros / mes", color: "#fbbf24" },
                 { value: "98%", label: "Puntualidad", color: "#60a5fa" },
               ].map((s, i) => (

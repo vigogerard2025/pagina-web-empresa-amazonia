@@ -22,9 +22,10 @@ const agencies = [
     regionColor: "#d42b2b",
     address: "Terminal El Chimbador — Stand Q-7",
     phones: ["993 767 433"],
-    maps: "https://www.google.com/maps/search/?api=1&query=-9.1047793,-78.5578073",
+    maps: "https://www.google.com/maps/place/Terminal+Terrestre+Chimbote/@-9.1045559,-78.5580393,18.5z/data=!4m12!1m5!3m4!2zOcKwMDYnMTcuMiJTIDc4wrAzMycyOC4xIlc!8m2!3d-9.1047793!4d-78.5578073!3m5!1s0x91ab84045765c6a5:0xd99c235aa2f87756!8m2!3d-9.1047793!4d-78.5578073!16s%2Fg%2F11g7gdqw8h?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3D",
     dot: "#e53e3e",
-    img: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=600&q=80",
+    img: "/chimbador_terminal.png",
+    whatsapp: "51993767433",
   },
 
   // ── La Libertad ─────────────────────────────────────────────
@@ -33,11 +34,12 @@ const agencies = [
     city: "Chao",
     region: "La Libertad",
     regionColor: "#1a4fa0",
-    address: "Av. Víctor Raúl 458 — al lado de Botica Medina",
+    address: "Au. Panamericana N 13, Chao 13631 — al lado de Botica Medina",
     phones: ["968 499 740", "987 455 023"],
-    maps: "https://maps.google.com/?q=Chao+La+Libertad+Peru",
+    maps: "https://www.google.com/maps/@-8.5387296,-78.6773439,3a,75y,230.05h,91.03t/data=!3m7!1e1!3m5!1s6fIKB0q2A8EFBaha9sLNtg!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-1.0298218462498738%26panoid%3D6fIKB0q2A8EFBaha9sLNtg%26yaw%3D230.05366993227085!7i16384!8i8192?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3D",
     dot: "#60a5fa",
-    img: "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&q=80",
+    img: "/chao_terminal.png",
+    whatsapp: "51987455023",
   },
   {
     id: 3,
@@ -46,9 +48,10 @@ const agencies = [
     regionColor: "#1a4fa0",
     address: "Av. Panamericana 396 — Puente Virú",
     phones: ["968 499 740"],
-    maps: "https://maps.google.com/?q=Viru+La+Libertad+Peru",
+    maps: "https://www.google.com/maps/place/Panamericana+Nte.+396,+13620/@-8.411023,-78.807637,17z/data=!3m1!4b1!4m5!3m4!1s0x91acfc9d665ae85f:0x9804771c6a44ad38!8m2!3d-8.4110283!4d-78.8050621?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3Dm/?q=Viru+La+Libertad+Peru",
     dot: "#60a5fa",
-    img: "https://images.unsplash.com/photo-1425913397330-cf8af2ff40a1?w=600&q=80",
+    img: "/viru_puente.png",
+    whatsapp: "51968499740",
   },
   {
     id: 4,
@@ -57,20 +60,22 @@ const agencies = [
     regionColor: "#1a4fa0",
     address: "Carretera Panamericana 1319 — Sector Manco Cápac",
     phones: ["937 512 954"],
-    maps: "https://maps.google.com/?q=Paijan+La+Libertad+Peru",
+    maps: "https://www.google.com/maps/@-7.7332027,-79.3018744,3a,75y,50.99h,93.28t/data=!3m7!1e1!3m5!1sDJ3HkkFqbySPmt4HbX6Ucw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-3.276347274329126%26panoid%3DDJ3HkkFqbySPmt4HbX6Ucw%26yaw%3D50.99190710643565!7i16384!8i8192?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3D",
     dot: "#f5c518",
-    img: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&q=80",
+    img: "/paijan_terminal.png",
+    whatsapp: "51937512954",
   },
   {
     id: 5,
     city: "Paiján 2",
     region: "La Libertad",
     regionColor: "#1a4fa0",
-    address: "Av. Panamericana Norte 657",
+    address: "Ctra. Panamericana N 657, Paiján 13721",
     phones: ["957 954 622"],
-    maps: "https://maps.google.com/?q=Paijan+La+Libertad+Peru",
+    maps: "https://www.google.com/maps/@-7.7338426,-79.3008682,3a,90y,244.15h,89.33t/data=!3m7!1e1!3m5!1swifxZdBT-9qOQdlXphbj6g!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D0.6710347378615467%26panoid%3DwifxZdBT-9qOQdlXphbj6g%26yaw%3D244.14723542980443!7i16384!8i8192?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3D",
     dot: "#f5c518",
-    img: "https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=600&q=80",
+    img: "/paijan2.png",
+    whatsapp: "51957954622",
   },
   {
     id: 6,
@@ -80,20 +85,22 @@ const agencies = [
     address:
       "1ra cdra. de Leoncio Prado — Terminal Terrestre Pacasmayo Stand 3 y 13",
     phones: ["981 911 766", "980 947 832"],
-    maps: "https://www.google.com/maps/search/?api=1&query=-7.3969310,-79.5672956",
+    maps: "https://www.google.com/maps/place/Terminal+Terrestre+Pacasmayo/@-7.3965125,-79.5672815,3a,90y,140.4h,88.68t/data=!3m7!1e1!3m5!1sz5JbwVU_UcEOvs4PqA9sNw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D1.3205965850238783%26panoid%3Dz5JbwVU_UcEOvs4PqA9sNw%26yaw%3D140.4003922139878!7i16384!8i8192!4m10!1m2!2m1!1s1ra+cdra.+de+Leoncio+Prado+%E2%80%94+Terminal+Terrestre+Pacasmayo+Stand+3+y+13!3m6!1s0x904d4606a6a1ca4b:0x992f035f6c6aa13c!8m2!3d-7.397103!4d-79.5670464!15sCkgxcmEgY2RyYS4gZGUgTGVvbmNpbyBQcmFkbyDigJQgVGVybWluYWwgVGVycmVzdHJlIFBhY2FzbWF5byBTdGFuZCAzIHkgMTNaRSJDMXJhIGNkcmEgZGUgbGVvbmNpbyBwcmFkbyB0ZXJtaW5hbCB0ZXJyZXN0cmUgcGFjYXNtYXlvIHN0YW5kIDMgeSAxM5IBC2J1c19zdGF0aW9umgEkQ2hkRFNVaE5NRzluUzBWSlEwRm5TVU10YVdaNWVHOVJSUkFC4AEA-gEECAAQKw!16s%2Fg%2F1ydp2p6ng?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3D",
     dot: "#60a5fa",
-    img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80",
+    img: "/pacasmayo_terminal.png",
+    whatsapp: "51981911766",
   },
   {
     id: 7,
     city: "Ciudad de Dios",
     region: "La Libertad",
     regionColor: "#1a4fa0",
-    address: "Panamericana Norte — Kiosko N°4",
+    address: "Panamericana Norte — Ciudad de Dios Kiosko N°4",
     phones: ["959 998 794"],
-    maps: "https://maps.google.com/?q=Ciudad+de+Dios+Guadalupe+La+Libertad",
+    maps: "https://www.google.com/maps/place/Au.+Panamericana+N/@-7.8384455,-79.1521497,3a,75y,240.56h,85.44t/data=!3m7!1e1!3m5!1sXHBkky0DIXJ-dw8-PCjZuw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D4.5601498979005015%26panoid%3DXHBkky0DIXJ-dw8-PCjZuw%26yaw%3D240.55872898711607!7i16384!8i8192!4m15!1m8!3m7!1s0x91072068667cccc9:0xbe1f0eee754411d!2sAu.+Panamericana+N!3b1!8m2!3d-7.838863!4d-79.1526054!16s%2Fg%2F12fgs81yp!3m5!1s0x91072068667cccc9:0xbe1f0eee754411d!8m2!3d-7.838863!4d-79.1526054!16s%2Fg%2F12fgs81yp?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3D",
     dot: "#93c5fd",
-    img: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=600&q=80",
+    img: "/ciudaddedios.png",
+    whatsapp: "51959998794",
   },
   {
     id: 8,
@@ -102,9 +109,10 @@ const agencies = [
     regionColor: "#1a4fa0",
     address: "Jr. Zoila Bay 181 — Cafetal II, costado del Parque San Isidro",
     phones: ["942 873 849"],
-    maps: "https://maps.google.com/?q=Guadalupe+Pacasmayo+La+Libertad+Peru",
+    maps: "https://www.google.com/maps/@-7.2492965,-79.4685065,3a,75y,197.23h,79.1t/data=!3m7!1e1!3m5!1scaKZzIV6G0fSYMq0ivPwnA!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D10.896044400769057%26panoid%3DcaKZzIV6G0fSYMq0ivPwnA%26yaw%3D197.22653053692878!7i16384!8i8192?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3D",
     dot: "#bfdbfe",
-    img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80",
+    img: "/guadalupe.png",
+    whatsapp: "51942873849",
   },
   {
     id: 9,
@@ -113,10 +121,11 @@ const agencies = [
     regionColor: "#1a4fa0",
     address:
       "Av. Ezequiel Gonzáles Cáceda 188 Stand-22 — Terminal Terrestre de Chepén",
-    phones: ["999 157 937", "952 510 976"],
-    maps: "https://maps.google.com/?q=Terminal+Terrestre+Chepen+La+Libertad",
+    phones: ["999t 7157 93", "952 510 976"],
+    maps: "https://www.google.com/maps/place/Terminal+terrestre+de+Chep%C3%A9n/@-7.220581,-79.4338135,15z/data=!4m6!3m5!1s0x904d3300170e385f:0xbbd40dd8087195f1!8m2!3d-7.2201949!4d-79.4335241!16s%2Fg%2F11vzbh1960?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3D",
     dot: "#3b82f6",
-    img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80",
+    img: "/terminal_chepen.png",
+    whatsapp: "51999157937",
   },
   {
     id: 10,
@@ -125,9 +134,10 @@ const agencies = [
     regionColor: "#1a4fa0",
     address: "Panamericana Norte JM 709 — a media cuadra del Hospital",
     phones: ["966 188 103"],
-    maps: "https://maps.google.com/?q=Chepen+La+Libertad+Peru",
+    maps: "https://www.google.com/maps/place/Panamericana+Norte+Km.+696.5/@-7.2239529,-79.4403148,3a,90y,195.61h,82.52t/data=!3m7!1e1!3m5!1sHJviEjrTV_qNS65Nf5y8hw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D7.480555875510419%26panoid%3DHJviEjrTV_qNS65Nf5y8hw%26yaw%3D195.61287909718857!7i16384!8i8192!4m14!1m7!3m6!1s0x904d338930829aa5:0x3a8084aac4009009!2sPanamericana+Norte+Km.+696.5!8m2!3d-7.2238301!4d-79.440361!16s%2Fg%2F11bt_n5wrx!3m5!1s0x904d338930829aa5:0x3a8084aac4009009!8m2!3d-7.2238301!4d-79.440361!16s%2Fg%2F11bt_n5wrx?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3D",
     dot: "#3b82f6",
-    img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80",
+    img: "/chepen_panamericana.png",
+    whatsapp: "51966188103",
   },
   {
     id: 11,
@@ -137,9 +147,10 @@ const agencies = [
     address:
       "Calle Bolívar 290 — Pacanguilla, a una esquina del paradero de autos Chepén",
     phones: ["939 797 326"],
-    maps: "https://maps.google.com/?q=Pacanguilla+La+Libertad+Peru",
+    maps: "https://www.google.com/maps/place/Calle+Bolivar,+Pacanguilla+13860/@-7.1573065,-79.4415191,3a,75y,149.01h,90.3t/data=!3m7!1e1!3m5!1s2SZkVEX6mHf8Cnx7MJuoNw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-0.29989714859854644%26panoid%3D2SZkVEX6mHf8Cnx7MJuoNw%26yaw%3D149.0121221658179!7i16384!8i8192!4m15!1m8!3m7!1s0x904d326e81266565:0x4b0fa46144d40fed!2sCalle+Bolivar,+Pacanguilla+13860!3b1!8m2!3d-7.1573425!4d-79.44157!16s%2Fg%2F11y8blxq0m!3m5!1s0x904d326e81266565:0x4b0fa46144d40fed!8m2!3d-7.1573425!4d-79.44157!16s%2Fg%2F11y8blxq0m?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3D",
     dot: "#93c5fd",
-    img: "https://images.unsplash.com/photo-1431794062232-2a99a5431c6c?w=600&q=80",
+    img: "/pacanguilla.png",
+    whatsapp: "51939797326",
   },
 
   // ── Lambayeque ──────────────────────────────────────────────
@@ -153,6 +164,7 @@ const agencies = [
     maps: "https://www.google.com/maps/search/?api=1&query=-6.7558086,-79.8636393",
     dot: "#a78bfa",
     img: "https://images.unsplash.com/photo-1520454974749-a795929c4f99?w=600&q=80",
+    whatsapp: "51944671146",
   },
   {
     id: 13,
@@ -164,6 +176,7 @@ const agencies = [
     maps: "https://maps.google.com/?q=Terminal+Plaza+Norte+Chiclayo",
     dot: "#c4b5fd",
     img: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=600&q=80",
+    whatsapp: "51935788639",
   },
   {
     id: 14,
@@ -175,6 +188,7 @@ const agencies = [
     maps: "https://maps.google.com/?q=Illimo+Lambayeque+Peru",
     dot: "#ddd6fe",
     img: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80",
+    whatsapp: "51964755681",
   },
   {
     id: 15,
@@ -186,6 +200,7 @@ const agencies = [
     maps: "https://maps.google.com/?q=Olmos+Lambayeque+Peru",
     dot: "#ede9fe",
     img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600&q=80",
+    whatsapp: "51991598645",
   },
 
   // ── Amazonas ────────────────────────────────────────────────
@@ -199,6 +214,7 @@ const agencies = [
     maps: "https://maps.google.com/?q=Chamaya+Jaen+Cajamarca+Peru",
     dot: "#6ee7b7",
     img: "https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=600&q=80",
+    whatsapp: "51914420313",
   },
   {
     id: 17,
@@ -210,6 +226,7 @@ const agencies = [
     maps: "https://www.google.com/maps/search/?api=1&query=-5.7576547,-78.4357215",
     dot: "#4ade80",
     img: "https://plus.unsplash.com/premium_photo-1686810855843-cb595b8418bd?w=600&q=80",
+    whatsapp: "51959544152",
   },
   {
     id: 18,
@@ -221,20 +238,10 @@ const agencies = [
     maps: "https://www.google.com/maps/search/?api=1&query=-5.9386330,-77.9736189",
     dot: "#34d399",
     img: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80",
+    whatsapp: "51982772303",
   },
   {
     id: 19,
-    city: "Pomacochas",
-    region: "Amazonas",
-    regionColor: "#065f46",
-    address: "Av. Marginal S/N — a cuadra y media de la Comisaría",
-    phones: ["988 040 498"],
-    maps: "https://maps.google.com/?q=Pomacochas+Amazonas+Peru",
-    dot: "#6ee7b7",
-    img: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&q=80",
-  },
-  {
-    id: 20,
     city: "Buenos Aires",
     region: "Amazonas",
     regionColor: "#065f46",
@@ -244,11 +251,12 @@ const agencies = [
     maps: "https://maps.google.com/?q=Buenos+Aires+Bongara+Amazonas+Peru",
     dot: "#a7f3d0",
     img: "https://images.unsplash.com/photo-1431794062232-2a99a5431c6c?w=600&q=80",
+    whatsapp: "51913574460",
   },
 
   // ── San Martín ──────────────────────────────────────────────
   {
-    id: 21,
+    id: 20,
     city: "Naranjos",
     region: "San Martín",
     regionColor: "#92400e",
@@ -257,9 +265,10 @@ const agencies = [
     maps: "https://maps.google.com/?q=Naranjos+Rioja+San+Martin+Peru",
     dot: "#fb923c",
     img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80",
+    whatsapp: "51942444294",
   },
   {
-    id: 22,
+    id: 21,
     city: "Naranjillo",
     region: "San Martín",
     regionColor: "#92400e",
@@ -268,9 +277,10 @@ const agencies = [
     maps: "https://maps.google.com/?q=Naranjillo+Rioja+San+Martin+Peru",
     dot: "#fdba74",
     img: "https://images.unsplash.com/photo-1425913397330-cf8af2ff40a1?w=600&q=80",
+    whatsapp: "51975790400",
   },
   {
-    id: 23,
+    id: 22,
     city: "N. Cajamarca",
     region: "San Martín",
     regionColor: "#92400e",
@@ -279,9 +289,10 @@ const agencies = [
     maps: "https://www.google.com/maps/search/?api=1&query=-5.9281701,-77.3154473",
     dot: "#f97316",
     img: "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&q=80",
+    whatsapp: "51931703571",
   },
   {
-    id: 24,
+    id: 23,
     city: "Segunda Jerusalén",
     region: "San Martín",
     regionColor: "#92400e",
@@ -291,9 +302,10 @@ const agencies = [
     maps: "https://maps.google.com/?q=Segunda+Jerusalen+Rioja+San+Martin",
     dot: "#fb923c",
     img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600&q=80",
+    whatsapp: "51939083805",
   },
   {
-    id: 25,
+    id: 24,
     city: "Rioja",
     region: "San Martín",
     regionColor: "#92400e",
@@ -303,9 +315,10 @@ const agencies = [
     maps: "https://www.google.com/maps/search/?api=1&query=-6.05516,-77.1659029",
     dot: "#f97316",
     img: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=600&q=80",
+    whatsapp: "51941583051",
   },
   {
-    id: 26,
+    id: 25,
     city: "Moyobamba",
     region: "San Martín",
     regionColor: "#92400e",
@@ -314,9 +327,10 @@ const agencies = [
     maps: "https://www.google.com/maps/search/?api=1&query=-6.0451601,-76.9704046",
     dot: "#fb923c",
     img: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600&q=80",
+    whatsapp: "51995454537",
   },
   {
-    id: 27,
+    id: 26,
     city: "Tabalosos",
     region: "San Martín",
     regionColor: "#92400e",
@@ -326,9 +340,10 @@ const agencies = [
     maps: "https://maps.google.com/?q=Tabalosos+Lamas+San+Martin+Peru",
     dot: "#fdba74",
     img: "https://images.unsplash.com/photo-1442120108414-42e7ea50d0b5?w=600&q=80",
+    whatsapp: "51979050445",
   },
   {
-    id: 28,
+    id: 27,
     city: "Tarapoto Santa Anita",
     region: "San Martín",
     regionColor: "#92400e",
@@ -338,20 +353,10 @@ const agencies = [
     maps: "https://maps.google.com/?q=Terminal+Santa+Anita+Tarapoto",
     dot: "#22c55e",
     img: "https://images.unsplash.com/photo-1442120108414-42e7ea50d0b5?w=600&q=80",
+    whatsapp: "51996454609",
   },
   {
-    id: 29,
-    city: "Tarapoto Morales",
-    region: "San Martín",
-    regionColor: "#92400e",
-    address: "Terminal Morales — Jr. 1 de Mayo Cdra. 3",
-    phones: ["995 454 609"],
-    maps: "https://www.google.com/maps/search/?api=1&query=-6.479374,-76.3836955",
-    dot: "#16a34a",
-    img: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&q=80",
-  },
-  {
-    id: 30,
+    id: 28,
     city: "Picota",
     region: "San Martín",
     regionColor: "#92400e",
@@ -360,9 +365,10 @@ const agencies = [
     maps: "https://maps.google.com/?q=Picota+San+Martin+Peru",
     dot: "#fb923c",
     img: "https://images.unsplash.com/photo-1431794062232-2a99a5431c6c?w=600&q=80",
+    whatsapp: "51924290846",
   },
   {
-    id: 31,
+    id: 29,
     city: "San Hilarión",
     region: "San Martín",
     regionColor: "#92400e",
@@ -371,9 +377,10 @@ const agencies = [
     maps: "https://www.google.com/maps/search/?api=1&query=-6.9993336,-76.4430630",
     dot: "#22c55e",
     img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80",
+    whatsapp: "51998031404",
   },
   {
-    id: 32,
+    id: 30,
     city: "San Hilarión 2",
     region: "San Martín",
     regionColor: "#92400e",
@@ -383,9 +390,10 @@ const agencies = [
     maps: "https://maps.google.com/?q=San+Hilarion+Picota+San+Martin+Peru",
     dot: "#4ade80",
     img: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=600&q=80",
+    whatsapp: "51952567353",
   },
   {
-    id: 33,
+    id: 31,
     city: "Bellavista",
     region: "San Martín",
     regionColor: "#92400e",
@@ -394,9 +402,10 @@ const agencies = [
     maps: "https://www.google.com/maps/search/?api=1&query=-7.0594,-76.5801",
     dot: "#a78bfa",
     img: "https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=600&q=80",
+    whatsapp: "51942135150",
   },
   {
-    id: 34,
+    id: 32,
     city: "Sacanche",
     region: "San Martín",
     regionColor: "#92400e",
@@ -405,9 +414,10 @@ const agencies = [
     maps: "https://www.google.com/maps/search/?api=1&query=-7.0807418,-76.7394833",
     dot: "#fb923c",
     img: "https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=600&q=80",
+    whatsapp: "51929855077",
   },
   {
-    id: 35,
+    id: 33,
     city: "Saposoa",
     region: "San Martín",
     regionColor: "#92400e",
@@ -416,9 +426,10 @@ const agencies = [
     maps: "https://maps.google.com/?q=Saposoa+Huallaga+San+Martin+Peru",
     dot: "#fbbf24",
     img: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80",
+    whatsapp: "51969182663",
   },
   {
-    id: 36,
+    id: 34,
     city: "Juanjuí",
     region: "San Martín",
     regionColor: "#92400e",
@@ -427,9 +438,10 @@ const agencies = [
     maps: "https://www.google.com/maps/search/?api=1&query=-7.1821376,-76.7353093",
     dot: "#4ade80",
     img: "https://images.unsplash.com/photo-1546412414-8035e1776c9a?w=600&q=80",
+    whatsapp: "51988394622",
   },
   {
-    id: 37,
+    id: 35,
     city: "Yurimaguas",
     region: "San Martín",
     regionColor: "#92400e",
@@ -438,6 +450,20 @@ const agencies = [
     maps: "https://maps.google.com/?q=Yurimaguas+Alto+Amazonas+Loreto+Peru",
     dot: "#22c55e",
     img: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&q=80",
+    whatsapp: "51972851055",
+  },
+  {
+    id: 36,
+    city: "Trujillo",
+    region: "La Libertad",
+    regionColor: "#92400e",
+    address:
+      "Av. Nicolás de Piérola N° 1230 Urb. San Fernando, Trujillo — La Libertad, Perú",
+    phones: ["972 851 055"],
+    maps: "https://maps.google.com/?q=Yurimaguas+Alto+Amazonas+Loreto+Peru",
+    dot: "#22c55e",
+    img: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&q=80",
+    whatsapp: "51972851055",
   },
 ];
 
@@ -1013,14 +1039,16 @@ export default function AgenciasPage() {
                         <FaArrowRight size={10} />
                       </a>
                     )}
-                    <a
-                      className="wsp-btn"
-                      href={`https://wa.me/51999333419?text=Hola!%20Estoy%20en%20${encodeURIComponent(agency.city)}%20y%20quiero%20consultar%20sobre%20pasajes%20%F0%9F%9A%8D`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FaWhatsapp size={13} /> WhatsApp
-                    </a>
+                    {agency.whatsapp && (
+                      <a
+                        className="wsp-btn"
+                        href={`https://wa.me/${agency.whatsapp}?text=Hola!%20Estoy%20en%20${encodeURIComponent(agency.city)}%20y%20quiero%20consultar%20sobre%20pasajes%20%F0%9F%9A%8D`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FaWhatsapp size={13} /> WhatsApp
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
