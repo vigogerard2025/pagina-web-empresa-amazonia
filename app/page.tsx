@@ -1,10 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { FaBus, FaSearch, FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
-// app/page.tsx — agrega esto arriba del componente
 import { supabase } from "@/lib/supabase";
-
-// Dentro del componente, en un useEffect:
 
 const slides = [
   {
@@ -156,10 +153,10 @@ export default function BusTransportPage() {
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [date, setDate] = useState("");
-  const [returnDate, setReturnDate] = useState("");
   const [searched, setSearched] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState<number | null>(null);
   const [current, setCurrent] = useState(0);
+
   useEffect(() => {
     supabase
       .from("agencias")
@@ -169,6 +166,7 @@ export default function BusTransportPage() {
         console.log("❌ Error:", error);
       });
   }, []);
+
   useEffect(() => {
     const interval = setInterval(
       () => setCurrent((p) => (p + 1) % slides.length),
@@ -360,7 +358,7 @@ export default function BusTransportPage() {
               Servicio Nacional
             </div>
 
-            {/* H1 — Poppins 800, tight tracking */}
+            {/* H1 */}
             <h1
               className="hero-title"
               style={{
@@ -436,15 +434,15 @@ export default function BusTransportPage() {
               selva.
             </p>
 
-            {/* Search card */}
+            {/* ── Search card ── */}
             <div className="search-card" id="search-section">
+              {/* Header de la card — solo ícono + texto, sin radio buttons */}
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
                   gap: 12,
                   marginBottom: 18,
-                  flexWrap: "wrap",
                 }}
               >
                 <FaBus size={17} color="#1a8c3c" />
@@ -458,38 +456,11 @@ export default function BusTransportPage() {
                 >
                   Buses Interurbanos
                 </span>
-                <div style={{ display: "flex", gap: 18, marginLeft: 4 }}>
-                  {["Pasajes de bus", "Ida y vuelta"].map((opt, idx) => (
-                    <label
-                      key={opt}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 6,
-                        cursor: "pointer",
-                        fontSize: 12.5,
-                        fontWeight: 500,
-                        color: idx === 0 ? "#1a8c3c" : "#999",
-                        fontFamily: F,
-                      }}
-                    >
-                      <span
-                        style={{
-                          width: 16,
-                          height: 16,
-                          borderRadius: "50%",
-                          border:
-                            idx === 0 ? "5px solid #1a8c3c" : "2px solid #ccc",
-                          display: "inline-block",
-                          flexShrink: 0,
-                        }}
-                      />
-                      {opt}
-                    </label>
-                  ))}
-                </div>
               </div>
+
+              {/* Campos: Origen | Destino | Fecha | Buscar */}
               <div className="search-fields-row">
+                {/* Origen */}
                 <div className="search-field">
                   <label>Origen</label>
                   <div
@@ -514,7 +485,10 @@ export default function BusTransportPage() {
                     </select>
                   </div>
                 </div>
+
                 <div className="field-divider" />
+
+                {/* Destino */}
                 <div className="search-field">
                   <label>Destino</label>
                   <div
@@ -539,7 +513,10 @@ export default function BusTransportPage() {
                     </select>
                   </div>
                 </div>
+
                 <div className="field-divider" />
+
+                {/* Fecha de ida */}
                 <div className="search-field">
                   <label>Ida</label>
                   <div
@@ -558,28 +535,10 @@ export default function BusTransportPage() {
                     />
                   </div>
                 </div>
+
                 <div className="field-divider" />
-                <div className="search-field" style={{ background: "#f3f4f6" }}>
-                  <label style={{ color: "rgba(0,0,0,.3)" }}>
-                    Vuelta (Opcional)
-                  </label>
-                  <div
-                    style={{ display: "flex", alignItems: "center", gap: 6 }}
-                  >
-                    <FaCalendarAlt
-                      size={12}
-                      color="#bbb"
-                      style={{ flexShrink: 0 }}
-                    />
-                    <input
-                      type="date"
-                      className="search-date"
-                      value={returnDate}
-                      onChange={(e) => setReturnDate(e.target.value)}
-                      style={{ color: "#aaa" }}
-                    />
-                  </div>
-                </div>
+
+                {/* Botón Buscar */}
                 <div
                   style={{
                     padding: "10px 14px",
@@ -724,7 +683,6 @@ export default function BusTransportPage() {
                 setOrigin("");
                 setDestination("");
                 setDate("");
-                setReturnDate("");
               }}
               style={{
                 background: "transparent",
@@ -741,6 +699,7 @@ export default function BusTransportPage() {
               ✕ Limpiar búsqueda
             </button>
           </div>
+
           {filteredRoutes.length === 0 ? (
             <div style={{ textAlign: "center", padding: "80px 0" }}>
               <div style={{ fontSize: 48, marginBottom: 16 }}>🔍</div>

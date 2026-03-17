@@ -239,7 +239,7 @@ export default function Navbar() {
           padding-left: 12px;
         }
         .nb-bus-img {
-          height: 68px;
+          height: 88px;
           width: auto;
           object-fit: contain;
           opacity: 0.92;
