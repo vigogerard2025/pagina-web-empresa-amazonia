@@ -1,7 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
-import { FaBus, FaSearch, FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
-import { supabase } from "@/lib/supabase";
+import {
+  FaBus,
+  FaSearch,
+  FaCalendarAlt,
+  FaMapMarkerAlt,
+  FaWhatsapp,
+  FaCommentDots,
+  FaClock,
+} from "react-icons/fa";
 
 const slides = [
   {
@@ -21,8 +28,8 @@ const slides = [
   },
   {
     url: "https://cocatambo.com/sites/default/files/tacacho-cecina-comida-selva-cocatambo.webp",
-    ciudad: "Juanji",
-    region: "La Libertad",
+    ciudad: "Juanjuí",
+    region: "San Martín",
   },
   {
     url: "https://images.unsplash.com/photo-1565983965700-a31031a213d8?q=80&w=1170&auto=format&fit=crop",
@@ -31,7 +38,7 @@ const slides = [
   },
   {
     url: "https://aventuras.pe/blog/wp-content/uploads/2023/11/guacamayo-macao-e1650594697991.jpg",
-    ciudad: "Tarapoto",
+    ciudad: "Selva",
     region: "Amazonas",
   },
   {
@@ -41,113 +48,880 @@ const slides = [
   },
 ];
 
+// ── Rutas extraídas de manifiestos Feb-Mar 2026 ──────────────────────────────
+// Precio = moda (precio más frecuente cobrado en ese par origen→destino)
 const routes = [
-  { id: 1, from: "Trujillo", to: "Chiclayo", price: 40, duration: "4h" },
+  // Desde TRUJILLO
+  { id: 1, from: "Trujillo", to: "Chiclayo", price: 30, duration: "3h" },
+  { id: 2, from: "Trujillo", to: "Bagua Grande", price: 80, duration: "10h" },
+  { id: 3, from: "Trujillo", to: "Bellavista", price: 120, duration: "16h" },
+  { id: 4, from: "Trujillo", to: "Chamaya", price: 60, duration: "8h" },
+  { id: 5, from: "Trujillo", to: "Jaén", price: 70, duration: "9h" },
+  { id: 6, from: "Trujillo", to: "Juanjuí", price: 130, duration: "17h" },
+  { id: 7, from: "Trujillo", to: "Moyobamba", price: 90, duration: "13h" },
+  { id: 8, from: "Trujillo", to: "Naranjillo", price: 80, duration: "12h" },
+  { id: 9, from: "Trujillo", to: "Naranjos", price: 80, duration: "12h" },
   {
-    id: 2,
+    id: 10,
     from: "Trujillo",
-    to: "Paijan",
-    price: 20,
-    duration: "1h y 30 minutos",
-  },
-  { id: 3, from: "Trujillo", to: "Nva Cajamarca", price: 80, duration: "12h" },
-  { id: 4, from: "Trujillo", to: "Moyobamba", price: 90, duration: "13h" },
-  { id: 5, from: "Trujillo", to: "Tarapoto", price: 100, duration: "14h" },
-  { id: 6, from: "Trujillo", to: "Picota", price: 120, duration: "15h" },
-  { id: 7, from: "Trujillo", to: "Bellavista", price: 120, duration: "16h" },
-  { id: 8, from: "Trujillo", to: "Saposoa", price: 130, duration: "17h" },
-  { id: 9, from: "Trujillo", to: "Juanjí", price: 130, duration: "17h" },
-  { id: 10, from: "Trujillo", to: "Pucara", price: 70, duration: "10h" },
-  { id: 11, from: "Trujillo", to: "Chamaya", price: 70, duration: "10h" },
-  { id: 12, from: "Trujillo", to: "Jaen", price: 80, duration: "10h" },
-  { id: 13, from: "Trujillo", to: "Pedro Ruiz", price: 80, duration: "11h" },
-  { id: 14, from: "Trujillo", to: "Pomacochas", price: 80, duration: "13h" },
-  { id: 15, from: "Trujillo", to: "Aguas Verdes", price: 80, duration: "10h" },
-  { id: 16, from: "Trujillo", to: "Naranjos", price: 80, duration: "12h" },
-  { id: 17, from: "Trujillo", to: "Naranjillo", price: 80, duration: "12h" },
-  {
-    id: 18,
-    from: "Trujillo",
-    to: "Segunda Jerusalen",
+    to: "Nueva Cajamarca",
     price: 80,
     duration: "12h",
   },
-  { id: 19, from: "Trujillo", to: "Rioja", price: 90, duration: "10h" },
-  { id: 20, from: "Trujillo", to: "Tabalosos", price: 100, duration: "10h" },
-  { id: 21, from: "Trujillo", to: "Alianza", price: 120, duration: "10h" },
-  { id: 22, from: "Trujillo", to: "Yurimaguas", price: 130, duration: "10h" },
-  { id: 23, from: "Trujillo", to: "San Hilarion", price: 120, duration: "10h" },
-  { id: 24, from: "Trujillo", to: "Sacanche", price: 120, duration: "10h" },
-  { id: 25, from: "Trujillo", to: "Tocache", price: 200, duration: "10h" },
-  { id: 101, from: "Chiclayo", to: "Trujillo", price: 30, duration: "12h" },
-  { id: 102, from: "Bagua Grande", to: "Trujillo", price: 80, duration: "12h" },
-  { id: 103, from: "Nva Cajamarca", to: "Trujillo", price: 80, duration: "8h" },
-  { id: 104, from: "Moyobamba", to: "Trujillo", price: 90, duration: "12h" },
-  { id: 105, from: "Tarapoto", to: "Trujillo", price: 100, duration: "6h" },
-  { id: 106, from: "Picota", to: "Trujillo", price: 120, duration: "10h" },
-  { id: 107, from: "Bellavista", to: "Trujillo", price: 120, duration: "10h" },
-  { id: 108, from: "Saposoa", to: "Trujillo", price: 130, duration: "10h" },
-  { id: 109, from: "Juanjí", to: "Trujillo", price: 130, duration: "10h" },
-  { id: 110, from: "Pucara", to: "Trujillo", price: 70, duration: "10h" },
-  { id: 111, from: "Chamaya", to: "Trujillo", price: 70, duration: "10h" },
-  { id: 113, from: "Pedro Ruiz", to: "Trujillo", price: 80, duration: "10h" },
-  { id: 114, from: "Pomacochas", to: "Trujillo", price: 80, duration: "10h" },
-  { id: 115, from: "Aguas Verdes", to: "Trujillo", price: 80, duration: "10h" },
-  { id: 116, from: "Naranjos", to: "Trujillo", price: 80, duration: "10h" },
-  { id: 117, from: "Naranjillo", to: "Trujillo", price: 80, duration: "10h" },
+  { id: 11, from: "Trujillo", to: "Pedro Ruiz", price: 80, duration: "11h" },
+  { id: 12, from: "Trujillo", to: "Picota", price: 110, duration: "15h" },
+  { id: 13, from: "Trujillo", to: "Pomacochas", price: 80, duration: "12h" },
+  { id: 14, from: "Trujillo", to: "Rioja", price: 90, duration: "13h" },
+  { id: 15, from: "Trujillo", to: "Sacanche", price: 120, duration: "18h" },
+  { id: 16, from: "Trujillo", to: "San Hilarión", price: 120, duration: "16h" },
+  { id: 17, from: "Trujillo", to: "Saposoa", price: 120, duration: "17h" },
   {
-    id: 118,
-    from: "Segunda Jerusalen",
+    id: 18,
+    from: "Trujillo",
+    to: "Segunda Jerusalén",
+    price: 70,
+    duration: "12h",
+  },
+  { id: 19, from: "Trujillo", to: "Tabalosos", price: 100, duration: "14h" },
+  { id: 20, from: "Trujillo", to: "Tarapoto", price: 100, duration: "14h" },
+  { id: 21, from: "Trujillo", to: "Yurimaguas", price: 130, duration: "18h" },
+  { id: 22, from: "Trujillo", to: "Alianza", price: 100, duration: "15h" },
+  { id: 23, from: "Trujillo", to: "Pacanguilla", price: 20, duration: "2h" },
+  // Desde CHICLAYO
+  { id: 101, from: "Chiclayo", to: "Trujillo", price: 30, duration: "3h" },
+  { id: 102, from: "Chiclayo", to: "Bagua Grande", price: 30, duration: "6h" },
+  { id: 103, from: "Chiclayo", to: "Bellavista", price: 80, duration: "14h" },
+  { id: 104, from: "Chiclayo", to: "Chamaya", price: 25, duration: "4h" },
+  { id: 105, from: "Chiclayo", to: "Juanjuí", price: 90, duration: "15h" },
+  { id: 106, from: "Chiclayo", to: "Moyobamba", price: 50, duration: "11h" },
+  { id: 107, from: "Chiclayo", to: "Naranjillo", price: 50, duration: "11h" },
+  {
+    id: 108,
+    from: "Chiclayo",
+    to: "Nueva Cajamarca",
+    price: 50,
+    duration: "10h",
+  },
+  { id: 109, from: "Chiclayo", to: "Pedro Ruiz", price: 40, duration: "7h" },
+  { id: 110, from: "Chiclayo", to: "Picota", price: 80, duration: "14h" },
+  { id: 111, from: "Chiclayo", to: "Pomacochas", price: 40, duration: "8h" },
+  { id: 112, from: "Chiclayo", to: "Pucará", price: 30, duration: "4h" },
+  { id: 113, from: "Chiclayo", to: "Rioja", price: 60, duration: "11h" },
+  { id: 114, from: "Chiclayo", to: "Sacanche", price: 80, duration: "16h" },
+  { id: 115, from: "Chiclayo", to: "San Hilarión", price: 80, duration: "13h" },
+  {
+    id: 116,
+    from: "Chiclayo",
+    to: "Segunda Jerusalén",
+    price: 50,
+    duration: "10h",
+  },
+  { id: 117, from: "Chiclayo", to: "Tabalosos", price: 60, duration: "12h" },
+  { id: 118, from: "Chiclayo", to: "Tarapoto", price: 60, duration: "12h" },
+  { id: 119, from: "Chiclayo", to: "Yurimaguas", price: 90, duration: "16h" },
+  { id: 120, from: "Chiclayo", to: "Buenos Aires", price: 60, duration: "10h" },
+  { id: 121, from: "Chiclayo", to: "Naranjos", price: 50, duration: "10h" },
+  { id: 122, from: "Chiclayo", to: "Jaén", price: 30, duration: "5h" },
+  // Desde TARAPOTO
+  { id: 200, from: "Tarapoto", to: "Trujillo", price: 90, duration: "14h" },
+  { id: 201, from: "Tarapoto", to: "Chiclayo", price: 60, duration: "12h" },
+  { id: 202, from: "Tarapoto", to: "Bagua Grande", price: 50, duration: "6h" },
+  { id: 203, from: "Tarapoto", to: "Chepén", price: 80, duration: "13h" },
+  { id: 204, from: "Tarapoto", to: "Jaén", price: 60, duration: "7h" },
+  { id: 205, from: "Tarapoto", to: "Olmos", price: 60, duration: "12h" },
+  { id: 206, from: "Tarapoto", to: "Pacasmayo", price: 90, duration: "13h" },
+  { id: 207, from: "Tarapoto", to: "Paiján", price: 90, duration: "13h" },
+  { id: 208, from: "Tarapoto", to: "Pedro Ruiz", price: 50, duration: "4h" },
+  // Desde MOYOBAMBA
+  { id: 300, from: "Moyobamba", to: "Trujillo", price: 80, duration: "13h" },
+  { id: 301, from: "Moyobamba", to: "Chiclayo", price: 50, duration: "11h" },
+  { id: 302, from: "Moyobamba", to: "Bagua Grande", price: 50, duration: "5h" },
+  { id: 303, from: "Moyobamba", to: "Olmos", price: 50, duration: "10h" },
+  { id: 304, from: "Moyobamba", to: "Pacasmayo", price: 80, duration: "12h" },
+  { id: 305, from: "Moyobamba", to: "Paiján", price: 90, duration: "13h" },
+  // Desde JUANJUÍ
+  { id: 400, from: "Juanjuí", to: "Trujillo", price: 110, duration: "17h" },
+  { id: 401, from: "Juanjuí", to: "Chiclayo", price: 90, duration: "15h" },
+  { id: 402, from: "Juanjuí", to: "Bagua Grande", price: 60, duration: "8h" },
+  { id: 403, from: "Juanjuí", to: "Jaén", price: 70, duration: "9h" },
+  {
+    id: 404,
+    from: "Juanjuí",
+    to: "Nueva Cajamarca",
+    price: 40,
+    duration: "5h",
+  },
+  { id: 405, from: "Juanjuí", to: "Pacasmayo", price: 100, duration: "16h" },
+  // Desde NUEVA CAJAMARCA
+  {
+    id: 500,
+    from: "Nueva Cajamarca",
     to: "Trujillo",
     price: 80,
-    duration: "10h",
+    duration: "12h",
   },
-  { id: 119, from: "Rioja", to: "Trujillo", price: 90, duration: "10h" },
-  { id: 120, from: "Tabalosos", to: "Trujillo", price: 100, duration: "10h" },
-  { id: 121, from: "Alianza", to: "Trujillo", price: 120, duration: "10h" },
-  { id: 122, from: "Yurimaguas", to: "Trujillo", price: 130, duration: "10h" },
   {
-    id: 123,
-    from: "San Hilarion",
-    to: "Trujillo",
-    price: 120,
+    id: 501,
+    from: "Nueva Cajamarca",
+    to: "Chiclayo",
+    price: 50,
     duration: "10h",
   },
-  { id: 124, from: "Sacanche", to: "Trujillo", price: 120, duration: "10h" },
-  { id: 125, from: "Tocache", to: "Trujillo", price: 200, duration: "10h" },
+  {
+    id: 502,
+    from: "Nueva Cajamarca",
+    to: "Bagua Grande",
+    price: 40,
+    duration: "5h",
+  },
+  {
+    id: 503,
+    from: "Nueva Cajamarca",
+    to: "Chepén",
+    price: 70,
+    duration: "11h",
+  },
+  { id: 504, from: "Nueva Cajamarca", to: "Olmos", price: 50, duration: "9h" },
+  {
+    id: 505,
+    from: "Nueva Cajamarca",
+    to: "Pacanguilla",
+    price: 70,
+    duration: "11h",
+  },
+  {
+    id: 506,
+    from: "Nueva Cajamarca",
+    to: "Pacasmayo",
+    price: 80,
+    duration: "12h",
+  },
+  // Desde BELLAVISTA
+  { id: 600, from: "Bellavista", to: "Trujillo", price: 110, duration: "16h" },
+  { id: 601, from: "Bellavista", to: "Chiclayo", price: 80, duration: "14h" },
+  {
+    id: 602,
+    from: "Bellavista",
+    to: "Bagua Grande",
+    price: 60,
+    duration: "8h",
+  },
+  { id: 603, from: "Bellavista", to: "Chepén", price: 100, duration: "15h" },
+  { id: 604, from: "Bellavista", to: "Jaén", price: 70, duration: "10h" },
+  { id: 605, from: "Bellavista", to: "Pacasmayo", price: 100, duration: "15h" },
+  // Desde PICOTA
+  { id: 700, from: "Picota", to: "Trujillo", price: 120, duration: "15h" },
+  { id: 701, from: "Picota", to: "Chiclayo", price: 90, duration: "14h" },
+  { id: 702, from: "Picota", to: "Olmos", price: 90, duration: "13h" },
+  // Desde BAGUA GRANDE
+  { id: 800, from: "Bagua Grande", to: "Trujillo", price: 55, duration: "10h" },
+  { id: 801, from: "Bagua Grande", to: "Chiclayo", price: 30, duration: "6h" },
+  { id: 802, from: "Bagua Grande", to: "Tarapoto", price: 50, duration: "6h" },
+  { id: 803, from: "Bagua Grande", to: "Juanjuí", price: 60, duration: "8h" },
+  { id: 804, from: "Bagua Grande", to: "Moyobamba", price: 40, duration: "5h" },
+  { id: 805, from: "Bagua Grande", to: "Picota", price: 60, duration: "9h" },
+  {
+    id: 806,
+    from: "Bagua Grande",
+    to: "Bellavista",
+    price: 60,
+    duration: "9h",
+  },
+  // Desde CHAO
+  { id: 900, from: "Chao", to: "Bagua Grande", price: 90, duration: "10h" },
+  { id: 901, from: "Chao", to: "Moyobamba", price: 110, duration: "13h" },
+  { id: 902, from: "Chao", to: "Nueva Cajamarca", price: 100, duration: "12h" },
+  { id: 903, from: "Chao", to: "Tarapoto", price: 120, duration: "14h" },
+  { id: 904, from: "Chao", to: "Yurimaguas", price: 160, duration: "18h" },
+  { id: 905, from: "Chao", to: "Jaén", price: 90, duration: "9h" },
+  { id: 906, from: "Chao", to: "Pedro Ruiz", price: 90, duration: "11h" },
+  { id: 907, from: "Chao", to: "Naranjillo", price: 100, duration: "12h" },
+  { id: 908, from: "Chao", to: "Naranjos", price: 100, duration: "12h" },
+  // Desde VIRÚ
+  { id: 1000, from: "Virú", to: "Bagua Grande", price: 90, duration: "10h" },
+  { id: 1001, from: "Virú", to: "Moyobamba", price: 100, duration: "13h" },
+  {
+    id: 1002,
+    from: "Virú",
+    to: "Nueva Cajamarca",
+    price: 100,
+    duration: "12h",
+  },
+  { id: 1003, from: "Virú", to: "Tarapoto", price: 120, duration: "14h" },
+  { id: 1004, from: "Virú", to: "Yurimaguas", price: 150, duration: "18h" },
+  { id: 1005, from: "Virú", to: "Juanjuí", price: 150, duration: "17h" },
+  { id: 1006, from: "Virú", to: "Pomacochas", price: 90, duration: "12h" },
+  // Desde PACASMAYO
+  {
+    id: 1100,
+    from: "Pacasmayo",
+    to: "Bagua Grande",
+    price: 70,
+    duration: "8h",
+  },
+  { id: 1101, from: "Pacasmayo", to: "Moyobamba", price: 90, duration: "12h" },
+  { id: 1102, from: "Pacasmayo", to: "Tarapoto", price: 100, duration: "13h" },
+  {
+    id: 1103,
+    from: "Pacasmayo",
+    to: "Nueva Cajamarca",
+    price: 80,
+    duration: "11h",
+  },
+  {
+    id: 1104,
+    from: "Pacasmayo",
+    to: "Yurimaguas",
+    price: 130,
+    duration: "17h",
+  },
+  { id: 1105, from: "Pacasmayo", to: "Rioja", price: 90, duration: "12h" },
+  { id: 1106, from: "Pacasmayo", to: "Jaén", price: 70, duration: "8h" },
+  { id: 1107, from: "Pacasmayo", to: "Saposoa", price: 130, duration: "16h" },
+  // Desde PAIJÁN
+  { id: 1200, from: "Paiján", to: "Tarapoto", price: 90, duration: "13h" },
+  { id: 1201, from: "Paiján", to: "Moyobamba", price: 80, duration: "12h" },
+  {
+    id: 1202,
+    from: "Paiján",
+    to: "Nueva Cajamarca",
+    price: 80,
+    duration: "11h",
+  },
+  { id: 1203, from: "Paiján", to: "Bellavista", price: 110, duration: "16h" },
+  { id: 1204, from: "Paiján", to: "Juanjuí", price: 120, duration: "17h" },
+  // Desde PACANGUILLA
+  {
+    id: 1300,
+    from: "Pacanguilla",
+    to: "Moyobamba",
+    price: 70,
+    duration: "11h",
+  },
+  {
+    id: 1301,
+    from: "Pacanguilla",
+    to: "Nueva Cajamarca",
+    price: 70,
+    duration: "11h",
+  },
+  { id: 1302, from: "Pacanguilla", to: "Tarapoto", price: 85, duration: "12h" },
+  { id: 1303, from: "Pacanguilla", to: "Juanjuí", price: 100, duration: "16h" },
+  {
+    id: 1304,
+    from: "Pacanguilla",
+    to: "Bellavista",
+    price: 100,
+    duration: "15h",
+  },
+  {
+    id: 1305,
+    from: "Pacanguilla",
+    to: "Bagua Grande",
+    price: 50,
+    duration: "7h",
+  },
+  {
+    id: 1306,
+    from: "Pacanguilla",
+    to: "Pedro Ruiz",
+    price: 50,
+    duration: "8h",
+  },
+  {
+    id: 1307,
+    from: "Pacanguilla",
+    to: "Yurimaguas",
+    price: 120,
+    duration: "17h",
+  },
+  {
+    id: 1308,
+    from: "Pacanguilla",
+    to: "San Hilarión",
+    price: 90,
+    duration: "14h",
+  },
+  {
+    id: 1309,
+    from: "Pacanguilla",
+    to: "Naranjillo",
+    price: 60,
+    duration: "10h",
+  },
+  { id: 1310, from: "Pacanguilla", to: "Picota", price: 90, duration: "14h" },
+  // Desde OLMOS
+  { id: 1400, from: "Olmos", to: "Moyobamba", price: 70, duration: "11h" },
+  { id: 1401, from: "Olmos", to: "Juanjuí", price: 95, duration: "15h" },
+  { id: 1402, from: "Olmos", to: "Picota", price: 90, duration: "13h" },
+  { id: 1403, from: "Olmos", to: "Bellavista", price: 100, duration: "14h" },
+  {
+    id: 1404,
+    from: "Olmos",
+    to: "Nueva Cajamarca",
+    price: 60,
+    duration: "10h",
+  },
+  { id: 1405, from: "Olmos", to: "Naranjos", price: 60, duration: "10h" },
+  // Desde PEDRO RUIZ
+  { id: 1500, from: "Pedro Ruiz", to: "Trujillo", price: 70, duration: "11h" },
+  { id: 1501, from: "Pedro Ruiz", to: "Chiclayo", price: 40, duration: "7h" },
+  // Desde RIOJA
+  { id: 1600, from: "Rioja", to: "Trujillo", price: 80, duration: "13h" },
+  { id: 1601, from: "Rioja", to: "Chiclayo", price: 60, duration: "11h" },
+  // Desde YURIMAGUAS
+  { id: 1700, from: "Yurimaguas", to: "Trujillo", price: 120, duration: "18h" },
+  { id: 1701, from: "Yurimaguas", to: "Chiclayo", price: 100, duration: "16h" },
+  // Desde SEGUNDA JERUSALÉN
+  {
+    id: 1800,
+    from: "Segunda Jerusalén",
+    to: "Trujillo",
+    price: 80,
+    duration: "12h",
+  },
+  {
+    id: 1801,
+    from: "Segunda Jerusalén",
+    to: "Chiclayo",
+    price: 50,
+    duration: "10h",
+  },
+  // Desde SAN HILARIÓN
+  {
+    id: 1900,
+    from: "San Hilarión",
+    to: "Trujillo",
+    price: 105,
+    duration: "16h",
+  },
+  {
+    id: 1901,
+    from: "San Hilarión",
+    to: "Chiclayo",
+    price: 90,
+    duration: "13h",
+  },
+  { id: 1902, from: "San Hilarión", to: "Chepén", price: 90, duration: "14h" },
+  // Desde SACANCHE
+  { id: 2000, from: "Sacanche", to: "Trujillo", price: 120, duration: "18h" },
+  { id: 2001, from: "Sacanche", to: "Chiclayo", price: 100, duration: "16h" },
+  // Desde NARANJILLO
+  { id: 2100, from: "Naranjillo", to: "Trujillo", price: 80, duration: "12h" },
+  // Desde NARANJOS
+  { id: 2200, from: "Naranjos", to: "Trujillo", price: 80, duration: "12h" },
+  // Desde CHEPÉN
+  { id: 2300, from: "Chepén", to: "Moyobamba", price: 70, duration: "11h" },
+  { id: 2301, from: "Chepén", to: "Tarapoto", price: 85, duration: "13h" },
+  {
+    id: 2302,
+    from: "Chepén",
+    to: "Nueva Cajamarca",
+    price: 65,
+    duration: "11h",
+  },
+  { id: 2303, from: "Chepén", to: "Bellavista", price: 100, duration: "15h" },
+  { id: 2304, from: "Chepén", to: "Sacanche", price: 100, duration: "17h" },
+  { id: 2305, from: "Chepén", to: "Juanjuí", price: 100, duration: "16h" },
 ];
 
+// ── Ciudades disponibles (todas las que aparecen en rutas) ──
 const cities = [
   "Trujillo",
-  "Paijan",
-  "Pacasmayo",
-  "Ciudad de Dios",
-  "Guadalupe",
-  "Chepen",
-  "Pacanguilla",
   "Chiclayo",
-  "Illimo",
-  "Olmos",
-  "Bagua Grande",
-  "Pedro Ruiz",
-  "Naranjos",
-  "Naranjillo",
-  "Nueva Cajamarca",
-  "Segunda Jerusalen",
-  "Rioja",
-  "Moyobamba",
-  "Tabalosos",
   "Tarapoto",
-  "Picota",
-  "San Hilarion",
+  "Moyobamba",
+  "Juanjuí",
+  "Nueva Cajamarca",
   "Bellavista",
-  "Sacanche",
-  "Saposoa",
-  "Juanjui",
+  "Picota",
+  "Bagua Grande",
+  "Chao",
+  "Virú",
+  "Pacasmayo",
+  "Paiján",
+  "Pacanguilla",
+  "Olmos",
+  "Pedro Ruiz",
+  "Rioja",
   "Yurimaguas",
+  "Segunda Jerusalén",
+  "San Hilarión",
+  "Sacanche",
+  "Naranjillo",
+  "Naranjos",
+  "Chepén",
+  "Jaén",
+  "Pomacochas",
+  "Pucará",
+  "Chamaya",
+  "Alianza",
+  "Buenos Aires",
 ];
 
 const F = "'Poppins', sans-serif";
+
+// ── Horarios conocidos por ciudad de origen ────────────────────────────────
+const SCHEDULES: Record<
+  string,
+  { time: string; label: string; note?: string }[]
+> = {
+  Trujillo: [
+    { time: "12:00 PM", label: "Mediodía", note: "Salida principal" },
+    { time: "9:30 AM", label: "Mañana", note: "Disponible algunos días" },
+  ],
+  Chiclayo: [
+    { time: "12:00 PM", label: "Mediodía", note: "Salida principal" },
+    { time: "9:30 AM", label: "Mañana", note: "Disponible algunos días" },
+  ],
+  Tarapoto: [{ time: "12:00 PM", label: "Mediodía", note: "Salida principal" }],
+  Moyobamba: [
+    { time: "12:00 PM", label: "Mediodía", note: "Salida principal" },
+  ],
+  Juanjuí: [{ time: "12:00 PM", label: "Mediodía", note: "Salida principal" }],
+  "Nueva Cajamarca": [
+    { time: "12:00 PM", label: "Mediodía", note: "Salida principal" },
+  ],
+  Bellavista: [
+    { time: "12:00 PM", label: "Mediodía", note: "Salida principal" },
+  ],
+  Picota: [{ time: "12:00 PM", label: "Mediodía", note: "Salida principal" }],
+  "Bagua Grande": [
+    { time: "12:00 PM", label: "Mediodía", note: "Salida principal" },
+  ],
+  Chao: [{ time: "12:00 PM", label: "Mediodía", note: "Salida principal" }],
+  Virú: [{ time: "12:00 PM", label: "Mediodía", note: "Salida principal" }],
+  Pacasmayo: [
+    { time: "12:00 PM", label: "Mediodía", note: "Salida principal" },
+    { time: "9:30 AM", label: "Mañana", note: "Disponible algunos días" },
+  ],
+  Paiján: [{ time: "12:00 PM", label: "Mediodía", note: "Salida principal" }],
+  Pacanguilla: [
+    { time: "12:00 PM", label: "Mediodía", note: "Salida principal" },
+  ],
+  Olmos: [{ time: "12:00 PM", label: "Mediodía", note: "Salida principal" }],
+  Rioja: [{ time: "12:00 PM", label: "Mediodía", note: "Salida principal" }],
+  Yurimaguas: [
+    { time: "12:00 PM", label: "Mediodía", note: "Salida principal" },
+  ],
+  Chepén: [{ time: "12:00 PM", label: "Mediodía", note: "Salida principal" }],
+};
+
+// ── Componente: consulta de destino + horario ──────────────────────────────
+function CustomQueryCard({
+  origin,
+  destination,
+  F,
+}: {
+  origin: string;
+  destination: string;
+  F: string;
+}) {
+  const [customDest, setCustomDest] = useState(destination || "");
+  const [customOrigin, setCustomOrigin] = useState(origin || "");
+  const [activeTab, setActiveTab] = useState<"ruta" | "horario">("ruta");
+
+  // Horarios del origen seleccionado (custom o del buscador)
+  const scheduleOrigin = customOrigin.trim() || origin || "";
+  const schedules = SCHEDULES[scheduleOrigin] || null;
+
+  const buildRutaMsg = () => {
+    const from = customOrigin.trim() || origin || "mi ciudad";
+    const to = customDest.trim() || destination || "mi destino";
+    return encodeURIComponent(
+      `Hola! 👋 Quiero consultar si hay servicio de bus de *${from}* a *${to}*.\n¿Tienen esa ruta disponible? ¿Cuál es el precio y horario? 🚍`,
+    );
+  };
+
+  const buildHorarioMsg = () => {
+    const from = customOrigin.trim() || origin || "mi ciudad";
+    const to = customDest.trim() || destination || "mi destino";
+    return encodeURIComponent(
+      `Hola! 👋 Quiero consultar el *horario de salida* del bus de *${from}* a *${to}*.\n¿A qué hora sale el próximo bus disponible? 🕐🚍`,
+    );
+  };
+
+  const inputStyle: React.CSSProperties = {
+    width: "100%",
+    background: "rgba(255,255,255,.08)",
+    border: "1.5px solid rgba(255,255,255,.12)",
+    borderRadius: 8,
+    padding: "9px 12px",
+    fontFamily: F,
+    fontSize: 13,
+    fontWeight: 600,
+    color: "#fff",
+    outline: "none",
+    boxSizing: "border-box",
+  };
+
+  const labelStyle: React.CSSProperties = {
+    fontFamily: F,
+    fontSize: 9,
+    fontWeight: 700,
+    letterSpacing: ".1em",
+    textTransform: "uppercase",
+    color: "rgba(255,255,255,.4)",
+    display: "block",
+    marginBottom: 5,
+  };
+
+  return (
+    <div
+      style={{
+        background: "linear-gradient(135deg,#0d1117 0%,#0f2a1a 100%)",
+        borderRadius: 20,
+        overflow: "hidden",
+        border: "1px solid rgba(255,255,255,.07)",
+        position: "relative",
+      }}
+    >
+      {/* glow */}
+      <div
+        style={{
+          position: "absolute",
+          right: -40,
+          top: -40,
+          width: 200,
+          height: 200,
+          background: "rgba(26,140,60,.10)",
+          borderRadius: "50%",
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* ── Tabs ── */}
+      <div
+        style={{
+          display: "flex",
+          borderBottom: "1px solid rgba(255,255,255,.07)",
+        }}
+      >
+        {(["ruta", "horario"] as const).map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            style={{
+              flex: 1,
+              padding: "13px 16px",
+              background: "transparent",
+              border: "none",
+              borderBottom:
+                activeTab === tab
+                  ? "2px solid #4ade80"
+                  : "2px solid transparent",
+              cursor: "pointer",
+              fontFamily: F,
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: ".1em",
+              textTransform: "uppercase",
+              color: activeTab === tab ? "#4ade80" : "rgba(255,255,255,.35)",
+              transition: "color .2s",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 7,
+            }}
+          >
+            {tab === "ruta" ? (
+              <>
+                <FaCommentDots size={12} /> ¿Tu destino no está en la lista?
+              </>
+            ) : (
+              <>
+                <FaClock size={12} /> Consultar horario de salida
+              </>
+            )}
+          </button>
+        ))}
+      </div>
+
+      {/* ── Contenido ── */}
+      <div
+        style={{
+          padding: "28px 32px",
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 28,
+          alignItems: "flex-start",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        {/* Izquierda: descripción */}
+        <div style={{ flex: "1 1 240px" }}>
+          {activeTab === "ruta" ? (
+            <>
+              <div
+                style={{
+                  fontFamily: F,
+                  fontSize: 15,
+                  fontWeight: 700,
+                  color: "#fff",
+                  marginBottom: 8,
+                }}
+              >
+                Consúltanos por WhatsApp
+              </div>
+              <p
+                style={{
+                  fontFamily: F,
+                  fontSize: 12.5,
+                  color: "rgba(255,255,255,.5)",
+                  lineHeight: 1.7,
+                  margin: 0,
+                }}
+              >
+                Tenemos más de 300 rutas activas. Si tu ciudad no aparece,
+                escríbenos y te confirmamos disponibilidad, precio y horario en
+                minutos.
+              </p>
+            </>
+          ) : (
+            <>
+              <div
+                style={{
+                  fontFamily: F,
+                  fontSize: 15,
+                  fontWeight: 700,
+                  color: "#fff",
+                  marginBottom: 8,
+                }}
+              >
+                Horarios de salida
+              </div>
+              <p
+                style={{
+                  fontFamily: F,
+                  fontSize: 12.5,
+                  color: "rgba(255,255,255,.5)",
+                  lineHeight: 1.7,
+                  marginTop: 0,
+                  marginLeft: 0,
+                  marginRight: 0,
+                  marginBottom: 16,
+                }}
+              >
+                La mayoría de buses salen al{" "}
+                <strong style={{ color: "#f5c518" }}>
+                  mediodía (12:00 PM)
+                </strong>
+                . En algunas rutas y fechas también hay salida a las{" "}
+                <strong style={{ color: "#f5c518" }}>9:30 AM</strong>.
+              </p>
+
+              {/* Chips de horario según origen */}
+              {schedules ? (
+                <div
+                  style={{ display: "flex", flexDirection: "column", gap: 8 }}
+                >
+                  {schedules.map((s, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 12,
+                        background:
+                          i === 0
+                            ? "rgba(245,197,24,.10)"
+                            : "rgba(255,255,255,.05)",
+                        border: `1px solid ${i === 0 ? "rgba(245,197,24,.3)" : "rgba(255,255,255,.08)"}`,
+                        borderRadius: 10,
+                        padding: "10px 14px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 34,
+                          height: 34,
+                          borderRadius: 8,
+                          background:
+                            i === 0
+                              ? "rgba(245,197,24,.15)"
+                              : "rgba(255,255,255,.06)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                        }}
+                      >
+                        <FaClock
+                          size={15}
+                          color={i === 0 ? "#f5c518" : "rgba(255,255,255,.4)"}
+                        />
+                      </div>
+                      <div>
+                        <div
+                          style={{
+                            fontFamily: F,
+                            fontSize: 16,
+                            fontWeight: 800,
+                            color: i === 0 ? "#f5c518" : "#fff",
+                            lineHeight: 1,
+                          }}
+                        >
+                          {s.time}
+                        </div>
+                        <div
+                          style={{
+                            fontFamily: F,
+                            fontSize: 10,
+                            color: "rgba(255,255,255,.4)",
+                            marginTop: 2,
+                          }}
+                        >
+                          {s.label} · {s.note}
+                        </div>
+                      </div>
+                      {i === 0 && (
+                        <div
+                          style={{
+                            marginLeft: "auto",
+                            background: "#f5c518",
+                            color: "#0d1117",
+                            fontSize: 9,
+                            fontWeight: 800,
+                            letterSpacing: ".1em",
+                            padding: "3px 8px",
+                            borderRadius: 6,
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          Principal
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div
+                  style={{
+                    background: "rgba(255,255,255,.04)",
+                    border: "1px solid rgba(255,255,255,.08)",
+                    borderRadius: 10,
+                    padding: "12px 16px",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: F,
+                      fontSize: 12,
+                      color: "rgba(255,255,255,.4)",
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    {scheduleOrigin
+                      ? `No tenemos el horario exacto de ${scheduleOrigin} en este momento.`
+                      : "Selecciona una ciudad de origen para ver sus horarios."}
+                    <br />
+                    Consúltanos por WhatsApp para horarios actualizados.
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+
+        {/* Derecha: formulario + botón */}
+        <div
+          style={{
+            flex: "1 1 280px",
+            display: "flex",
+            flexDirection: "column",
+            gap: 10,
+          }}
+        >
+          <div style={{ display: "flex", gap: 10 }}>
+            <div style={{ flex: 1 }}>
+              <label style={labelStyle}>Desde</label>
+              <input
+                style={inputStyle}
+                placeholder={origin || "Ej. Trujillo"}
+                value={customOrigin}
+                onChange={(e) => setCustomOrigin(e.target.value)}
+                onFocus={(e) => {
+                  (e.target as HTMLInputElement).style.borderColor = "#4ade80";
+                }}
+                onBlur={(e) => {
+                  (e.target as HTMLInputElement).style.borderColor =
+                    "rgba(255,255,255,.12)";
+                }}
+              />
+            </div>
+            <div style={{ flex: 1 }}>
+              <label style={labelStyle}>Hasta</label>
+              <input
+                style={inputStyle}
+                placeholder={destination || "Ej. Tocache"}
+                value={customDest}
+                onChange={(e) => setCustomDest(e.target.value)}
+                onFocus={(e) => {
+                  (e.target as HTMLInputElement).style.borderColor = "#4ade80";
+                }}
+                onBlur={(e) => {
+                  (e.target as HTMLInputElement).style.borderColor =
+                    "rgba(255,255,255,.12)";
+                }}
+              />
+            </div>
+          </div>
+
+          <a
+            href={`https://wa.me/51966198771?text=${activeTab === "ruta" ? buildRutaMsg() : buildHorarioMsg()}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+              background: "linear-gradient(135deg,#25D366,#128C7E)",
+              color: "#fff",
+              borderRadius: 10,
+              padding: "12px 20px",
+              fontFamily: F,
+              fontSize: 12.5,
+              fontWeight: 700,
+              letterSpacing: ".04em",
+              textDecoration: "none",
+              boxShadow: "0 4px 16px rgba(37,211,102,.35)",
+              transition: "opacity .2s",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.opacity = ".88";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.opacity = "1";
+            }}
+          >
+            <FaWhatsapp size={15} />
+            {activeTab === "ruta"
+              ? "Consultar esta ruta por WhatsApp"
+              : "Consultar horario por WhatsApp"}
+          </a>
+
+          {activeTab === "horario" && (
+            <p
+              style={{
+                fontFamily: F,
+                fontSize: 11,
+                color: "rgba(255,255,255,.3)",
+                textAlign: "center",
+                margin: 0,
+                lineHeight: 1.5,
+              }}
+            >
+              ⚠️ Los horarios pueden variar según disponibilidad y fecha.
+              Confirma siempre por WhatsApp antes de presentarte.
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function BusTransportPage() {
   const [origin, setOrigin] = useState("");
@@ -156,16 +930,6 @@ export default function BusTransportPage() {
   const [searched, setSearched] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState<number | null>(null);
   const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    supabase
-      .from("agencias")
-      .select("*")
-      .then(({ data, error }) => {
-        console.log("✅ Conexión exitosa:", data);
-        console.log("❌ Error:", error);
-      });
-  }, []);
 
   useEffect(() => {
     const interval = setInterval(
@@ -236,6 +1000,8 @@ export default function BusTransportPage() {
 
         .feat-icon{width:48px;height:48px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;}
         .feat-card{border-radius:14px;padding:24px;display:flex;gap:16px;align-items:flex-start;transition:transform .2s,box-shadow .2s;}
+
+        .no-results-wrap{text-align:center;padding:80px 20px;}
 
         @media(max-width:768px){
           .hero-content{padding:60px 20px 100px!important;}
@@ -325,7 +1091,6 @@ export default function BusTransportPage() {
           }}
         >
           <div className="animate-up" style={{ maxWidth: 880 }}>
-            {/* Pill */}
             <div
               style={{
                 display: "inline-flex",
@@ -358,7 +1123,6 @@ export default function BusTransportPage() {
               Servicio Nacional
             </div>
 
-            {/* H1 */}
             <h1
               className="hero-title"
               style={{
@@ -376,7 +1140,6 @@ export default function BusTransportPage() {
               ruta nor oriental
               <br />
               <span style={{ fontStyle: "italic", color: "#f5c518" }}>
-                {" "}
                 del Perú
               </span>
               <br />
@@ -436,7 +1199,6 @@ export default function BusTransportPage() {
 
             {/* ── Search card ── */}
             <div className="search-card" id="search-section">
-              {/* Header de la card — solo ícono + texto, sin radio buttons */}
               <div
                 style={{
                   display: "flex",
@@ -458,9 +1220,7 @@ export default function BusTransportPage() {
                 </span>
               </div>
 
-              {/* Campos: Origen | Destino | Fecha | Buscar */}
               <div className="search-fields-row">
-                {/* Origen */}
                 <div className="search-field">
                   <label>Origen</label>
                   <div
@@ -488,7 +1248,6 @@ export default function BusTransportPage() {
 
                 <div className="field-divider" />
 
-                {/* Destino */}
                 <div className="search-field">
                   <label>Destino</label>
                   <div
@@ -516,7 +1275,6 @@ export default function BusTransportPage() {
 
                 <div className="field-divider" />
 
-                {/* Fecha de ida */}
                 <div className="search-field">
                   <label>Ida</label>
                   <div
@@ -538,7 +1296,6 @@ export default function BusTransportPage() {
 
                 <div className="field-divider" />
 
-                {/* Botón Buscar */}
                 <div
                   style={{
                     padding: "10px 14px",
@@ -571,7 +1328,7 @@ export default function BusTransportPage() {
               }}
             >
               {[
-                { value: "35+", label: "Oficinas", color: "#4ade80" },
+                { value: "35+", label: "Agencias", color: "#4ade80" },
                 { value: "4200", label: "Pasajeros / mes", color: "#fbbf24" },
                 { value: "98%", label: "Puntualidad", color: "#60a5fa" },
               ].map((s, i) => (
@@ -701,7 +1458,7 @@ export default function BusTransportPage() {
           </div>
 
           {filteredRoutes.length === 0 ? (
-            <div style={{ textAlign: "center", padding: "80px 0" }}>
+            <div className="no-results-wrap">
               <div style={{ fontSize: 48, marginBottom: 16 }}>🔍</div>
               <p
                 style={{
@@ -709,6 +1466,7 @@ export default function BusTransportPage() {
                   fontSize: 16,
                   fontWeight: 600,
                   color: "rgba(0,0,0,.5)",
+                  marginBottom: 6,
                 }}
               >
                 No se encontraron rutas
@@ -718,12 +1476,17 @@ export default function BusTransportPage() {
                   fontFamily: F,
                   fontSize: 13,
                   color: "rgba(0,0,0,.35)",
-                  marginTop: 6,
+                  marginBottom: 28,
                   fontWeight: 400,
                 }}
               >
-                Intenta con otro origen o destino
+                Pero podemos consultar tu destino directamente
               </p>
+              <CustomQueryCard
+                origin={origin}
+                destination={destination}
+                F={F}
+              />
             </div>
           ) : (
             <div
@@ -748,52 +1511,62 @@ export default function BusTransportPage() {
                     )
                   }
                 >
+                  {/* Price badge top-right */}
                   <div
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "flex-start",
-                      marginBottom: 14,
+                      marginBottom: 10,
+                      gap: 8,
                     }}
                   >
-                    <div>
+                    <div style={{ minWidth: 0, flex: 1 }}>
                       <div
                         style={{
                           fontFamily: F,
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 8,
-                          fontSize: 14.5,
+                          fontSize: 14,
                           fontWeight: 700,
                           color: "#111",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
                         }}
                       >
-                        <span>{route.from}</span>
-                        <span style={{ color: "#d4a017", fontSize: 13 }}>
-                          →
-                        </span>
-                        <span>{route.to}</span>
+                        {route.from} <span style={{ color: "#d4a017" }}>→</span>{" "}
+                        {route.to}
                       </div>
                       <div
                         style={{
                           fontFamily: F,
-                          fontSize: 12,
+                          fontSize: 11.5,
                           color: "rgba(0,0,0,.4)",
                           marginTop: 3,
                           fontWeight: 400,
                         }}
                       >
-                        Duración: {route.duration}
+                        Duración aprox.: {route.duration}
                       </div>
                     </div>
-                    <div style={{ textAlign: "right" }}>
+                    <div
+                      style={{
+                        flexShrink: 0,
+                        background: "#f0fdf4",
+                        border: "1.5px solid #86efac",
+                        borderRadius: 10,
+                        padding: "6px 12px",
+                        textAlign: "center",
+                      }}
+                    >
                       <div
                         style={{
                           fontFamily: F,
-                          fontSize: 22,
+                          fontSize: 18,
                           fontWeight: 800,
                           color: "#1a8c3c",
+                          lineHeight: 1.1,
                           letterSpacing: "-0.02em",
+                          whiteSpace: "nowrap",
                         }}
                       >
                         S/ {route.price}
@@ -801,12 +1574,15 @@ export default function BusTransportPage() {
                       <div
                         style={{
                           fontFamily: F,
-                          fontSize: 11,
-                          color: "rgba(0,0,0,.4)",
-                          fontWeight: 400,
+                          fontSize: 9,
+                          color: "#166534",
+                          fontWeight: 600,
+                          textTransform: "uppercase",
+                          letterSpacing: ".06em",
+                          marginTop: 1,
                         }}
                       >
-                        por persona
+                        c/persona
                       </div>
                     </div>
                   </div>
@@ -822,31 +1598,41 @@ export default function BusTransportPage() {
                   {selectedRoute === route.id && (
                     <div
                       style={{
-                        marginTop: 16,
+                        marginTop: 14,
                         paddingTop: 14,
                         borderTop: "1.5px solid #bbf7d0",
                       }}
                     >
-                      <button
+                      <a
+                        href={`https://wa.me/51966198771?text=Hola!%20Quiero%20reservar%20un%20pasaje%20de%20${encodeURIComponent(route.from)}%20a%20${encodeURIComponent(route.to)}%20por%20S/%20${route.price}%20%F0%9F%9A%8D`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="btn-primary"
                         style={{
                           width: "100%",
                           justifyContent: "center",
                           display: "flex",
-                        }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          alert(
-                            `¡Reserva iniciada para ${route.from} → ${route.to}!`,
-                          );
+                          textDecoration: "none",
+                          gap: 8,
                         }}
                       >
-                        Reservar ahora — S/ {route.price}
-                      </button>
+                        <FaWhatsapp size={14} /> Reservar — S/ {route.price}
+                      </a>
                     </div>
                   )}
                 </div>
               ))}
+            </div>
+          )}
+
+          {/* ── Banner: destino no encontrado ── */}
+          {filteredRoutes.length > 0 && (
+            <div style={{ marginTop: 32 }}>
+              <CustomQueryCard
+                origin={origin}
+                destination={destination}
+                F={F}
+              />
             </div>
           )}
         </section>
