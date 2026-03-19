@@ -17,6 +17,7 @@ import {
   FaUsers,
   FaPaperPlane,
   FaExchangeAlt,
+  FaBox,
 } from "react-icons/fa";
 
 // ── Precios reales extraídos de manifiestos (Febrero–Marzo 2026) ─────────────
@@ -484,6 +485,8 @@ export default function ContactanosPage() {
   const [dni, setDni] = useState("");
   const [fecha, setFecha] = useState("");
   const [pasajeros, setPasajeros] = useState("1");
+  const [encomienda, setEncomienda] = useState<"no" | "si">("no");
+  const [descEncomienda, setDescEncomienda] = useState("");
   const [formStep, setFormStep] = useState<"dest" | "data">("dest");
 
   const availableDests = cities.filter((c) => c !== origin);
@@ -528,6 +531,7 @@ export default function ContactanosPage() {
       `📅 *Fecha de viaje:* ${fecha}`,
       `👥 *Pasajeros:* ${pasajeros}`,
       `💰 *Precio estimado:* S/ ${totalPrice} (${pasajeros} × S/ ${routePrice})`,
+      `📦 *Encomienda:* ${encomienda === "si" ? `Sí${descEncomienda.trim() ? ` — ${descEncomienda.trim()}` : ""}` : "No"}`,
       ``,
       `Por favor confirmarme disponibilidad y horarios. ¡Gracias! 😊`,
     ];
@@ -1517,6 +1521,99 @@ export default function ContactanosPage() {
                           />
                         </div>
                       </div>
+
+                      {/* ── ENCOMIENDA ── */}
+                      <div style={{ gridColumn: "1/-1" }}>
+                        <label
+                          style={{
+                            fontFamily: "'Inter',sans-serif",
+                            fontSize: 11,
+                            fontWeight: 700,
+                            letterSpacing: ".08em",
+                            textTransform: "uppercase",
+                            color: "rgba(0,0,0,.45)",
+                            display: "block",
+                            marginBottom: 8,
+                          }}
+                        >
+                          📦 ¿Lleva encomienda?
+                        </label>
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: 10,
+                            marginBottom: encomienda === "si" ? 10 : 0,
+                          }}
+                        >
+                          {(["no", "si"] as const).map((val) => (
+                            <button
+                              key={val}
+                              type="button"
+                              onClick={() => {
+                                setEncomienda(val);
+                                if (val === "no") setDescEncomienda("");
+                              }}
+                              style={{
+                                flex: 1,
+                                padding: "11px",
+                                border: "1.5px solid",
+                                borderColor:
+                                  encomienda === val
+                                    ? val === "si"
+                                      ? "#1a8c3c"
+                                      : "#e53e3e"
+                                    : "#e5e7eb",
+                                borderRadius: 10,
+                                fontFamily: "'Inter',sans-serif",
+                                fontSize: 13,
+                                fontWeight: 700,
+                                cursor: "pointer",
+                                background:
+                                  encomienda === val
+                                    ? val === "si"
+                                      ? "#f0fdf4"
+                                      : "#fff5f5"
+                                    : "#fafafa",
+                                color:
+                                  encomienda === val
+                                    ? val === "si"
+                                      ? "#166534"
+                                      : "#c53030"
+                                    : "rgba(0,0,0,.4)",
+                                transition: "all .15s",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                gap: 6,
+                              }}
+                            >
+                              {val === "si" ? "✅ Sí" : "❌ No"}
+                            </button>
+                          ))}
+                        </div>
+                        {encomienda === "si" && (
+                          <div style={{ position: "relative" }}>
+                            <div
+                              style={{
+                                position: "absolute",
+                                left: 12,
+                                top: "50%",
+                                transform: "translateY(-50%)",
+                              }}
+                            >
+                              <FaBox size={12} color="#aaa" />
+                            </div>
+                            <input
+                              className="form-input"
+                              placeholder="¿Qué desea enviar? Ej: ropa, documentos, alimentos..."
+                              value={descEncomienda}
+                              onChange={(e) =>
+                                setDescEncomienda(e.target.value)
+                              }
+                            />
+                          </div>
+                        )}
+                      </div>
                     </div>
 
                     <div
@@ -1680,6 +1777,19 @@ export default function ContactanosPage() {
                       <span style={{ color: "#aaa", fontStyle: "italic" }}>
                         —
                       </span>
+                    )}
+                  </div>
+                  <div>
+                    📦 <strong>Encomienda:</strong>{" "}
+                    {encomienda === "si" ? (
+                      <span style={{ color: "#166534" }}>
+                        Sí
+                        {descEncomienda.trim()
+                          ? ` — ${descEncomienda.trim()}`
+                          : ""}
+                      </span>
+                    ) : (
+                      <span style={{ color: "#c53030" }}>No</span>
                     )}
                   </div>
                   <div style={{ marginTop: 8, color: "#555" }}>
