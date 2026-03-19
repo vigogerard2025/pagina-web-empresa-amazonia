@@ -19,62 +19,454 @@ import {
   FaExchangeAlt,
 } from "react-icons/fa";
 
-// ── Precios base desde Trujillo (lógica de proximidad) ───────────────────────
+// ── Precios reales extraídos de manifiestos (Febrero–Marzo 2026) ─────────────
 const CITY_PRICES: Record<string, number> = {
+  // La Libertad
   Trujillo: 0,
+  Chao: 20,
+  Viru: 25,
+  Paijan: 15,
+  Pacasmayo: 20,
+  Chepen: 30,
+  Pacanguilla: 20,
+  "Ciudad De Dios": 35,
+  Chimbote: 40,
+  // Lambayeque
   Chiclayo: 30,
-  Pucara: 70,
-  Chamaya: 70,
-  Jaen: 80,
+  Olmos: 60,
+  Motupe: 60,
+  Jayanca: 60,
+  Lambayeque: 50,
+  Illimo: 55,
+  Hualapampa: 60,
+  // Amazonas
+  Chamaya: 60,
+  Pucara: 60,
+  "Las Juntas": 60,
+  Jaen: 70,
   Bagua: 80,
   "Pedro Ruiz": 80,
   Pomacochas: 80,
-  "Aguas Verdes": 80,
+  "Buenos Aires": 80,
+  "Aguas Verdes": 100,
+  // San Martín
   Naranjos: 80,
   Naranjillo: 80,
   "Nueva Cajamarca": 80,
-  "Segunda Jerusalen": 80,
+  "Segunda Jerusalen": 70,
   Rioja: 90,
+  Calzada: 90,
   Moyobamba: 90,
   Tabalosos: 100,
   Tarapoto: 100,
-  Alianza: 120,
-  Yurimaguas: 130,
-  Picota: 120,
+  Alianza: 100,
+  Picota: 110,
   "San Hilarion": 120,
   Bellavista: 120,
   Sacanche: 120,
-  Saposoa: 130,
+  Saposoa: 120,
   Juanjui: 130,
-  Tocache: 200,
-  // Agencias adicionales
-  Chimbote: 40,
-  Paijan: 15,
-  Pacasmayo: 20,
+  "Pampa Hermosa": 130,
+  Yurimaguas: 130,
+  // Rutas especiales
+  "Km.81": 60,
+  Progreso: 70,
+  Pacayzapa: 90,
+  Chiple: 60,
+};
+
+// ── Precios directos por ruta (origen → destino) desde los manifiestos ───────
+const DIRECT_PRICES: Record<string, Record<string, number>> = {
+  Trujillo: {
+    Chao: 20,
+    Viru: 25,
+    Paijan: 15,
+    Pacasmayo: 20,
+    Chepen: 30,
+    Pacanguilla: 20,
+    "Ciudad De Dios": 35,
+    Chiclayo: 30,
+    Bagua: 80,
+    Bellavista: 120,
+    Chamaya: 60,
+    Jaen: 70,
+    Juanjui: 130,
+    Moyobamba: 90,
+    Naranjillo: 80,
+    Naranjos: 80,
+    "Nueva Cajamarca": 80,
+    Olmos: 60,
+    "Pedro Ruiz": 80,
+    Picota: 110,
+    Pomacochas: 80,
+    Rioja: 90,
+    Sacanche: 120,
+    "San Hilarion": 120,
+    Saposoa: 120,
+    "Segunda Jerusalen": 70,
+    Tabalosos: 100,
+    Tarapoto: 100,
+    Yurimaguas: 130,
+    Alianza: 100,
+    "Km.81": 60,
+    Pacayzapa: 90,
+    "Pampa Hermosa": 130,
+  },
+  Chao: {
+    Bagua: 90,
+    Bellavista: 140,
+    Chamaya: 90,
+    Chiclayo: 50,
+    Jaen: 90,
+    Juanjui: 150,
+    Moyobamba: 110,
+    Naranjillo: 100,
+    Naranjos: 100,
+    "Nueva Cajamarca": 100,
+    "Pedro Ruiz": 90,
+    Picota: 140,
+    Pomacochas: 90,
+    Rioja: 110,
+    Saposoa: 150,
+    Tabalosos: 120,
+    Tarapoto: 120,
+    Yurimaguas: 160,
+    "Pampa Hermosa": 150,
+    "Aguas Verdes": 100,
+  },
+  Viru: {
+    Bagua: 90,
+    Chiclayo: 50,
+    Juanjui: 150,
+    Moyobamba: 100,
+    "Nueva Cajamarca": 100,
+    Olmos: 80,
+    Pomacochas: 90,
+    Sacanche: 140,
+    "Segunda Jerusalen": 100,
+    Tarapoto: 120,
+    Yurimaguas: 150,
+    Naranjos: 100,
+  },
+  Paijan: {
+    Bellavista: 110,
+    Juanjui: 120,
+    Moyobamba: 80,
+    "Nueva Cajamarca": 80,
+    Rioja: 80,
+    Tarapoto: 90,
+  },
+  Pacasmayo: {
+    Bagua: 70,
+    Jaen: 70,
+    Juanjui: 130,
+    Moyobamba: 90,
+    Naranjos: 80,
+    "Nueva Cajamarca": 80,
+    Rioja: 90,
+    Saposoa: 130,
+    Tarapoto: 100,
+    Yurimaguas: 130,
+  },
+  Chepen: {
+    Bellavista: 100,
+    Juanjui: 100,
+    Moyobamba: 70,
+    Naranjillo: 70,
+    Naranjos: 60,
+    "Nueva Cajamarca": 65,
+    Rioja: 70,
+    Sacanche: 100,
+    "Segunda Jerusalen": 70,
+    Tarapoto: 85,
+  },
+  Pacanguilla: {
+    Bagua: 50,
+    Bellavista: 100,
+    Chamaya: 50,
+    Juanjui: 100,
+    Moyobamba: 70,
+    Naranjillo: 60,
+    Naranjos: 60,
+    "Nueva Cajamarca": 70,
+    Picota: 90,
+    Pomacochas: 60,
+    "Pedro Ruiz": 50,
+    Progreso: 70,
+    Rioja: 70,
+    "San Hilarion": 90,
+    Tarapoto: 85,
+    Yurimaguas: 120,
+    Pacayzapa: 75,
+  },
+  Chiclayo: {
+    Bagua: 30,
+    Bellavista: 80,
+    "Buenos Aires": 60,
+    Chamaya: 25,
+    Chiple: 30,
+    Hualapampa: 25,
+    Juanjui: 90,
+    Jaen: 40,
+    "Las Juntas": 30,
+    Moyobamba: 50,
+    Naranjillo: 50,
+    Naranjos: 50,
+    "Nueva Cajamarca": 50,
+    "Pedro Ruiz": 40,
+    Picota: 80,
+    Pomacochas: 40,
+    Pucara: 30,
+    Rioja: 60,
+    Sacanche: 80,
+    "San Hilarion": 80,
+    "Segunda Jerusalen": 50,
+    Tabalosos: 60,
+    Tarapoto: 60,
+    Yurimaguas: 90,
+    "Aguas Verdes": 50,
+    Progreso: 50,
+  },
+  Olmos: {
+    Bellavista: 100,
+    Juanjui: 95,
+    Moyobamba: 70,
+    Naranjos: 60,
+    "Nueva Cajamarca": 60,
+    Picota: 90,
+    Tarapoto: 80,
+  },
+  Bagua: {
+    Bellavista: 60,
+    Chepen: 50,
+    Chiclayo: 30,
+    Juanjui: 60,
+    Moyobamba: 40,
+    Naranjillo: 40,
+    "Nueva Cajamarca": 40,
+    Olmos: 30,
+    Picota: 60,
+    Rioja: 40,
+    Sacanche: 60,
+    "San Hilarion": 60,
+    Tarapoto: 50,
+    Trujillo: 55,
+  },
+  "Pedro Ruiz": {
+    Chepen: 40,
+    Chiclayo: 40,
+    Motupe: 40,
+    Pacanguilla: 60,
+    Trujillo: 70,
+  },
+  Moyobamba: {
+    Bagua: 50,
+    Chao: 110,
+    Chepen: 80,
+    Chiclayo: 50,
+    Chiple: 50,
+    "Ciudad De Dios": 80,
+    Hualapampa: 50,
+    Jayanca: 50,
+    Lambayeque: 50,
+    Motupe: 50,
+    Olmos: 50,
+    Pacanguilla: 80,
+    Pacasmayo: 80,
+    Paijan: 90,
+    "Pedro Ruiz": 30,
+    Pucara: 50,
+    Trujillo: 80,
+  },
+  "Nueva Cajamarca": {
+    Bagua: 40,
+    Chao: 110,
+    Chepen: 70,
+    Chiclayo: 50,
+    Chiple: 50,
+    "Ciudad De Dios": 80,
+    Hualapampa: 50,
+    Lambayeque: 50,
+    Motupe: 50,
+    Olmos: 50,
+    Pacanguilla: 70,
+    Pacasmayo: 80,
+    Pucara: 50,
+    Trujillo: 80,
+  },
+  Rioja: {
+    Chao: 110,
+    Chepen: 70,
+    Chiclayo: 60,
+    "Ciudad De Dios": 80,
+    Pacanguilla: 70,
+    Trujillo: 80,
+  },
+  Tarapoto: {
+    Bagua: 50,
+    Chamaya: 50,
+    Chao: 120,
+    Chepen: 80,
+    Chiclayo: 60,
+    Chimbote: 130,
+    "Ciudad De Dios": 80,
+    Hualapampa: 60,
+    Jaen: 60,
+    Jayanca: 70,
+    Lambayeque: 60,
+    Motupe: 60,
+    Olmos: 60,
+    Pacanguilla: 80,
+    Pacasmayo: 90,
+    Paijan: 90,
+    "Pedro Ruiz": 50,
+    Pomacochas: 45,
+    Pucara: 60,
+    Trujillo: 90,
+  },
+  Juanjui: {
+    Bagua: 60,
+    Chepen: 100,
+    Chiclayo: 90,
+    Chimbote: 150,
+    Chiple: 70,
+    "Ciudad De Dios": 110,
+    Hualapampa: 70,
+    Illimo: 90,
+    Jaen: 70,
+    Jayanca: 90,
+    Lambayeque: 90,
+    Motupe: 90,
+    Naranjos: 40,
+    "Nueva Cajamarca": 40,
+    Olmos: 90,
+    Pacasmayo: 100,
+    "Pedro Ruiz": 60,
+    Pucara: 70,
+    Trujillo: 110,
+  },
+  Bellavista: {
+    Bagua: 60,
+    Chepen: 100,
+    Chiclayo: 80,
+    Chiple: 80,
+    "Ciudad De Dios": 100,
+    Hualapampa: 80,
+    Jaen: 70,
+    Jayanca: 80,
+    Motupe: 80,
+    Olmos: 90,
+    Pacanguilla: 90,
+    Pacasmayo: 100,
+    "Pedro Ruiz": 60,
+    Pucara: 70,
+    "Segunda Jerusalen": 40,
+    Trujillo: 110,
+  },
+  Picota: {
+    Bagua: 60,
+    Chepen: 110,
+    Chiclayo: 90,
+    Hualapampa: 80,
+    Jaen: 80,
+    "Las Juntas": 80,
+    Motupe: 90,
+    Olmos: 90,
+    Pacanguilla: 100,
+    Pucara: 80,
+    Trujillo: 120,
+  },
+  "San Hilarion": {
+    Bagua: 60,
+    Chepen: 90,
+    Chiclayo: 90,
+    "Ciudad De Dios": 100,
+    Motupe: 90,
+    Trujillo: 105,
+  },
+  Sacanche: {
+    Bagua: 70,
+    Chao: 140,
+    Chiclayo: 100,
+    Trujillo: 120,
+  },
+  Saposoa: {
+    Bagua: 80,
+    Chiclayo: 100,
+    Chimbote: 150,
+    Jaen: 90,
+    Moyobamba: 50,
+    Trujillo: 120,
+  },
+  "Segunda Jerusalen": {
+    Chao: 110,
+    Chepen: 80,
+    "Ciudad De Dios": 80,
+    Hualapampa: 60,
+    Olmos: 60,
+    Paijan: 80,
+    Trujillo: 80,
+  },
+  Tabalosos: {
+    Chiclayo: 70,
+    "Ciudad De Dios": 80,
+    Trujillo: 90,
+  },
+  Yurimaguas: {
+    Bagua: 80,
+    Chao: 150,
+    Chiclayo: 100,
+    Olmos: 100,
+    Trujillo: 120,
+  },
+  Naranjillo: {
+    Chao: 100,
+    Pacanguilla: 80,
+    Trujillo: 80,
+  },
+  Naranjos: {
+    Chiclayo: 60,
+    Trujillo: 80,
+  },
+  "Buenos Aires": {
+    Chiclayo: 60,
+    Trujillo: 80,
+  },
 };
 
 // Ciudades CON AGENCIA OFICIAL (sólo estas pueden ser origen)
 const OFFICE_CITIES = [
   "Trujillo",
   "Chimbote",
+  "Chao",
+  "Viru",
   "Paijan",
   "Pacasmayo",
+  "Chepen",
+  "Pacanguilla",
+  "Ciudad De Dios",
   "Chiclayo",
+  "Olmos",
   "Bagua",
   "Pedro Ruiz",
   "Nueva Cajamarca",
   "Rioja",
   "Moyobamba",
+  "Tabalosos",
   "Tarapoto",
   "San Hilarion",
   "Bellavista",
   "Sacanche",
+  "Saposoa",
   "Juanjui",
+  "Yurimaguas",
 ];
 
 const cities = Object.keys(CITY_PRICES);
 
 function calcPrice(from: string, to: string): number {
+  if (DIRECT_PRICES[from]?.[to]) return DIRECT_PRICES[from][to];
+  if (DIRECT_PRICES[to]?.[from]) return DIRECT_PRICES[to][from];
   const diff = Math.abs((CITY_PRICES[from] ?? 0) - (CITY_PRICES[to] ?? 0));
   return diff <= 20 ? diff + 10 : diff;
 }
@@ -555,7 +947,6 @@ export default function ContactanosPage() {
             padding: "60px 48px 68px",
           }}
         >
-          {/* Header */}
           <div style={{ textAlign: "center", marginBottom: 40 }}>
             <div
               style={{
@@ -624,7 +1015,6 @@ export default function ContactanosPage() {
                 boxShadow: "0 8px 32px rgba(0,0,0,.06)",
               }}
             >
-              {/* Tabs */}
               <div
                 style={{
                   display: "flex",
@@ -664,10 +1054,8 @@ export default function ContactanosPage() {
               </div>
 
               <div style={{ padding: "28px 28px 32px" }}>
-                {/* ── PASO 1: ORIGEN Y DESTINO ── */}
                 {formStep === "dest" && (
                   <div>
-                    {/* Selector de ORIGEN */}
                     <div style={{ marginBottom: 20 }}>
                       <label
                         style={{
@@ -711,7 +1099,6 @@ export default function ContactanosPage() {
                       </div>
                     </div>
 
-                    {/* Botón swap */}
                     {selectedDest && (
                       <div
                         style={{
@@ -743,7 +1130,6 @@ export default function ContactanosPage() {
                       </div>
                     )}
 
-                    {/* Selector de DESTINO */}
                     <div style={{ marginBottom: 18 }}>
                       <label
                         style={{
@@ -828,7 +1214,6 @@ export default function ContactanosPage() {
                       </div>
                     </div>
 
-                    {/* Grilla de destinos */}
                     <div
                       style={{
                         fontFamily: "'Inter',sans-serif",
@@ -912,7 +1297,6 @@ export default function ContactanosPage() {
                   </div>
                 )}
 
-                {/* ── PASO 2: DATOS ── */}
                 {formStep === "data" && (
                   <div>
                     {selectedDest && (
@@ -1665,7 +2049,6 @@ export default function ContactanosPage() {
           </div>
         </div>
 
-        {/* Otros canales */}
         <div style={{ marginBottom: 16 }}>
           <div
             style={{
@@ -2022,7 +2405,7 @@ export default function ContactanosPage() {
                       lineHeight: 1.6,
                     }}
                   >
-                    Av. Nicolás de Piérola N° 1230
+                    Av. Nicolás de Piérola 1230
                     <br />
                     Urb. San Fernando, Trujillo — La Libertad, Perú
                   </div>
@@ -2063,10 +2446,16 @@ export default function ContactanosPage() {
                       lineHeight: 1.6,
                     }}
                   >
-                    Lunes a Domingo
+                    Lunes a Sabado
                     <br />
                     <span style={{ fontWeight: 700, color: "#111" }}>
-                      06:00 am — 10:00 pm
+                      07:00 am — 18:00 pm
+                    </span>
+                    <br />
+                    Domingos y Feriados
+                    <br />
+                    <span style={{ fontWeight: 700, color: "#111" }}>
+                      07:00 am — 17:00 pm
                     </span>
                   </div>
                 </div>

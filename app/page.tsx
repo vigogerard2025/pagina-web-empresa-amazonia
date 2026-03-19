@@ -1710,14 +1710,7 @@ export default function BusTransportPage() {
               bg: "#f0fdf4",
               border: "#bbf7d0",
             },
-            {
-              icon: "⭐",
-              title: "Golden Class",
-              desc: "Servicio premium con asientos cama VIP, Wi-Fi y entretenimiento a bordo.",
-              accent: "#d4a017",
-              bg: "#fefce8",
-              border: "#fde68a",
-            },
+
             {
               icon: "💺",
               title: "Asientos cama",

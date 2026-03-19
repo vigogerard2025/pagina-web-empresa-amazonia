@@ -21,11 +21,11 @@ const agencies = [
     region: "Áncash",
     regionColor: "#d42b2b",
     address: "Terminal El Chimbador — Stand Q-7",
-    phones: ["993 767 433"],
+    phones: ["952 689 115"],
     maps: "https://www.google.com/maps/place/Terminal+Terrestre+Chimbote/@-9.1045559,-78.5580393,18.5z/data=!4m12!1m5!3m4!2zOcKwMDYnMTcuMiJTIDc4wrAzMycyOC4xIlc!8m2!3d-9.1047793!4d-78.5578073!3m5!1s0x91ab84045765c6a5:0xd99c235aa2f87756!8m2!3d-9.1047793!4d-78.5578073!16s%2Fg%2F11g7gdqw8h?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3D",
     dot: "#e53e3e",
     img: "/chimbador_terminal.png",
-    whatsapp: "51993767433",
+    whatsapp: "51952689115",
   },
 
   // ── La Libertad ─────────────────────────────────────────────
@@ -59,26 +59,14 @@ const agencies = [
     region: "La Libertad",
     regionColor: "#1a4fa0",
     address: "Carretera Panamericana 1319 — Sector Manco Cápac",
-    phones: ["937 512 954"],
+    phones: ["923 747 857"],
     maps: "https://www.google.com/maps/@-7.7332027,-79.3018744,3a,75y,50.99h,93.28t/data=!3m7!1e1!3m5!1sDJ3HkkFqbySPmt4HbX6Ucw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-3.276347274329126%26panoid%3DDJ3HkkFqbySPmt4HbX6Ucw%26yaw%3D50.99190710643565!7i16384!8i8192?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3D",
     dot: "#f5c518",
     img: "/paijan_terminal.png",
-    whatsapp: "51937512954",
+    whatsapp: "51923747857",
   },
   {
     id: 5,
-    city: "Paiján 2",
-    region: "La Libertad",
-    regionColor: "#1a4fa0",
-    address: "Ctra. Panamericana N 657, Paiján 13721",
-    phones: ["957 954 622"],
-    maps: "https://www.google.com/maps/@-7.7338426,-79.3008682,3a,90y,244.15h,89.33t/data=!3m7!1e1!3m5!1swifxZdBT-9qOQdlXphbj6g!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D0.6710347378615467%26panoid%3DwifxZdBT-9qOQdlXphbj6g%26yaw%3D244.14723542980443!7i16384!8i8192?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#f5c518",
-    img: "/paijan2.png",
-    whatsapp: "51957954622",
-  },
-  {
-    id: 6,
     city: "Pacasmayo",
     region: "La Libertad",
     regionColor: "#1a4fa0",
@@ -91,7 +79,7 @@ const agencies = [
     whatsapp: "51981911766",
   },
   {
-    id: 7,
+    id: 6,
     city: "Ciudad de Dios",
     region: "La Libertad",
     regionColor: "#1a4fa0",
@@ -103,7 +91,7 @@ const agencies = [
     whatsapp: "51959998794",
   },
   {
-    id: 8,
+    id: 7,
     city: "Guadalupe",
     region: "La Libertad",
     regionColor: "#1a4fa0",
@@ -115,20 +103,19 @@ const agencies = [
     whatsapp: "51942873849",
   },
   {
-    id: 9,
-    city: "Chepén Terminal",
+    id: 8,
+    city: "Chepén",
     region: "La Libertad",
     regionColor: "#1a4fa0",
-    address:
-      "Av. Ezequiel Gonzáles Cáceda 188 Stand-22 — Terminal Terrestre de Chepén",
-    phones: ["999t 7157 93", "952 510 976"],
-    maps: "https://www.google.com/maps/place/Terminal+terrestre+de+Chep%C3%A9n/@-7.220581,-79.4338135,15z/data=!4m6!3m5!1s0x904d3300170e385f:0xbbd40dd8087195f1!8m2!3d-7.2201949!4d-79.4335241!16s%2Fg%2F11vzbh1960?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3D",
+    address: "Au. Panamericana N 709, Chepén 13871",
+    phones: ["999 7157 93", "952 510 976"],
+    maps: "https://www.google.com/maps/place/Au.+Panamericana+N+709,+Chep%C3%A9n+13871/@-7.2227184,-79.4387883,3a,75y,273.22h,91.91t/data=!3m7!1e1!3m5!1sgcF-RAeQn85XVdUvUY0FUw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-1.9109256249649462%26panoid%3DgcF-RAeQn85XVdUvUY0FUw%26yaw%3D273.22258722050793!7i16384!8i8192!4m13!1m7!3m6!1s0x904d338f2e6b6f17:0xfada6d3eaa72b79e!2sAu.+Panamericana+N+709,+Chep%C3%A9n+13871!3b1!8m2!3d-7.2227147!4d-79.4388002!3m4!1s0x904d338f2e6b6f17:0xfada6d3eaa72b79e!8m2!3d-7.2227147!4d-79.4388002?entry=ttu&g_ep=EgoyMDI2MDMxNS4wIKXMDSoASAFQAw%3D%3D",
     dot: "#3b82f6",
-    img: "/terminal_chepen.png",
+    img: "/chepen_panamericana.png",
     whatsapp: "51999157937",
   },
   {
-    id: 11,
+    id: 9,
     city: "Pacanguilla",
     region: "La Libertad",
     regionColor: "#1a4fa0",
@@ -143,8 +130,8 @@ const agencies = [
 
   // ── Lambayeque ──────────────────────────────────────────────
   {
-    id: 13,
-    city: "Terrapuerto Plaza Norte Chiclayo",
+    id: 10,
+    city: "Chiclayo",
     region: "Lambayeque",
     regionColor: "#7c3aed",
     address: "Av. Augusto B. Leguía 2592, Chiclayo 14009",
@@ -155,7 +142,7 @@ const agencies = [
     whatsapp: "51935788639",
   },
   {
-    id: 14,
+    id: 11,
     city: "Illimo",
     region: "Lambayeque",
     regionColor: "#7c3aed",
@@ -167,7 +154,7 @@ const agencies = [
     whatsapp: "51964755681",
   },
   {
-    id: 15,
+    id: 12,
     city: "Olmos",
     region: "Lambayeque",
     regionColor: "#7c3aed",
@@ -181,12 +168,12 @@ const agencies = [
 
   // ── Amazonas ────────────────────────────────────────────────
   {
-    id: 16,
+    id: 13,
     city: "Bagua Grande",
     region: "Amazonas",
     regionColor: "#065f46",
     address: "Av. Chachapoyas 2840 — Terminal Leiva",
-    phones: ["914 420 313"],
+    phones: ["959 544 152"],
     maps: "https://www.google.com/maps/place/Terminal+Leyva/@-5.7575741,-78.4383837,17z/data=!4m10!1m2!2m1!1sAv.+Chachapoyas+2840+%E2%80%94+Terminal+Leiva!3m6!1s0x91b44fbd00000001:0xcee0e7102f5cce78!8m2!3d-5.7576547!4d-78.4357215!15sCidBdi4gQ2hhY2hhcG95YXMgMjg0MCDigJQgVGVybWluYWwgTGVpdmFaJCIiYXYgY2hhY2hhcG95YXMgMjg0MCB0ZXJtaW5hbCBsZWl2YZIBCnJlc3RhdXJhbnSaAURDaTlEUVVsUlFVTnZaRU5vZEhsalJqbHZUMjVDYlZWWE1UWmhWRkUxWW5wb2VWSkVTazlOUXpBelpXNXNSVnBJWXhBQuABAPoBBAgAEDA!16s%2Fg%2F11c5smlm8m?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
     dot: "#4ade80",
     img: "/chamaya.png",
@@ -194,24 +181,23 @@ const agencies = [
   },
 
   {
-    id: 17,
+    id: 14,
     city: "Pedro Ruiz",
     region: "Amazonas",
     regionColor: "#065f46",
     address: "Carr. Fernando Belaúnde Terry S/N",
-    phones: ["982 772 303", "922 210 161"],
+    phones: ["922 210 161"],
     maps: "https://www.google.com/maps/place/Ctra.+Fernando+Bela%C3%BAnde+Terry/@-5.9214092,-78.1195584,3a,75y,90.27h,93.08t/data=!3m7!1e1!3m5!1sI2sR3-M2hwuQ8i06FTFF2w!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-3.078275302330553%26panoid%3DI2sR3-M2hwuQ8i06FTFF2w%26yaw%3D90.27393580094342!7i16384!8i8192!4m15!1m8!3m7!1s0x91b49b7e6e8fe457:0x2bc3405674c57e69!2sCtra.+Fernando+Bela%C3%BAnde+Terry!3b1!8m2!3d-5.9214227!4d-78.1197751!16s%2Fg%2F1tg_bkf0!3m5!1s0x91b49b7e6e8fe457:0x2bc3405674c57e69!8m2!3d-5.9214227!4d-78.1197751!16s%2Fg%2F1tg_bkf0?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
     dot: "#34d399",
     img: "/pedroruiz.png",
-    whatsapp: "51982772303",
+    whatsapp: "51922210161",
   },
   {
-    id: 18,
+    id: 15,
     city: "Buenos Aires",
     region: "Amazonas",
     regionColor: "#065f46",
-    address:
-      "Carr. Fernando Belaúnde Terry 1246 — frente a la Comisaría (entre Pomacochas y Naranjos)",
+    address: "Carr. Fernando Belaúnde Terry 1246 — frente a la Comisaría",
     phones: ["913 574 460"],
     maps: "https://www.google.com/maps/place/Ctra.+Fernando+Bela%C3%BAnde+Terry+1246,+Pomacochas+01150/@-5.8214903,-77.970806,17z/data=!3m1!4b1!4m5!3m4!1s0x91b42704aa792569:0xe7d96234efd0d574!8m2!3d-5.8214956!4d-77.9682311?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
     dot: "#a7f3d0",
@@ -221,7 +207,7 @@ const agencies = [
 
   // ── San Martín ──────────────────────────────────────────────
   {
-    id: 19,
+    id: 16,
     city: "Naranjos",
     region: "San Martín",
     regionColor: "#92400e",
@@ -233,7 +219,7 @@ const agencies = [
     whatsapp: "51942444294",
   },
   {
-    id: 20,
+    id: 17,
     city: "Naranjillo",
     region: "San Martín",
     regionColor: "#92400e",
@@ -245,7 +231,7 @@ const agencies = [
     whatsapp: "51975790400",
   },
   {
-    id: 21,
+    id: 18,
     city: "N. Cajamarca",
     region: "San Martín",
     regionColor: "#92400e",
@@ -257,7 +243,7 @@ const agencies = [
     whatsapp: "51931703571",
   },
   {
-    id: 22,
+    id: 19,
     city: "Segunda Jerusalén",
     region: "San Martín",
     regionColor: "#92400e",
@@ -270,12 +256,11 @@ const agencies = [
     whatsapp: "51939083805",
   },
   {
-    id: 23,
+    id: 20,
     city: "Rioja",
     region: "San Martín",
     regionColor: "#92400e",
-    address:
-      "Av. Campo Ferial #100 — Terminal Terrestre Stand 8, costado de TSP",
+    address: "Av. Campo Ferial #100 — Terminal Terrestre Stand 8",
     phones: ["941 583 051"],
     maps: "https://www.google.com/maps/place/Terminal+Terrestre+Municipal+Arturo+Iberico+Lopez/@-6.0551671,-77.1678398,17.5z/data=!4m10!1m2!2m1!1sAv.+Campo+Ferial+%23100+%E2%80%94+Terminal+Terrestre+Stand+8,+costado+de+TSP!3m6!1s0x91b727bc779a6bcb:0x46317503d98f2a85!8m2!3d-6.05516!4d-77.1659029!15sCkRBdi4gQ2FtcG8gRmVyaWFsICMxMDAg4oCUIFRlcm1pbmFsIFRlcnJlc3RyZSBTdGFuZCA4LCBjb3N0YWRvIGRlIFRTUJIBC2J1c19zdGF0aW9u4AEA!16s%2Fg%2F1pxqc4rnp?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
     dot: "#f97316",
@@ -283,7 +268,7 @@ const agencies = [
     whatsapp: "51941583051",
   },
   {
-    id: 24,
+    id: 21,
     city: "Moyobamba",
     region: "San Martín",
     regionColor: "#92400e",
@@ -295,7 +280,7 @@ const agencies = [
     whatsapp: "51995454537",
   },
   {
-    id: 25,
+    id: 22,
     city: "Tabalosos",
     region: "San Martín",
     regionColor: "#92400e",
@@ -308,20 +293,20 @@ const agencies = [
     whatsapp: "51979050445",
   },
   {
-    id: 26,
-    city: "Tarapoto Santa Anita",
+    id: 23,
+    city: "Tarapoto",
     region: "San Martín",
     regionColor: "#92400e",
     address:
       "Terminal Santa Anita Stand 20 — costado del Mercado Santa Anita, Carr. Atupampa Morales",
-    phones: ["996 454 609"],
+    phones: ["995 454 609"],
     maps: "https://www.google.com/maps/place/Mercado+Santa+Anita'/@-6.4895639,-76.3889518,3a,75y,186.79h,92.41t/data=!3m7!1e1!3m5!1si4dows2_heevdzD2RlOMwQ!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-2.4145987512358715%26panoid%3Di4dows2_heevdzD2RlOMwQ%26yaw%3D186.78810665529988!7i16384!8i8192!4m10!1m2!2m1!1sTerminal+Santa+Anita+Tarapoto!3m6!1s0x91ba0bc3d31a7377:0x49fedb35c91d5b2a!8m2!3d-6.4903458!4d-76.3890869!15sCh1UZXJtaW5hbCBTYW50YSBBbml0YSBUYXJhcG90b1ofIh10ZXJtaW5hbCBzYW50YSBhbml0YSB0YXJhcG90b5IBBm1hcmtldJoBJENoZERTVWhOTUc5blMwVkpRMEZuU1VOUGNIRXRZVE5SUlJBQuABAPoBBAgAEB8!16s%2Fg%2F11j98zzs2b?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
     dot: "#22c55e",
     img: "/santa_anita.png",
-    whatsapp: "51996454609",
+    whatsapp: "51995454609",
   },
   {
-    id: 27,
+    id: 24,
     city: "Picota",
     region: "San Martín",
     regionColor: "#92400e",
@@ -333,19 +318,19 @@ const agencies = [
     whatsapp: "51924290846",
   },
   {
-    id: 28,
+    id: 25,
     city: "San Hilarión",
     region: "San Martín",
     regionColor: "#92400e",
     address: "Carr. Fernando Belaúnde Terry S/N",
-    phones: ["998 031 404"],
+    phones: ["942 647 965", "998 031 404"],
     maps: "https://www.google.com/maps/place/San+Hilari%C3%B3n/@-6.9963233,-76.4430821,15z/data=!4m6!3m5!1s0x91ba821336ad1961:0xa3331dbad24701af!8m2!3d-6.9993164!4d-76.4418473!16s%2Fm%2F043jwcs?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
     dot: "#22c55e",
     img: "/san_hilarion.png",
-    whatsapp: "51998031404",
+    whatsapp: "51942647965",
   },
   {
-    id: 29,
+    id: 26,
     city: "Bellavista",
     region: "San Martín",
     regionColor: "#92400e",
@@ -357,19 +342,19 @@ const agencies = [
     whatsapp: "51942135150",
   },
   {
-    id: 30,
+    id: 27,
     city: "Sacanche",
     region: "San Martín",
     regionColor: "#92400e",
     address: "Carr. Fernando Belaúnde Terry S/N — Km. 737",
-    phones: ["929 855 077"],
+    phones: ["927 113 725", "929 855 077"],
     maps: "https://www.google.com/maps/place/Fernando+Belaunde+Terry/@-7.9020854,-76.6666304,3a,75y,174.7h,94.1t/data=!3m7!1e1!3m5!1sENqdQaDsS962N4-ZZhnCVw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-4.101070425634575%26panoid%3DENqdQaDsS962N4-ZZhnCVw%26yaw%3D174.70036990254155!7i16384!8i8192!4m15!1m8!3m7!1s0x91b0a0eba374da97:0xd2aef54bd41bd6fd!2sFernando+Belaunde+Terry!3b1!8m2!3d-7.9020057!4d-76.6666117!16s%2Fg%2F1ptvzystd!3m5!1s0x91b0a0eba374da97:0xd2aef54bd41bd6fd!8m2!3d-7.9020057!4d-76.6666117!16s%2Fg%2F1ptvzystd?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
     dot: "#fb923c",
     img: "/sacanche.png",
-    whatsapp: "51929855077",
+    whatsapp: "51927113725",
   },
   {
-    id: 31,
+    id: 28,
     city: "Saposoa",
     region: "San Martín",
     regionColor: "#92400e",
@@ -381,19 +366,19 @@ const agencies = [
     whatsapp: "51969182663",
   },
   {
-    id: 32,
+    id: 29,
     city: "Juanjuí",
     region: "San Martín",
     regionColor: "#92400e",
     address: "Jr. Arica 103 — Terminal Tobías Ruiz",
-    phones: ["988 394 622"],
+    phones: ["950 641 480"],
     maps: "https://www.google.com/maps/place/TERMINAL+TOBIAS+RUIZ/@-7.1803393,-76.7347538,18z/data=!4m15!1m8!3m7!1s0x91b06bbd4669d5bf:0x4e88e1b46c0939ff!2sTERMINAL+TOBIAS+RUIZ!8m2!3d-7.180322!4d-76.7347968!10e5!16s%2Fg%2F11f8_knyt4!3m5!1s0x91b06bbd4669d5bf:0x4e88e1b46c0939ff!8m2!3d-7.180322!4d-76.7347968!16s%2Fg%2F11f8_knyt4?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
     dot: "#4ade80",
     img: "./juanjui.png",
-    whatsapp: "51988394622",
+    whatsapp: "51950641480",
   },
   {
-    id: 33,
+    id: 30,
     city: "Yurimaguas",
     region: "San Martín",
     regionColor: "#92400e",
@@ -405,16 +390,16 @@ const agencies = [
     whatsapp: "51972851055",
   },
   {
-    id: 34,
+    id: 31,
     city: "Trujillo",
     region: "La Libertad",
     regionColor: "#92400e",
     address: "Av. Nicolás de Piérola 1230, Trujillo 13001 Urb. San Fernando",
-    phones: ["972 851 055"],
+    phones: ["999 333 419", "966 198 771"],
     maps: "https://www.google.com/maps/place/Turismo+Universo+Trujillo/@-8.097577,-79.0379012,20.25z/data=!4m15!1m8!3m7!1s0x91ad3deae506cb59:0x5fede72cef4dde49!2sAv.+Nicol%C3%A1s+de+Pi%C3%A9rola+1230,+Trujillo+13001!3b1!8m2!3d-8.097581!4d-79.0376331!16s%2Fg%2F11vqn9zmr_!3m5!1s0x91ad3dc64e7a2a7b:0x4d64efd5950473b8!8m2!3d-8.0973113!4d-79.0378456!16s%2Fg%2F11h7d85rbd?entry=ttu&g_ep=EgoyMDI2MDMxNS4wIKXMDSoASAFQAw%3D%3D",
     dot: "#22c55e",
     img: "/trujillo.png",
-    whatsapp: "51972851055",
+    whatsapp: "51966198771",
   },
 ];
 
@@ -667,7 +652,7 @@ export default function AgenciasPage() {
             >
               Contamos con{" "}
               <strong style={{ color: "#f5c518" }}>
-                37 puntos de atención
+                31 puntos de atención
               </strong>{" "}
               distribuidos en 5 regiones del norte del Perú. Compra tu pasaje
               directamente en la agencia más cercana.
@@ -689,10 +674,10 @@ export default function AgenciasPage() {
               }}
             >
               {[
-                { value: "37", label: "Agencias", color: "#4ade80" },
+                { value: "31", label: "Agencias", color: "#4ade80" },
                 { value: "5", label: "Regiones", color: "#fbbf24" },
                 { value: "50+", label: "Rutas", color: "#60a5fa" },
-                { value: "6am", label: "Apertura", color: "#f87171" },
+                { value: "7 am", label: "Apertura", color: "#f87171" },
               ].map((s, i) => (
                 <div
                   key={s.label}
