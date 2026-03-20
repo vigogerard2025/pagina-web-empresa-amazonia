@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Universo",
+  title: "T.BusUniverso",
   description: "Transportes Universo S.A.C.",
 };
 

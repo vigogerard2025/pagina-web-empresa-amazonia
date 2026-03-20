@@ -24,37 +24,36 @@ export default function Navbar() {
     document.body.style.overflow = menuOpen ? "hidden" : "";
   }, [menuOpen]);
 
-  const navItems = [
-    { label: "Inicio", href: "/" },
-    { label: "Cláusulas", href: "/clausulas" },
-    { label: "Agencias", href: "/agencias" },
-    { label: "Contáctanos", href: "/contactanos" },
-  ];
-
   return (
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600&display=swap');
 
         :root {
-          --gold: #C9A84C;
-          --gold-light: #E8C97A;
-          --gold-dim: rgba(201,168,76,0.15);
-          --dark: #0B0E13;
-          --dark-mid: #111419;
-          --dark-card: #161A22;
-          --cream: #F5F0E8;
-          --muted: rgba(245,240,232,0.5);
-          --border: rgba(201,168,76,0.18);
+          --green-deep:   #0f7a2e;
+          --green-main:   #1a8c3c;
+          --green-bright: #22a849;
+          --green-light:  #d4f5e0;
+          --green-pale:   #edfaf3;
+          --gold:         #e8a820;
+          --gold-light:   #f5c518;
+          --gold-pale:    #fef9e7;
+          --cream:        #f9fdf6;
+          --white:        #ffffff;
+          --text-dark:    #0d2818;
+          --text-mid:     #2d5a3d;
+          --text-soft:    #5a8a6a;
+          --border-green: rgba(26,140,60,0.18);
+          --shadow-green: rgba(26,140,60,0.15);
         }
 
         * { box-sizing: border-box; }
 
+        /* ── TOP BAR ── */
         .nb-topbar {
-          background: var(--cream);
-          border-bottom: 1px solid rgba(0,0,0,0.08);
+          background: var(--green-main);
           padding: 0 52px;
-          height: 38px;
+          height: 36px;
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -73,17 +72,17 @@ export default function Navbar() {
           gap: 6px;
           text-decoration: none;
           font-size: 11.5px;
-          font-weight: 400;
-          color: #555;
+          font-weight: 500;
+          color: rgba(255,255,255,0.88);
           letter-spacing: 0.02em;
           transition: color 0.2s;
         }
-        .nb-top-link:hover { color: #111; }
+        .nb-top-link:hover { color: #fff; }
 
-        .nb-divider {
+        .nb-divider-top {
           width: 1px;
           height: 12px;
-          background: rgba(0,0,0,0.15);
+          background: rgba(255,255,255,0.3);
         }
 
         .nb-top-right {
@@ -93,8 +92,8 @@ export default function Navbar() {
         }
 
         .nb-soc {
-          width: 28px;
-          height: 28px;
+          width: 26px;
+          height: 26px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -103,53 +102,65 @@ export default function Navbar() {
           transition: background 0.2s, transform 0.15s;
         }
         .nb-soc:hover {
-          background: rgba(0,0,0,0.06);
+          background: rgba(255,255,255,0.15);
           transform: translateY(-1px);
         }
 
         .nb-provider-badge {
           margin-left: 8px;
-          padding: 3px 10px;
-          border: 1px solid rgba(0,0,0,0.12);
+          padding: 2px 10px;
+          border: 1px solid rgba(255,255,255,0.35);
           border-radius: 20px;
-          font-size: 9.5px;
-          font-weight: 600;
-          letter-spacing: 0.12em;
+          font-size: 9px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: rgba(0,0,0,0.4);
+          color: rgba(255,255,255,0.65);
         }
 
-        /* ─── NAV ─── */
+        /* ── NAV ── */
         .nb-nav {
           position: sticky;
           top: 0;
           z-index: 100;
-          background: var(--dark);
+          background: var(--white);
+          border-bottom: 2px solid var(--green-light);
           transition: box-shadow 0.3s, background 0.3s;
           font-family: 'Outfit', sans-serif;
+          /* overflow visible para que el bus sobresalga hacia abajo */
+          overflow: visible;
         }
         .nb-nav.scrolled {
-          background: rgba(11,14,19,0.96);
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          box-shadow: 0 1px 0 var(--border), 0 8px 40px rgba(0,0,0,0.55);
+          background: rgba(255,255,255,0.97);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          box-shadow: 0 2px 24px var(--shadow-green);
+        }
+
+        /* Línea de colores superior */
+        .nb-nav::before {
+          content: '';
+          display: block;
+          height: 3px;
+          background: linear-gradient(90deg,
+            var(--green-main) 0%,
+            var(--green-bright) 25%,
+            var(--gold) 50%,
+            var(--green-bright) 75%,
+            var(--green-main) 100%
+          );
         }
 
         .nb-nav-inner {
           display: flex;
           align-items: stretch;
           justify-content: space-between;
-          min-height: 72px;
+          /* Altura fija y compacta — el bus sale por debajo sin empujar */
+          min-height: 68px;
           padding: 0 28px;
-          border-bottom: 1px solid var(--border);
-        }
-
-        /* Gold accent line top */
-        .nb-nav::before {
-          content: '';
-          display: block;
-          height: 2px;
-          background: linear-gradient(90deg, transparent, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, transparent);
+          /* overflow visible para el bus */
+          overflow: visible;
+          position: relative;
         }
 
         .nb-logo-wrap {
@@ -159,12 +170,12 @@ export default function Navbar() {
         }
 
         .nb-logo {
-          height: 44px;
+          height: 40px;
           width: auto;
           object-fit: contain;
         }
 
-        /* ─── Desktop links ─── */
+        /* Desktop links */
         .nb-links {
           flex: 1;
           display: flex;
@@ -176,13 +187,13 @@ export default function Navbar() {
         .nb-link {
           position: relative;
           text-decoration: none;
-          color: var(--muted);
+          color: var(--text-mid);
           font-size: 11px;
           font-weight: 600;
-          letter-spacing: 0.14em;
+          letter-spacing: 0.12em;
           text-transform: uppercase;
           padding: 8px 16px;
-          border-radius: 6px;
+          border-radius: 8px;
           transition: color 0.22s, background 0.22s;
           white-space: nowrap;
         }
@@ -192,15 +203,16 @@ export default function Navbar() {
           bottom: 4px;
           left: 16px;
           right: 16px;
-          height: 1px;
-          background: var(--gold);
+          height: 2px;
+          background: var(--green-main);
+          border-radius: 1px;
           transform: scaleX(0);
           transform-origin: center;
           transition: transform 0.28s cubic-bezier(0.25,0.46,0.45,0.94);
         }
         .nb-link:hover {
-          color: var(--gold-light);
-          background: var(--gold-dim);
+          color: var(--green-main);
+          background: var(--green-pale);
         }
         .nb-link:hover::after {
           transform: scaleX(1);
@@ -212,68 +224,78 @@ export default function Navbar() {
           align-items: center;
           gap: 7px;
           text-decoration: none;
-          background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
-          color: #0B0E13;
+          background: linear-gradient(135deg, var(--green-main), var(--green-bright));
+          color: #fff;
           font-family: 'Outfit', sans-serif;
           font-size: 11px;
           font-weight: 700;
           letter-spacing: 0.12em;
           text-transform: uppercase;
           padding: 9px 22px;
-          border-radius: 6px;
+          border-radius: 8px;
           transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
-          box-shadow: 0 2px 16px rgba(201,168,76,0.28);
+          box-shadow: 0 3px 16px var(--shadow-green);
           margin-left: 8px;
           white-space: nowrap;
         }
         .nb-cta:hover {
           opacity: 0.9;
           transform: translateY(-1px);
-          box-shadow: 0 6px 24px rgba(201,168,76,0.4);
+          box-shadow: 0 6px 24px rgba(26,140,60,0.35);
         }
 
-        /* Bus logo */
+        /* ── Bus logo: crece hacia abajo sin afectar la altura de la navbar ── */
         .nb-bus-wrap {
+          /* Se posiciona en el flujo normal para mantener el espacio a la derecha */
+          position: relative;
           display: flex;
           align-items: center;
-          padding-left: 12px;
+          /* Ancho fijo para reservar espacio horizontal */
+          width: 140px;
+          flex-shrink: 0;
         }
         .nb-bus-img {
-          height: 88px;
+          /* Sale del flujo vertical con position absolute */
+          position: absolute;
+          bottom: -28px;   /* cuánto sobresale por debajo */
+          right: 0;
+          height: 130px;   /* tamaño del bus — ajusta aquí */
           width: auto;
           object-fit: contain;
-          opacity: 0.92;
-          filter: drop-shadow(0 2px 12px rgba(201,168,76,0.18));
+          opacity: 0.96;
+          filter: drop-shadow(0 4px 12px rgba(26,140,60,0.22));
+          /* z-index alto para que aparezca sobre el hero */
+          z-index: 101;
+          pointer-events: none;
         }
 
         /* Hamburger */
         .nb-hamburger {
           display: none;
-          background: none;
-          border: 1px solid var(--border);
+          background: var(--green-pale);
+          border: 1.5px solid var(--border-green);
           border-radius: 8px;
           cursor: pointer;
-          color: var(--muted);
+          color: var(--green-main);
           padding: 8px 10px;
           align-items: center;
           justify-content: center;
-          transition: border-color 0.2s, color 0.2s, background 0.2s;
+          transition: background 0.2s, border-color 0.2s;
           align-self: center;
         }
         .nb-hamburger:hover {
-          border-color: var(--gold);
-          color: var(--gold);
-          background: var(--gold-dim);
+          background: var(--green-light);
+          border-color: var(--green-main);
         }
 
-        /* ─── Mobile Menu ─── */
+        /* Mobile Menu */
         .nb-mobile {
           display: none;
           position: fixed;
           inset: 0;
           z-index: 999;
           flex-direction: column;
-          background: var(--dark-mid);
+          background: var(--white);
         }
         .nb-mobile.open {
           display: flex;
@@ -289,62 +311,64 @@ export default function Navbar() {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 18px 24px;
-          border-bottom: 1px solid var(--border);
-          background: var(--dark);
+          padding: 16px 24px;
+          border-bottom: 2px solid var(--green-light);
+          background: var(--cream);
+          position: relative;
         }
         .nb-mobile-header::before {
           content: '';
           position: absolute;
           top: 0; left: 0; right: 0;
-          height: 2px;
-          background: linear-gradient(90deg, transparent, var(--gold) 40%, var(--gold-light) 60%, transparent);
+          height: 3px;
+          background: linear-gradient(90deg, var(--green-main), var(--gold), var(--green-bright));
         }
         .nb-mobile-close {
-          background: none;
-          border: 1px solid var(--border);
+          background: var(--green-pale);
+          border: 1.5px solid var(--border-green);
           border-radius: 8px;
           cursor: pointer;
-          color: var(--muted);
+          color: var(--green-main);
           padding: 8px 10px;
           display: flex;
           align-items: center;
-          transition: border-color 0.2s, color 0.2s;
+          transition: background 0.2s;
         }
-        .nb-mobile-close:hover { border-color: var(--gold); color: var(--gold); }
+        .nb-mobile-close:hover { background: var(--green-light); }
 
         .nb-mobile-links {
           flex: 1;
           overflow-y: auto;
-          padding: 16px 0;
+          padding: 12px 0;
+          background: var(--white);
         }
 
         .nb-mobile-link {
           display: flex;
           align-items: center;
           text-decoration: none;
-          color: var(--muted);
+          color: var(--text-mid);
           font-family: 'Outfit', sans-serif;
           font-size: 13px;
-          font-weight: 500;
-          letter-spacing: 0.12em;
+          font-weight: 600;
+          letter-spacing: 0.1em;
           text-transform: uppercase;
           padding: 16px 28px;
-          border-bottom: 1px solid rgba(255,255,255,0.04);
+          border-bottom: 1px solid var(--green-pale);
           transition: background 0.2s, color 0.2s, padding-left 0.2s;
           gap: 12px;
         }
         .nb-mobile-link:hover {
-          background: var(--gold-dim);
-          color: var(--gold-light);
+          background: var(--green-pale);
+          color: var(--green-main);
           padding-left: 36px;
         }
         .nb-mobile-link-dot {
-          width: 4px;
-          height: 4px;
+          width: 5px;
+          height: 5px;
           border-radius: 50%;
-          background: var(--gold);
-          opacity: 0.5;
+          background: var(--green-main);
+          opacity: 0.4;
           flex-shrink: 0;
           transition: opacity 0.2s;
         }
@@ -355,29 +379,29 @@ export default function Navbar() {
           align-items: center;
           justify-content: center;
           text-decoration: none;
-          background: linear-gradient(135deg, var(--gold), var(--gold-light));
-          color: #0B0E13;
+          background: linear-gradient(135deg, var(--green-main), var(--green-bright));
+          color: #fff;
           font-family: 'Outfit', sans-serif;
           font-size: 12px;
           font-weight: 700;
           letter-spacing: 0.12em;
           text-transform: uppercase;
-          padding: 16px 28px;
+          padding: 15px 28px;
           margin: 16px 24px 0;
-          border-radius: 8px;
+          border-radius: 10px;
           gap: 8px;
-          box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+          box-shadow: 0 4px 18px var(--shadow-green);
           transition: opacity 0.2s, transform 0.15s;
         }
         .nb-mobile-cta:hover { opacity: 0.9; transform: translateY(-1px); }
 
         .nb-mobile-footer {
-          padding: 20px 24px;
-          border-top: 1px solid var(--border);
+          padding: 18px 24px;
+          border-top: 2px solid var(--green-light);
           display: flex;
           align-items: center;
           gap: 14px;
-          background: var(--dark);
+          background: var(--cream);
         }
 
         .nb-mobile-contact {
@@ -385,13 +409,13 @@ export default function Navbar() {
           align-items: center;
           gap: 7px;
           text-decoration: none;
-          color: var(--muted);
+          color: var(--text-soft);
           font-family: 'Outfit', sans-serif;
           font-size: 12.5px;
-          font-weight: 400;
+          font-weight: 500;
           transition: color 0.2s;
         }
-        .nb-mobile-contact:hover { color: #fff; }
+        .nb-mobile-contact:hover { color: var(--green-main); }
 
         .nb-mobile-socials {
           margin-left: auto;
@@ -407,22 +431,23 @@ export default function Navbar() {
           align-items: center;
           justify-content: center;
           text-decoration: none;
-          border: 1px solid var(--border);
+          border: 1.5px solid var(--border-green);
+          background: var(--green-pale);
           transition: border-color 0.2s, background 0.2s, transform 0.15s;
         }
         .nb-mobile-soc:hover {
-          border-color: var(--gold);
-          background: var(--gold-dim);
+          border-color: var(--green-main);
+          background: var(--green-light);
           transform: translateY(-2px);
         }
 
-        /* ─── Responsive ─── */
+        /* ── Responsive ── */
         @media (max-width: 768px) {
           .nb-topbar { display: none !important; }
         }
 
         @media (max-width: 960px) {
-          .nb-links { display: none !important; }
+          .nb-links    { display: none !important; }
           .nb-bus-wrap { display: none !important; }
           .nb-hamburger { display: flex !important; }
           .nb-nav-inner { padding: 0 20px; }
@@ -442,30 +467,29 @@ export default function Navbar() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <FaWhatsapp size={13} color="#25D366" />
+            <FaWhatsapp size={13} color="rgba(255,255,255,0.9)" />
             (+51) 966 198 771
           </a>
-          <div className="nb-divider" />
+          <div className="nb-divider-top" />
           <a
             className="nb-top-link"
             href="https://www.google.com/maps/place/Turismo+Universo+Trujillo"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <FaMapMarkerAlt size={12} color="#C9A84C" />
+            <FaMapMarkerAlt size={12} color="rgba(255,255,255,0.9)" />
             Av. Nicolás de Piérola N° 1230, San Fernando — Trujillo, Perú
           </a>
         </div>
-
         <div className="nb-top-right">
-          <div className="nb-divider" style={{ marginRight: 4 }} />
+          <div className="nb-divider-top" style={{ marginRight: 4 }} />
           <a
             className="nb-soc"
             href="https://www.facebook.com/turismobusuniverso/?locale=es_LA"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <FaFacebook size={15} color="#1877F2" />
+            <FaFacebook size={14} color="#fff" />
           </a>
           <a
             className="nb-soc"
@@ -473,7 +497,7 @@ export default function Navbar() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <FaInstagram size={15} color="#E1306C" />
+            <FaInstagram size={14} color="#fff" />
           </a>
           <div className="nb-provider-badge">Proveedores</div>
         </div>
@@ -482,13 +506,43 @@ export default function Navbar() {
       {/* ════ MAIN NAV ════ */}
       <nav className={`nb-nav${scrolled ? " scrolled" : ""}`}>
         <div className="nb-nav-inner">
-          {/* Logo */}
+          {/* Logo texto SVG */}
           <div className="nb-logo-wrap">
-            <img
-              src="/logonombreuniverso.png"
-              alt="Turismo Universo"
-              className="nb-logo"
-            />
+            <svg
+              height="44"
+              viewBox="0 0 260 44"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-label="Turismo Bus Universo"
+            >
+              <text
+                x="2"
+                y="13"
+                fontFamily="'Arial Narrow', Arial, sans-serif"
+                fontStyle="italic"
+                fontWeight="700"
+                fontSize="12"
+                letterSpacing="1.5"
+                fill="#1a8c3c"
+              >
+                TURISMO BUS
+              </text>
+              <text
+                x="0"
+                y="43"
+                fontFamily="'Arial Black', 'Arial Narrow', Arial, sans-serif"
+                fontStyle="italic"
+                fontWeight="900"
+                fontSize="34"
+                letterSpacing="-0.5"
+                fill="#d42b2b"
+                stroke="#fff"
+                strokeWidth="2"
+                paintOrder="stroke"
+              >
+                UNIVERSO
+              </text>
+            </svg>
           </div>
 
           {/* Desktop Links */}
@@ -517,7 +571,7 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* Bus logo right */}
+          {/* ── Bus: position absolute, crece sin afectar la altura ── */}
           <div className="nb-bus-wrap">
             <img src="/logobus.png" alt="Bus Universo" className="nb-bus-img" />
           </div>
@@ -535,12 +589,42 @@ export default function Navbar() {
 
       {/* ════ MOBILE MENU ════ */}
       <div className={`nb-mobile${menuOpen ? " open" : ""}`}>
-        <div className="nb-mobile-header" style={{ position: "relative" }}>
-          <img
-            src="/logonombreuniverso.png"
-            alt="Turismo Universo"
-            style={{ height: 38, objectFit: "contain" }}
-          />
+        <div className="nb-mobile-header">
+          <svg
+            height="38"
+            viewBox="0 0 260 44"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-label="Turismo Bus Universo"
+          >
+            <text
+              x="2"
+              y="13"
+              fontFamily="'Arial Narrow', Arial, sans-serif"
+              fontStyle="italic"
+              fontWeight="700"
+              fontSize="12"
+              letterSpacing="1.5"
+              fill="#1a8c3c"
+            >
+              TURISMO BUS
+            </text>
+            <text
+              x="0"
+              y="43"
+              fontFamily="'Arial Black', 'Arial Narrow', Arial, sans-serif"
+              fontStyle="italic"
+              fontWeight="900"
+              fontSize="34"
+              letterSpacing="-0.5"
+              fill="#d42b2b"
+              stroke="#fff"
+              strokeWidth="2"
+              paintOrder="stroke"
+            >
+              UNIVERSO
+            </text>
+          </svg>
           <button
             className="nb-mobile-close"
             onClick={() => setMenuOpen(false)}

@@ -12,6 +12,11 @@ import {
 
 const slides = [
   {
+    url: "/turismo_bus_universo.jpg",
+    ciudad: "Bagua Grande",
+    region: "Amazonas",
+  },
+  {
     url: "https://plus.unsplash.com/premium_photo-1686810855843-cb595b8418bd?q=80&w=1025&auto=format&fit=crop",
     ciudad: "Bagua Grande",
     region: "Amazonas",
@@ -85,8 +90,16 @@ const routes = [
   { id: 19, from: "Trujillo", to: "Tabalosos", price: 100, duration: "14h" },
   { id: 20, from: "Trujillo", to: "Tarapoto", price: 100, duration: "14h" },
   { id: 21, from: "Trujillo", to: "Yurimaguas", price: 130, duration: "18h" },
-  { id: 22, from: "Trujillo", to: "Alianza", price: 100, duration: "15h" },
+  { id: 22, from: "Trujillo", to: "Alianza", price: 130, duration: "15h" },
   { id: 23, from: "Trujillo", to: "Pacanguilla", price: 20, duration: "2h" },
+  { id: 24, from: "Trujillo", to: "Chepén", price: 20, duration: "2h y 30" },
+  {
+    id: 25,
+    from: "Trujillo",
+    to: "Ciudad de Dios",
+    price: 20,
+    duration: "2h y 30",
+  },
   // Desde CHICLAYO
   { id: 101, from: "Chiclayo", to: "Trujillo", price: 30, duration: "3h" },
   { id: 102, from: "Chiclayo", to: "Bagua Grande", price: 30, duration: "6h" },
@@ -457,6 +470,7 @@ const cities = [
   "Chamaya",
   "Alianza",
   "Buenos Aires",
+  "Ciudad de Dios",
 ];
 
 const F = "'Poppins', sans-serif";
@@ -1705,7 +1719,7 @@ export default function BusTransportPage() {
             {
               icon: "🛡️",
               title: "Viaje seguro",
-              desc: "Unidades revisadas mensualmente con los más altos estándares de seguridad vial.",
+              desc: "Unidades sometidas a inspecciones técnicas posteriores a cada servicio, bajo estrictos protocolos de seguridad y mantenimiento preventivo..",
               accent: "#1a8c3c",
               bg: "#f0fdf4",
               border: "#bbf7d0",
@@ -1780,7 +1794,41 @@ export default function BusTransportPage() {
       </section>
 
       {/* ════ FOOTER ════ */}
-      <footer style={{ background: "#0d1117", borderTop: "3px solid #f5c518" }}>
+      <footer
+        style={{
+          background:
+            "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 60%, #f0fdf4 100%)",
+          borderTop: "3px solid #1a8c3c",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        {/* Decoración de fondo */}
+        <div
+          style={{
+            position: "absolute",
+            top: -40,
+            right: -40,
+            width: 160,
+            height: 160,
+            background: "rgba(26,140,60,.07)",
+            borderRadius: "50%",
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            bottom: -30,
+            left: 60,
+            width: 100,
+            height: 100,
+            background: "rgba(245,197,24,.08)",
+            borderRadius: "50%",
+            pointerEvents: "none",
+          }}
+        />
+
         <div
           className="footer-inner"
           style={{
@@ -1792,57 +1840,71 @@ export default function BusTransportPage() {
             alignItems: "center",
             flexWrap: "wrap",
             gap: 16,
+            position: "relative",
+            zIndex: 1,
           }}
         >
+          {/* Logo + slogan */}
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <img
               src="/logonombreuniverso.png"
               alt="Universo"
-              style={{
-                height: 34,
-                filter: "brightness(0) invert(1) opacity(0.8)",
-              }}
+              style={{ height: 34 }}
             />
             <span
               style={{
                 fontFamily: F,
-                color: "rgba(255,255,255,.3)",
+                color: "#2d5a3d",
                 fontSize: 12,
-                fontWeight: 400,
+                fontWeight: 600,
               }}
             >
               — ¡Siempre pensando en usted!
             </span>
           </div>
+
+          {/* Copyright */}
           <div
             style={{
               fontFamily: F,
-              color: "rgba(255,255,255,.28)",
+              color: "#5a8a6a",
               fontSize: 12,
-              fontWeight: 400,
+              fontWeight: 500,
             }}
           >
-            © 2025 Transportes Universo S.A.C. · Todos los derechos reservados
+            © 2025 Transporte Turismo Bus Universo S.A.C. · Todos los derechos
+            reservados
           </div>
-          <div style={{ display: "flex", gap: 20 }}>
+
+          {/* Links */}
+          <div style={{ display: "flex", gap: 8 }}>
             {["Términos", "Privacidad", "Soporte"].map((l) => (
               <a
                 key={l}
                 href="#"
                 style={{
                   fontFamily: F,
-                  color: "rgba(255,255,255,.35)",
+                  color: "#1a8c3c",
                   textDecoration: "none",
                   fontSize: 12,
-                  fontWeight: 500,
-                  transition: "color .2s",
+                  fontWeight: 600,
+                  padding: "5px 12px",
+                  borderRadius: 20,
+                  border: "1.5px solid rgba(26,140,60,.25)",
+                  background: "rgba(26,140,60,.06)",
+                  transition: "all .2s",
                 }}
                 onMouseEnter={(e) => {
-                  (e.target as HTMLAnchorElement).style.color = "#f5c518";
+                  const el = e.target as HTMLAnchorElement;
+                  el.style.background = "#1a8c3c";
+                  el.style.color = "#fff";
+                  el.style.borderColor = "#1a8c3c";
                 }}
                 onMouseLeave={(e) => {
-                  (e.target as HTMLAnchorElement).style.color =
-                    "rgba(255,255,255,.35)";
+                  const el = e.target as HTMLAnchorElement;
+                  el.style.background = "rgba(26,140,60,.06)";
+                  el.style.color = "#1a8c3c";
+                  el.style.borderColor = "rgba(26,140,60,.25)";
                 }}
               >
                 {l}

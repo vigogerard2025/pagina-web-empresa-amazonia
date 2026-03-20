@@ -5,14 +5,11 @@ import {
   FaMapMarkerAlt,
   FaPhoneAlt,
   FaWhatsapp,
-  FaTimes,
   FaArrowRight,
   FaSearch,
   FaFilter,
 } from "react-icons/fa";
-// import { supabase } from "@/lib/supabase";
 
-// ── Datos oficiales completos — extraídos del Excel RELACION_DE_OFICINAS_BUS_UNIVERSO ──
 const agencies = [
   // ── Áncash ──────────────────────────────────────────────────
   {
@@ -22,12 +19,11 @@ const agencies = [
     regionColor: "#d42b2b",
     address: "Terminal El Chimbador — Stand Q-7",
     phones: ["952 689 115"],
-    maps: "https://www.google.com/maps/place/Terminal+Terrestre+Chimbote/@-9.1045559,-78.5580393,18.5z/data=!4m12!1m5!3m4!2zOcKwMDYnMTcuMiJTIDc4wrAzMycyOC4xIlc!8m2!3d-9.1047793!4d-78.5578073!3m5!1s0x91ab84045765c6a5:0xd99c235aa2f87756!8m2!3d-9.1047793!4d-78.5578073!16s%2Fg%2F11g7gdqw8h?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3D",
+    maps: "https://www.google.com/maps/place/Terminal+Terrestre+Chimbote/@-9.1045559,-78.5580393,18.5z",
     dot: "#e53e3e",
     img: "/chimbador_terminal.png",
     whatsapp: "51952689115",
   },
-
   // ── La Libertad ─────────────────────────────────────────────
   {
     id: 2,
@@ -36,8 +32,8 @@ const agencies = [
     regionColor: "#1a4fa0",
     address: "Au. Panamericana N 13, Chao 13631 — al lado de Botica Medina",
     phones: ["968 499 740", "987 455 023"],
-    maps: "https://www.google.com/maps/@-8.5387296,-78.6773439,3a,75y,230.05h,91.03t/data=!3m7!1e1!3m5!1s6fIKB0q2A8EFBaha9sLNtg!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-1.0298218462498738%26panoid%3D6fIKB0q2A8EFBaha9sLNtg%26yaw%3D230.05366993227085!7i16384!8i8192?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#60a5fa",
+    maps: "https://www.google.com/maps/@-8.5387296,-78.6773439,3a",
+    dot: "#1a8c3c",
     img: "/chao_terminal.png",
     whatsapp: "51987455023",
   },
@@ -48,8 +44,8 @@ const agencies = [
     regionColor: "#1a4fa0",
     address: "Av. Panamericana 396 — Puente Virú",
     phones: ["968 499 740"],
-    maps: "https://www.google.com/maps/place/Panamericana+Nte.+396,+13620/@-8.411023,-78.807637,17z/data=!3m1!4b1!4m5!3m4!1s0x91acfc9d665ae85f:0x9804771c6a44ad38!8m2!3d-8.4110283!4d-78.8050621?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3Dm/?q=Viru+La+Libertad+Peru",
-    dot: "#60a5fa",
+    maps: "https://www.google.com/maps/place/Panamericana+Nte.+396",
+    dot: "#1a8c3c",
     img: "/viru_puente.png",
     whatsapp: "51968499740",
   },
@@ -60,8 +56,8 @@ const agencies = [
     regionColor: "#1a4fa0",
     address: "Carretera Panamericana 1319 — Sector Manco Cápac",
     phones: ["923 747 857"],
-    maps: "https://www.google.com/maps/@-7.7332027,-79.3018744,3a,75y,50.99h,93.28t/data=!3m7!1e1!3m5!1sDJ3HkkFqbySPmt4HbX6Ucw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-3.276347274329126%26panoid%3DDJ3HkkFqbySPmt4HbX6Ucw%26yaw%3D50.99190710643565!7i16384!8i8192?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#f5c518",
+    maps: "https://www.google.com/maps/@-7.7332027,-79.3018744",
+    dot: "#e8a820",
     img: "/paijan_terminal.png",
     whatsapp: "51923747857",
   },
@@ -73,8 +69,8 @@ const agencies = [
     address:
       "1ra cdra. de Leoncio Prado — Terminal Terrestre Pacasmayo Stand 3 y 13",
     phones: ["981 911 766", "980 947 832"],
-    maps: "https://www.google.com/maps/place/Terminal+Terrestre+Pacasmayo/@-7.3965125,-79.5672815,3a,90y,140.4h,88.68t/data=!3m7!1e1!3m5!1sz5JbwVU_UcEOvs4PqA9sNw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D1.3205965850238783%26panoid%3Dz5JbwVU_UcEOvs4PqA9sNw%26yaw%3D140.4003922139878!7i16384!8i8192!4m10!1m2!2m1!1s1ra+cdra.+de+Leoncio+Prado+%E2%80%94+Terminal+Terrestre+Pacasmayo+Stand+3+y+13!3m6!1s0x904d4606a6a1ca4b:0x992f035f6c6aa13c!8m2!3d-7.397103!4d-79.5670464!15sCkgxcmEgY2RyYS4gZGUgTGVvbmNpbyBQcmFkbyDigJQgVGVybWluYWwgVGVycmVzdHJlIFBhY2FzbWF5byBTdGFuZCAzIHkgMTNaRSJDMXJhIGNkcmEgZGUgbGVvbmNpbyBwcmFkbyB0ZXJtaW5hbCB0ZXJyZXN0cmUgcGFjYXNtYXlvIHN0YW5kIDMgeSAxM5IBC2J1c19zdGF0aW9umgEkQ2hkRFNVaE5NRzluUzBWSlEwRm5TVU10YVdaNWVHOVJSUkFC4AEA-gEECAAQKw!16s%2Fg%2F1ydp2p6ng?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#60a5fa",
+    maps: "https://www.google.com/maps/place/Terminal+Terrestre+Pacasmayo",
+    dot: "#1a8c3c",
     img: "/pacasmayo_terminal.png",
     whatsapp: "51981911766",
   },
@@ -85,8 +81,8 @@ const agencies = [
     regionColor: "#1a4fa0",
     address: "Panamericana Norte — Ciudad de Dios Kiosko N°4",
     phones: ["959 998 794"],
-    maps: "https://www.google.com/maps/place/Au.+Panamericana+N/@-7.8384455,-79.1521497,3a,75y,240.56h,85.44t/data=!3m7!1e1!3m5!1sXHBkky0DIXJ-dw8-PCjZuw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D4.5601498979005015%26panoid%3DXHBkky0DIXJ-dw8-PCjZuw%26yaw%3D240.55872898711607!7i16384!8i8192!4m15!1m8!3m7!1s0x91072068667cccc9:0xbe1f0eee754411d!2sAu.+Panamericana+N!3b1!8m2!3d-7.838863!4d-79.1526054!16s%2Fg%2F12fgs81yp!3m5!1s0x91072068667cccc9:0xbe1f0eee754411d!8m2!3d-7.838863!4d-79.1526054!16s%2Fg%2F12fgs81yp?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#93c5fd",
+    maps: "https://www.google.com/maps/place/Au.+Panamericana+N",
+    dot: "#22a849",
     img: "/ciudaddedios.png",
     whatsapp: "51959998794",
   },
@@ -97,8 +93,8 @@ const agencies = [
     regionColor: "#1a4fa0",
     address: "Jr. Zoila Bay 181 — Cafetal II, costado del Parque San Isidro",
     phones: ["942 873 849"],
-    maps: "https://www.google.com/maps/@-7.2492965,-79.4685065,3a,75y,197.23h,79.1t/data=!3m7!1e1!3m5!1scaKZzIV6G0fSYMq0ivPwnA!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D10.896044400769057%26panoid%3DcaKZzIV6G0fSYMq0ivPwnA%26yaw%3D197.22653053692878!7i16384!8i8192?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#bfdbfe",
+    maps: "https://www.google.com/maps/@-7.2492965,-79.4685065",
+    dot: "#1a8c3c",
     img: "/guadalupe.png",
     whatsapp: "51942873849",
   },
@@ -109,8 +105,8 @@ const agencies = [
     regionColor: "#1a4fa0",
     address: "Au. Panamericana N 709, Chepén 13871",
     phones: ["999 7157 93", "952 510 976"],
-    maps: "https://www.google.com/maps/place/Au.+Panamericana+N+709,+Chep%C3%A9n+13871/@-7.2227184,-79.4387883,3a,75y,273.22h,91.91t/data=!3m7!1e1!3m5!1sgcF-RAeQn85XVdUvUY0FUw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-1.9109256249649462%26panoid%3DgcF-RAeQn85XVdUvUY0FUw%26yaw%3D273.22258722050793!7i16384!8i8192!4m13!1m7!3m6!1s0x904d338f2e6b6f17:0xfada6d3eaa72b79e!2sAu.+Panamericana+N+709,+Chep%C3%A9n+13871!3b1!8m2!3d-7.2227147!4d-79.4388002!3m4!1s0x904d338f2e6b6f17:0xfada6d3eaa72b79e!8m2!3d-7.2227147!4d-79.4388002?entry=ttu&g_ep=EgoyMDI2MDMxNS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#3b82f6",
+    maps: "https://www.google.com/maps/place/Au.+Panamericana+N+709",
+    dot: "#1a8c3c",
     img: "/chepen_panamericana.png",
     whatsapp: "51999157937",
   },
@@ -122,12 +118,11 @@ const agencies = [
     address:
       "Calle Bolívar 290 — Pacanguilla, a una esquina del paradero de autos Chepén",
     phones: ["939 797 326"],
-    maps: "https://www.google.com/maps/place/Calle+Bolivar,+Pacanguilla+13860/@-7.1573065,-79.4415191,3a,75y,149.01h,90.3t/data=!3m7!1e1!3m5!1s2SZkVEX6mHf8Cnx7MJuoNw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-0.29989714859854644%26panoid%3D2SZkVEX6mHf8Cnx7MJuoNw%26yaw%3D149.0121221658179!7i16384!8i8192!4m15!1m8!3m7!1s0x904d326e81266565:0x4b0fa46144d40fed!2sCalle+Bolivar,+Pacanguilla+13860!3b1!8m2!3d-7.1573425!4d-79.44157!16s%2Fg%2F11y8blxq0m!3m5!1s0x904d326e81266565:0x4b0fa46144d40fed!8m2!3d-7.1573425!4d-79.44157!16s%2Fg%2F11y8blxq0m?entry=ttu&g_ep=EgoyMDI2MDMxMC4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#93c5fd",
+    maps: "https://www.google.com/maps/place/Calle+Bolivar,+Pacanguilla",
+    dot: "#22a849",
     img: "/pacanguilla.png",
     whatsapp: "51939797326",
   },
-
   // ── Lambayeque ──────────────────────────────────────────────
   {
     id: 10,
@@ -136,8 +131,8 @@ const agencies = [
     regionColor: "#7c3aed",
     address: "Av. Augusto B. Leguía 2592, Chiclayo 14009",
     phones: ["935 788 639"],
-    maps: "https://www.google.com/maps/place/Terrapuerto+Plaza+Norte+Chiclayo/@-6.7581481,-79.8652479,17z/data=!4m10!1m2!2m1!1sAv.+Augusto+B.+Legu%C3%ADa+2590+Stand+30+%E2%80%94+Terminal+Plaza+Norte!3m6!1s0x904ceeee5441e971:0x177085d265800cad!8m2!3d-6.7581481!4d-79.8607418!15sCj1Bdi4gQXVndXN0byBCLiBMZWd1w61hIDI1OTAgU3RhbmQgMzAg4oCUIFRlcm1pbmFsIFBsYXphIE5vcnRl4AEA!16s%2Fg%2F11vzrw7p60?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#c4b5fd",
+    maps: "https://www.google.com/maps/place/Terrapuerto+Plaza+Norte+Chiclayo",
+    dot: "#e8a820",
     img: "/chiclayo_plazanorte.png",
     whatsapp: "51935788639",
   },
@@ -148,8 +143,8 @@ const agencies = [
     regionColor: "#7c3aed",
     address: "Au. Panamericana N 476, Lambayeque 14013",
     phones: ["964 755 681"],
-    maps: "https://www.google.com/maps/place/Expreso+Jireh/@-6.7008848,-79.9023657,3a,75y,287.57h,95.51t/data=!3m7!1e1!3m5!1sj42LuG98O9SOfK4CqIOq0Q!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-5.505664982500676%26panoid%3Dj42LuG98O9SOfK4CqIOq0Q%26yaw%3D287.5687214481369!7i13312!8i6656!4m10!1m2!2m1!1sexpreso+jireh+chiclayo!3m6!1s0x904ced0038cc0803:0xb82603bd9ab287df!8m2!3d-6.700782!4d-79.9024775!15sChZleHByZXNvIGppcmVoIGNoaWNsYXlvkgENdHJhdmVsX2FnZW5jeeABAA!16s%2Fg%2F11xvh_xj7z?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#ddd6fe",
+    maps: "https://www.google.com/maps/place/Expreso+Jireh",
+    dot: "#1a8c3c",
     img: "/illimo.png",
     whatsapp: "51964755681",
   },
@@ -160,12 +155,11 @@ const agencies = [
     regionColor: "#7c3aed",
     address: "Caserío Nuevo Cruce Jaén — referencia a la cochera CCHISA",
     phones: ["991 598 645"],
-    maps: "https://www.google.com/maps/place/Grifo+CCHISA+(Ex.+Consorcios+Mori)/@-6.7369043,-79.8814074,3a,75y,63.41h,93.45t/data=!3m7!1e1!3m5!1sAz6mJ9YAavvL9HGvKgIACA!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-3.448607030360364%26panoid%3DAz6mJ9YAavvL9HGvKgIACA%26yaw%3D63.40698655417178!7i16384!8i8192!4m14!1m7!3m6!1s0x904cee7b912e3eef:0xd91ef137dea9cbd0!2sGrifo+CCHISA+(Ex.+Consorcios+Mori)!8m2!3d-6.7368215!4d-79.8811048!16s%2Fg%2F11gbp__z0c!3m5!1s0x904cee7b912e3eef:0xd91ef137dea9cbd0!8m2!3d-6.7368215!4d-79.8811048!16s%2Fg%2F11gbp__z0c?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#ede9fe",
+    maps: "https://www.google.com/maps/place/Grifo+CCHISA",
+    dot: "#1a8c3c",
     img: "/olmos_cchisa.png",
     whatsapp: "51991598645",
   },
-
   // ── Amazonas ────────────────────────────────────────────────
   {
     id: 13,
@@ -174,12 +168,11 @@ const agencies = [
     regionColor: "#065f46",
     address: "Av. Chachapoyas 2840 — Terminal Leiva",
     phones: ["959 544 152"],
-    maps: "https://www.google.com/maps/place/Terminal+Leyva/@-5.7575741,-78.4383837,17z/data=!4m10!1m2!2m1!1sAv.+Chachapoyas+2840+%E2%80%94+Terminal+Leiva!3m6!1s0x91b44fbd00000001:0xcee0e7102f5cce78!8m2!3d-5.7576547!4d-78.4357215!15sCidBdi4gQ2hhY2hhcG95YXMgMjg0MCDigJQgVGVybWluYWwgTGVpdmFaJCIiYXYgY2hhY2hhcG95YXMgMjg0MCB0ZXJtaW5hbCBsZWl2YZIBCnJlc3RhdXJhbnSaAURDaTlEUVVsUlFVTnZaRU5vZEhsalJqbHZUMjVDYlZWWE1UWmhWRkUxWW5wb2VWSkVTazlOUXpBelpXNXNSVnBJWXhBQuABAPoBBAgAEDA!16s%2Fg%2F11c5smlm8m?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#4ade80",
+    maps: "https://www.google.com/maps/place/Terminal+Leyva",
+    dot: "#22a849",
     img: "/chamaya.png",
     whatsapp: "51959544152",
   },
-
   {
     id: 14,
     city: "Pedro Ruiz",
@@ -187,8 +180,8 @@ const agencies = [
     regionColor: "#065f46",
     address: "Carr. Fernando Belaúnde Terry S/N",
     phones: ["922 210 161"],
-    maps: "https://www.google.com/maps/place/Ctra.+Fernando+Bela%C3%BAnde+Terry/@-5.9214092,-78.1195584,3a,75y,90.27h,93.08t/data=!3m7!1e1!3m5!1sI2sR3-M2hwuQ8i06FTFF2w!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-3.078275302330553%26panoid%3DI2sR3-M2hwuQ8i06FTFF2w%26yaw%3D90.27393580094342!7i16384!8i8192!4m15!1m8!3m7!1s0x91b49b7e6e8fe457:0x2bc3405674c57e69!2sCtra.+Fernando+Bela%C3%BAnde+Terry!3b1!8m2!3d-5.9214227!4d-78.1197751!16s%2Fg%2F1tg_bkf0!3m5!1s0x91b49b7e6e8fe457:0x2bc3405674c57e69!8m2!3d-5.9214227!4d-78.1197751!16s%2Fg%2F1tg_bkf0?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#34d399",
+    maps: "https://www.google.com/maps/place/Ctra.+Fernando+Bela%C3%BAnde+Terry",
+    dot: "#1a8c3c",
     img: "/pedroruiz.png",
     whatsapp: "51922210161",
   },
@@ -199,12 +192,11 @@ const agencies = [
     regionColor: "#065f46",
     address: "Carr. Fernando Belaúnde Terry 1246 — frente a la Comisaría",
     phones: ["913 574 460"],
-    maps: "https://www.google.com/maps/place/Ctra.+Fernando+Bela%C3%BAnde+Terry+1246,+Pomacochas+01150/@-5.8214903,-77.970806,17z/data=!3m1!4b1!4m5!3m4!1s0x91b42704aa792569:0xe7d96234efd0d574!8m2!3d-5.8214956!4d-77.9682311?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#a7f3d0",
+    maps: "https://www.google.com/maps/place/Ctra.+Fernando+Bela%C3%BAnde+Terry+1246",
+    dot: "#e8a820",
     img: "/buenosaires.png",
     whatsapp: "51913574460",
   },
-
   // ── San Martín ──────────────────────────────────────────────
   {
     id: 16,
@@ -213,8 +205,8 @@ const agencies = [
     regionColor: "#92400e",
     address: "Av. Marginal 314 — al costado de Turismo Cajamarca",
     phones: ["942 444 294"],
-    maps: "https://www.google.com/maps/place/AV.+MARGINAL+314,+Naranjos+22866/@-5.7384303,-77.5026697,15z/data=!4m16!1m9!3m8!1s0x91b6f24290dce1d9:0x4f33e4ffa2ad3fe!2sAV.+MARGINAL+314,+Naranjos+22866!3b1!8m2!3d-5.7385044!4d-77.5027397!10e5!16s%2Fg%2F11s9l6yl3f!3m5!1s0x91b6f24290dce1d9:0x4f33e4ffa2ad3fe!8m2!3d-5.7385044!4d-77.5027397!16s%2Fg%2F11s9l6yl3f?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#fb923c",
+    maps: "https://www.google.com/maps/place/AV.+MARGINAL+314,+Naranjos",
+    dot: "#e8a820",
     img: "/naranjos.png",
     whatsapp: "51942444294",
   },
@@ -225,8 +217,8 @@ const agencies = [
     regionColor: "#92400e",
     address: "Carr. Fernando Belaúnde Terry S/N — Naranjillo",
     phones: ["975 790 400"],
-    maps: "https://www.google.com/maps/place/CARRETERA+FERNANDO+BELAUNDE/@-5.8096875,-77.3935764,3a,75y,137.43h,92.52t/data=!3m7!1e1!3m5!1sp1Wv0ECjaTxF1ppjcCxtrw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-2.5222593896327794%26panoid%3Dp1Wv0ECjaTxF1ppjcCxtrw%26yaw%3D137.43359904803108!7i16384!8i8192!4m15!1m8!3m7!1s0x91b6ef73c55e2a5b:0x384524106bee019c!2sNaranjillo!3b1!8m2!3d-5.8065853!4d-77.3984704!16s%2Fg%2F1vgx1t_y!3m5!1s0x91b6ef30581d5be9:0xcfcfd4fcf1635aa6!8m2!3d-5.8092961!4d-77.3940519!16s%2Fg%2F11thqxdg9t?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#fdba74",
+    maps: "https://www.google.com/maps/place/CARRETERA+FERNANDO+BELAUNDE",
+    dot: "#1a8c3c",
     img: "/naranjillo.png",
     whatsapp: "51975790400",
   },
@@ -237,8 +229,8 @@ const agencies = [
     regionColor: "#92400e",
     address: "Av. Cajamarca Norte — Terminal Terrestre La Molina",
     phones: ["931 703 571"],
-    maps: "https://www.google.com/maps/place/Terminal+Terrestre+La+Molina/@-5.9281701,-77.3154473,17z/data=!4m15!1m8!3m7!1s0x91b6dd8e83a6f883:0x1364125be898171e!2sTerminal+Terrestre+La+Molina!8m2!3d-5.9281701!4d-77.3154473!10e5!16s%2Fg%2F11bw6497j5!3m5!1s0x91b6dd8e83a6f883:0x1364125be898171e!8m2!3d-5.9281701!4d-77.3154473!16s%2Fg%2F11bw6497j5?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#f97316",
+    maps: "https://www.google.com/maps/place/Terminal+Terrestre+La+Molina",
+    dot: "#22a849",
     img: "/n.cajamarca.png",
     whatsapp: "51931703571",
   },
@@ -250,8 +242,8 @@ const agencies = [
     address:
       "Av. Samaria Cdra. 1 — al costado de la Iglesia Pentecostés Misionera",
     phones: ["939 083 805"],
-    maps: "https://www.google.com/maps/place/Iglesia+Pentecost%C3%A9s+Misionera+Segunda+Jerusal%C3%A9n/@-5.9916378,-77.2800005,3a,75y,39.2h,89.61t/data=!3m7!1e1!3m5!1spr_ywX6NwMYrFE5z8pRRAQ!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D0.3887837716800959%26panoid%3Dpr_ywX6NwMYrFE5z8pRRAQ%26yaw%3D39.19720724761396!7i16384!8i8192!4m14!1m7!3m6!1s0x91b6dea5d09ea3b9:0x83a74a951f047d94!2sIglesia+Pentecost%C3%A9s+Misionera+Segunda+Jerusal%C3%A9n!8m2!3d-5.9908792!4d-77.2802933!16s%2Fg%2F11b7lgyjqs!3m5!1s0x91b6dea5d09ea3b9:0x83a74a951f047d94!8m2!3d-5.9908792!4d-77.2802933!16s%2Fg%2F11b7lgyjqs?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#fb923c",
+    maps: "https://www.google.com/maps/place/Iglesia+Pentecost%C3%A9s+Misionera+Segunda+Jerusal%C3%A9n",
+    dot: "#e8a820",
     img: "/segunda_jerusalen.png",
     whatsapp: "51939083805",
   },
@@ -262,8 +254,8 @@ const agencies = [
     regionColor: "#92400e",
     address: "Av. Campo Ferial #100 — Terminal Terrestre Stand 8",
     phones: ["941 583 051"],
-    maps: "https://www.google.com/maps/place/Terminal+Terrestre+Municipal+Arturo+Iberico+Lopez/@-6.0551671,-77.1678398,17.5z/data=!4m10!1m2!2m1!1sAv.+Campo+Ferial+%23100+%E2%80%94+Terminal+Terrestre+Stand+8,+costado+de+TSP!3m6!1s0x91b727bc779a6bcb:0x46317503d98f2a85!8m2!3d-6.05516!4d-77.1659029!15sCkRBdi4gQ2FtcG8gRmVyaWFsICMxMDAg4oCUIFRlcm1pbmFsIFRlcnJlc3RyZSBTdGFuZCA4LCBjb3N0YWRvIGRlIFRTUJIBC2J1c19zdGF0aW9u4AEA!16s%2Fg%2F1pxqc4rnp?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#f97316",
+    maps: "https://www.google.com/maps/place/Terminal+Terrestre+Municipal+Arturo+Iberico+Lopez",
+    dot: "#22a849",
     img: "/riojagencia.png",
     whatsapp: "51941583051",
   },
@@ -274,8 +266,8 @@ const agencies = [
     regionColor: "#92400e",
     address: "Av. Miguel Grau 555 — Terminal Terrestre Municipal",
     phones: ["995 454 537"],
-    maps: "https://www.google.com/maps/place/Terminal+Terrestre/@-6.0452045,-76.9708222,3a,75y,47.57h,78.47t/data=!3m7!1e1!3m5!1shNvOQ3O9_Of0W2Z7nYHfLA!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D11.52863004774565%26panoid%3DhNvOQ3O9_Of0W2Z7nYHfLA%26yaw%3D47.57483618906018!7i13312!8i6656!4m14!1m7!3m6!1s0x91b73b103b41cef3:0x51fbc79713f914b2!2sTerminal+Terrestre!8m2!3d-6.0451601!4d-76.9704046!16s%2Fg%2F11gl0y0bbc!3m5!1s0x91b73b103b41cef3:0x51fbc79713f914b2!8m2!3d-6.0451601!4d-76.9704046!16s%2Fg%2F11gl0y0bbc?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#fb923c",
+    maps: "https://www.google.com/maps/place/Terminal+Terrestre",
+    dot: "#1a8c3c",
     img: "/moyobamba_agencia.png",
     whatsapp: "51995454537",
   },
@@ -287,8 +279,8 @@ const agencies = [
     address:
       "Carr. Fernando Belaúnde Terry Km. 40 — junto al Restaurante Mi Elva, frente al grifo",
     phones: ["979 050 445"],
-    maps: "https://www.google.com/maps/place/Ctra.+Fernando+Bela%C3%BAnde+Terry,+Tabalosos/@-6.3866568,-76.6304153,15z/data=!4m11!1m3!2m2!1sTabalosos+Carr.+Fernando+Bela%C3%BAnde+Terry+Km.+40+%E2%80%94+junto+al+Restaurante+Mi+Elva,+frente+al+grifo!6e1!3m6!1s0x91b49b7e6e8fe457:0x2bc3405674c57e69!8m2!3d-6.3867179!4d-76.6304224!15sCmFUYWJhbG9zb3MgQ2Fyci4gRmVybmFuZG8gQmVsYcO6bmRlIFRlcnJ5IEttLiA0MCDigJQganVudG8gYWwgUmVzdGF1cmFudGUgTWkgRWx2YSwgZnJlbnRlIGFsIGdyaWZvkgEFcm91dGXgAQA!16s%2Fg%2F1tg_bkf0?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#fdba74",
+    maps: "https://www.google.com/maps/place/Ctra.+Fernando+Bela%C3%BAnde+Terry,+Tabalosos",
+    dot: "#e8a820",
     img: "/tabalosos.png",
     whatsapp: "51979050445",
   },
@@ -300,8 +292,8 @@ const agencies = [
     address:
       "Terminal Santa Anita Stand 20 — costado del Mercado Santa Anita, Carr. Atupampa Morales",
     phones: ["995 454 609"],
-    maps: "https://www.google.com/maps/place/Mercado+Santa+Anita'/@-6.4895639,-76.3889518,3a,75y,186.79h,92.41t/data=!3m7!1e1!3m5!1si4dows2_heevdzD2RlOMwQ!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-2.4145987512358715%26panoid%3Di4dows2_heevdzD2RlOMwQ%26yaw%3D186.78810665529988!7i16384!8i8192!4m10!1m2!2m1!1sTerminal+Santa+Anita+Tarapoto!3m6!1s0x91ba0bc3d31a7377:0x49fedb35c91d5b2a!8m2!3d-6.4903458!4d-76.3890869!15sCh1UZXJtaW5hbCBTYW50YSBBbml0YSBUYXJhcG90b1ofIh10ZXJtaW5hbCBzYW50YSBhbml0YSB0YXJhcG90b5IBBm1hcmtldJoBJENoZERTVWhOTUc5blMwVkpRMEZuU1VOUGNIRXRZVE5SUlJBQuABAPoBBAgAEB8!16s%2Fg%2F11j98zzs2b?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#22c55e",
+    maps: "https://www.google.com/maps/place/Mercado+Santa+Anita",
+    dot: "#22a849",
     img: "/santa_anita.png",
     whatsapp: "51995454609",
   },
@@ -312,8 +304,8 @@ const agencies = [
     regionColor: "#92400e",
     address: "Carr. Fernando Belaúnde Terry S/N — costado Hotel Mateo",
     phones: ["924 290 846"],
-    maps: "https://www.google.com/maps/place/Picota/@-6.921107,-76.334992,3a,75y,30.95h,94.49t/data=!3m7!1e1!3m5!1swpaBXn6ukkpGFjf0ye5q6A!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-4.492062424993932%26panoid%3DwpaBXn6ukkpGFjf0ye5q6A%26yaw%3D30.947066227537505!7i16384!8i8192!4m6!3m5!1s0x91ba87881e9f04b7:0xd5ffb8db127ae91d!8m2!3d-6.9199176!4d-76.3304777!16s%2Fm%2F047fpv6?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#fb923c",
+    maps: "https://www.google.com/maps/place/Picota",
+    dot: "#1a8c3c",
     img: "/picota.png",
     whatsapp: "51924290846",
   },
@@ -324,8 +316,8 @@ const agencies = [
     regionColor: "#92400e",
     address: "Carr. Fernando Belaúnde Terry S/N",
     phones: ["942 647 965", "998 031 404"],
-    maps: "https://www.google.com/maps/place/San+Hilari%C3%B3n/@-6.9963233,-76.4430821,15z/data=!4m6!3m5!1s0x91ba821336ad1961:0xa3331dbad24701af!8m2!3d-6.9993164!4d-76.4418473!16s%2Fm%2F043jwcs?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#22c55e",
+    maps: "https://www.google.com/maps/place/San+Hilari%C3%B3n",
+    dot: "#1a8c3c",
     img: "/san_hilarion.png",
     whatsapp: "51942647965",
   },
@@ -336,8 +328,8 @@ const agencies = [
     regionColor: "#92400e",
     address: "Av. Lima Cdra. 6 con Jr. Loreto — Tercer Piso",
     phones: ["942 135 150"],
-    maps: "]https://www.google.com/maps/place/Bellavista/@-7.0520657,-76.5889836,19z/data=!4m6!3m5!1s0x91b07a6434cf00f3:0x16eb0cc657796f94!8m2!3d-7.0534572!4d-76.5892774!16s%2Fm%2F047pcnp?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#a78bfa",
+    maps: "https://www.google.com/maps/place/Bellavista",
+    dot: "#22a849",
     img: "/bellavista.png",
     whatsapp: "51942135150",
   },
@@ -348,8 +340,8 @@ const agencies = [
     regionColor: "#92400e",
     address: "Carr. Fernando Belaúnde Terry S/N — Km. 737",
     phones: ["927 113 725", "929 855 077"],
-    maps: "https://www.google.com/maps/place/Fernando+Belaunde+Terry/@-7.9020854,-76.6666304,3a,75y,174.7h,94.1t/data=!3m7!1e1!3m5!1sENqdQaDsS962N4-ZZhnCVw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-4.101070425634575%26panoid%3DENqdQaDsS962N4-ZZhnCVw%26yaw%3D174.70036990254155!7i16384!8i8192!4m15!1m8!3m7!1s0x91b0a0eba374da97:0xd2aef54bd41bd6fd!2sFernando+Belaunde+Terry!3b1!8m2!3d-7.9020057!4d-76.6666117!16s%2Fg%2F1ptvzystd!3m5!1s0x91b0a0eba374da97:0xd2aef54bd41bd6fd!8m2!3d-7.9020057!4d-76.6666117!16s%2Fg%2F1ptvzystd?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#fb923c",
+    maps: "https://www.google.com/maps/place/Fernando+Belaunde+Terry",
+    dot: "#e8a820",
     img: "/sacanche.png",
     whatsapp: "51927113725",
   },
@@ -360,8 +352,8 @@ const agencies = [
     regionColor: "#92400e",
     address: "Jr. Chorrillos 516",
     phones: ["969 182 663"],
-    maps: "https://www.google.com/maps/place/Jr.+Chorrillos+516,+Saposoa+22661/@-6.9378186,-76.7704636,17z/data=!4m6!3m5!1s0x91b061b027960619:0xfab3bb31de91302b!8m2!3d-6.9378598!4d-76.7703275!16s%2Fg%2F11tk54bfz7?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#fbbf24",
+    maps: "https://www.google.com/maps/place/Jr.+Chorrillos+516,+Saposoa",
+    dot: "#1a8c3c",
     img: "/saposoa.png",
     whatsapp: "51969182663",
   },
@@ -372,8 +364,8 @@ const agencies = [
     regionColor: "#92400e",
     address: "Jr. Arica 103 — Terminal Tobías Ruiz",
     phones: ["950 641 480"],
-    maps: "https://www.google.com/maps/place/TERMINAL+TOBIAS+RUIZ/@-7.1803393,-76.7347538,18z/data=!4m15!1m8!3m7!1s0x91b06bbd4669d5bf:0x4e88e1b46c0939ff!2sTERMINAL+TOBIAS+RUIZ!8m2!3d-7.180322!4d-76.7347968!10e5!16s%2Fg%2F11f8_knyt4!3m5!1s0x91b06bbd4669d5bf:0x4e88e1b46c0939ff!8m2!3d-7.180322!4d-76.7347968!16s%2Fg%2F11f8_knyt4?entry=ttu&g_ep=EgoyMDI2MDMxMS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#4ade80",
+    maps: "https://www.google.com/maps/place/TERMINAL+TOBIAS+RUIZ",
+    dot: "#22a849",
     img: "./juanjui.png",
     whatsapp: "51950641480",
   },
@@ -384,8 +376,8 @@ const agencies = [
     regionColor: "#92400e",
     address: "Las Flores, Jr. Mariscal Caceres 230, Yurimaguas 16501",
     phones: ["972 851 055"],
-    maps: "https://www.google.com/maps/place/5NB+234,+Yurimaguas+16501/@-5.8986537,-76.1138832,17z/data=!3m1!4b1!4m6!3m5!1s0x91b9ea98e470879f:0x92b4ec55594b0a8e!8m2!3d-5.898659!4d-76.1113083!16s%2Fg%2F11w84j_l_f?entry=ttu&g_ep=EgoyMDI2MDMxNS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#22c55e",
+    maps: "https://www.google.com/maps/place/5NB+234,+Yurimaguas",
+    dot: "#1a8c3c",
     img: "/yurimaguas.png",
     whatsapp: "51972851055",
   },
@@ -393,11 +385,11 @@ const agencies = [
     id: 31,
     city: "Trujillo",
     region: "La Libertad",
-    regionColor: "#92400e",
+    regionColor: "#1a4fa0",
     address: "Av. Nicolás de Piérola 1230, Trujillo 13001 Urb. San Fernando",
     phones: ["999 333 419", "966 198 771"],
-    maps: "https://www.google.com/maps/place/Turismo+Universo+Trujillo/@-8.097577,-79.0379012,20.25z/data=!4m15!1m8!3m7!1s0x91ad3deae506cb59:0x5fede72cef4dde49!2sAv.+Nicol%C3%A1s+de+Pi%C3%A9rola+1230,+Trujillo+13001!3b1!8m2!3d-8.097581!4d-79.0376331!16s%2Fg%2F11vqn9zmr_!3m5!1s0x91ad3dc64e7a2a7b:0x4d64efd5950473b8!8m2!3d-8.0973113!4d-79.0378456!16s%2Fg%2F11h7d85rbd?entry=ttu&g_ep=EgoyMDI2MDMxNS4wIKXMDSoASAFQAw%3D%3D",
-    dot: "#22c55e",
+    maps: "https://www.google.com/maps/place/Turismo+Universo+Trujillo",
+    dot: "#22a849",
     img: "/trujillo.png",
     whatsapp: "51966198771",
   },
@@ -422,26 +414,16 @@ export default function AgenciasPage() {
     const matchRegion = activeRegion === "Todas" || a.region === activeRegion;
     return matchSearch && matchRegion;
   });
-  useEffect(() => {
-    // supabase
-    //   .from("agencias")
-    //   .select("*")
-    //   .then(({ data, error }) => {
-    //     if (error) {
-    //       console.error("❌ ERROR DETALLADO:", JSON.stringify(error, null, 2));
-    //     } else {
-    //       console.log("✅ Datos recibidos:", data);
-    //       console.log("📊 Total registros:", data?.length);
-    //     }
-    //   });
-  }, []);
+
+  useEffect(() => {}, []);
+
   return (
     <div
       style={{
         fontFamily: "'Inter', sans-serif",
-        background: "#f8f9fa",
+        background: "#f2fbf5",
         minHeight: "100vh",
-        color: "#111",
+        color: "#0d2818",
         overflowX: "hidden",
       }}
     >
@@ -452,68 +434,77 @@ export default function AgenciasPage() {
         @keyframes slideUp  { from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);} }
         @keyframes pulseDot { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.6);} }
         @keyframes cardIn   { from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);} }
+        @keyframes shimmer  { 0%{background-position:200% center;}100%{background-position:-200% center;} }
 
         .agency-card {
-          background: #fff; border-radius: 18px; overflow: hidden;
-          border: 1.5px solid #e5e7eb;
-          transition: transform .22s ease, box-shadow .22s ease;
+          background: #fff;
+          border-radius: 18px;
+          overflow: hidden;
+          border: 1.5px solid #c8f0d8;
+          transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
           animation: cardIn .45s ease both;
         }
-        .agency-card:hover { transform: translateY(-5px); box-shadow: 0 20px 50px rgba(0,0,0,.10); }
+        .agency-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 20px 50px rgba(26,140,60,.14);
+          border-color: #1a8c3c;
+        }
         .agency-img-wrap { position: relative; height: 160px; overflow: hidden; }
         .agency-img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
         .agency-card:hover .agency-img { transform: scale(1.06); }
 
         .region-badge {
           position: absolute; top: 12px; right: 12px;
-          background: rgba(0,0,0,.55); backdrop-filter: blur(8px);
-          border: 1px solid rgba(255,255,255,.18); color: #fff;
+          background: rgba(255,255,255,.92);
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(26,140,60,.25);
+          color: #0f7a2e;
           font-size: 10px; font-weight: 700; letter-spacing: .1em;
           text-transform: uppercase; padding: 4px 10px; border-radius: 6px;
         }
-        .city-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex-shrink: 0; box-shadow: 0 0 0 3px rgba(255,255,255,.35); }
+        .city-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex-shrink: 0; box-shadow: 0 0 0 3px rgba(255,255,255,.5); }
 
         .phone-chip {
           display: inline-flex; align-items: center; gap: 6px;
-          background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px;
-          padding: 5px 10px; font-size: 12px; font-weight: 700; color: #166534;
+          background: #edfaf3; border: 1px solid #a7f3d0; border-radius: 6px;
+          padding: 5px 10px; font-size: 12px; font-weight: 700; color: #0f7a2e;
           text-decoration: none; transition: background .15s, transform .1s; white-space: nowrap;
         }
-        .phone-chip:hover { background: #dcfce7; transform: translateY(-1px); }
+        .phone-chip:hover { background: #d4f5e0; transform: translateY(-1px); }
 
         .maps-btn {
           display: flex; align-items: center; gap: 6px;
-          background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+          background: linear-gradient(135deg, #edfaf3, #d4f5e0);
           border: 1.5px solid #86efac; border-radius: 8px; padding: 9px 14px;
           font-size: 11px; font-weight: 700; letter-spacing: .06em;
-          text-transform: uppercase; color: #166534; text-decoration: none;
+          text-transform: uppercase; color: #0f7a2e; text-decoration: none;
           transition: all .15s;
         }
-        .maps-btn:hover { background: linear-gradient(135deg, #dcfce7, #bbf7d0); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,140,60,.15); }
+        .maps-btn:hover { background: linear-gradient(135deg, #d4f5e0, #bbf7d0); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,140,60,.18); }
 
         .filter-chip {
           padding: 7px 16px; border-radius: 20px; font-size: 12px; font-weight: 700;
-          letter-spacing: .05em; border: 1.5px solid #e5e7eb; background: #fff;
-          color: rgba(0,0,0,.5); cursor: pointer; transition: all .15s; white-space: nowrap;
+          letter-spacing: .05em; border: 1.5px solid #c8f0d8; background: #fff;
+          color: #5a8a6a; cursor: pointer; transition: all .15s; white-space: nowrap;
         }
-        .filter-chip:hover { border-color: #1a8c3c; color: #1a8c3c; }
+        .filter-chip:hover { border-color: #1a8c3c; color: #1a8c3c; background: #edfaf3; }
         .filter-chip.active { background: #1a8c3c; border-color: #1a8c3c; color: #fff; }
 
         .search-input {
-          border: 1.5px solid #e5e7eb; border-radius: 12px;
+          border: 1.5px solid #c8f0d8; border-radius: 12px;
           padding: 12px 16px 12px 42px; font-size: 14px; font-weight: 500;
-          color: #111; background: #fff; outline: none; width: 100%; max-width: 340px;
+          color: #0d2818; background: #fff; outline: none; width: 100%; max-width: 340px;
           transition: border-color .2s, box-shadow .2s;
         }
-        .search-input:focus { border-color: #1a8c3c; box-shadow: 0 0 0 3px rgba(26,140,60,.10); }
-        .search-input::placeholder { color: rgba(0,0,0,.35); }
+        .search-input:focus { border-color: #1a8c3c; box-shadow: 0 0 0 3px rgba(26,140,60,.12); }
+        .search-input::placeholder { color: #5a8a6a; }
 
         .wsp-btn {
           display: inline-flex; align-items: center; gap: 8px;
           background: linear-gradient(135deg, #25D366, #128C7E);
           color: #fff; border: none; border-radius: 10px; padding: 10px 18px;
           font-size: 12px; font-weight: 700; letter-spacing: .04em;
-          cursor: pointer; box-shadow: 0 4px 16px rgba(37,211,102,.35);
+          cursor: pointer; box-shadow: 0 4px 16px rgba(37,211,102,.30);
           transition: opacity .2s, transform .15s; text-decoration: none; white-space: nowrap;
         }
         .wsp-btn:hover { opacity: .9; transform: translateY(-1px); }
@@ -531,30 +522,45 @@ export default function AgenciasPage() {
       <section
         style={{
           background:
-            "linear-gradient(135deg,#0d1117 0%,#0f2a1a 50%,#0d1117 100%)",
+            "linear-gradient(135deg, #edfaf3 0%, #d4f5e0 40%, #fef9e7 100%)",
           position: "relative",
           overflow: "hidden",
+          borderBottom: "3px solid #86efac",
         }}
       >
+        {/* Decorative circles */}
         <div
           style={{
             position: "absolute",
-            inset: 0,
-            opacity: 0.04,
-            backgroundImage: "radial-gradient(circle,#fff 1px,transparent 1px)",
-            backgroundSize: "28px 28px",
+            top: -60,
+            right: -60,
+            width: 300,
+            height: 300,
+            background:
+              "radial-gradient(circle, rgba(26,140,60,.10) 0%, transparent 70%)",
+            borderRadius: "50%",
           }}
         />
         <div
           style={{
             position: "absolute",
-            top: -80,
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: 700,
-            height: 320,
+            bottom: -40,
+            left: -40,
+            width: 200,
+            height: 200,
             background:
-              "radial-gradient(ellipse,rgba(26,140,60,.22) 0%,transparent 70%)",
+              "radial-gradient(circle, rgba(232,168,32,.12) 0%, transparent 70%)",
+            borderRadius: "50%",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            opacity: 0.035,
+            backgroundImage:
+              "radial-gradient(circle, #1a8c3c 1px, transparent 1px)",
+            backgroundSize: "28px 28px",
           }}
         />
 
@@ -575,14 +581,14 @@ export default function AgenciasPage() {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 8,
-                background: "rgba(255,255,255,.07)",
-                border: "1px solid rgba(255,255,255,.18)",
+                background: "rgba(255,255,255,.80)",
+                border: "1.5px solid rgba(26,140,60,.25)",
                 borderRadius: 20,
                 padding: "6px 18px",
                 fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: ".12em",
-                color: "#e2e8f0",
+                color: "#0f7a2e",
                 textTransform: "uppercase",
                 marginBottom: 24,
                 backdropFilter: "blur(10px)",
@@ -592,7 +598,7 @@ export default function AgenciasPage() {
                 style={{
                   width: 7,
                   height: 7,
-                  background: "#4ade80",
+                  background: "#22a849",
                   borderRadius: "50%",
                   animation: "pulseDot 1.5s ease-in-out infinite",
                   display: "inline-block",
@@ -606,14 +612,13 @@ export default function AgenciasPage() {
                 fontFamily: "'Playfair Display',serif",
                 fontSize: "clamp(32px,5vw,56px)",
                 fontWeight: 800,
-                color: "#fff",
+                color: "#0d2818",
                 lineHeight: 1.12,
                 marginBottom: 18,
-                textShadow: "0 2px 28px rgba(0,0,0,.4)",
               }}
             >
               Nuestras{" "}
-              <span style={{ fontStyle: "italic", color: "#f5c518" }}>
+              <span style={{ fontStyle: "italic", color: "#1a8c3c" }}>
                 agencias
               </span>{" "}
               en el norte del Perú
@@ -628,13 +633,17 @@ export default function AgenciasPage() {
                 justifyContent: "center",
               }}
             >
-              {["#1a8c3c", "#f5c518", "#d42b2b"].map((c, i) => (
+              {[
+                { w: 36, c: "#1a8c3c" },
+                { w: 18, c: "#e8a820" },
+                { w: 10, c: "#d42b2b" },
+              ].map((s, i) => (
                 <div
                   key={i}
                   style={{
-                    width: i === 0 ? 36 : i === 1 ? 18 : 10,
+                    width: s.w,
                     height: 3,
-                    background: c,
+                    background: s.c,
                     borderRadius: 2,
                   }}
                 />
@@ -643,7 +652,7 @@ export default function AgenciasPage() {
 
             <p
               style={{
-                color: "rgba(215,225,240,.78)",
+                color: "#2d5a3d",
                 fontSize: 16,
                 lineHeight: 1.8,
                 maxWidth: 540,
@@ -651,7 +660,7 @@ export default function AgenciasPage() {
               }}
             >
               Contamos con{" "}
-              <strong style={{ color: "#f5c518" }}>
+              <strong style={{ color: "#1a8c3c" }}>
                 31 puntos de atención
               </strong>{" "}
               distribuidos en 5 regiones del norte del Perú. Compra tu pasaje
@@ -663,21 +672,21 @@ export default function AgenciasPage() {
               style={{
                 display: "flex",
                 gap: 0,
-                background: "rgba(5,12,28,.48)",
+                background: "rgba(255,255,255,.75)",
                 borderRadius: 14,
                 overflow: "hidden",
                 backdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,.10)",
+                border: "1.5px solid rgba(26,140,60,.20)",
                 maxWidth: 520,
                 margin: "0 auto",
-                boxShadow: "0 8px 32px rgba(0,0,0,.35)",
+                boxShadow: "0 8px 32px rgba(26,140,60,.12)",
               }}
             >
               {[
-                { value: "31", label: "Agencias", color: "#4ade80" },
-                { value: "5", label: "Regiones", color: "#fbbf24" },
-                { value: "50+", label: "Rutas", color: "#60a5fa" },
-                { value: "7 am", label: "Apertura", color: "#f87171" },
+                { value: "31", label: "Agencias", color: "#1a8c3c" },
+                { value: "5", label: "Regiones", color: "#e8a820" },
+                { value: "2", label: "Rutas", color: "#1a4fa0" },
+                { value: "7 am", label: "Apertura", color: "#d42b2b" },
               ].map((s, i) => (
                 <div
                   key={s.label}
@@ -686,7 +695,7 @@ export default function AgenciasPage() {
                     padding: "16px 8px",
                     textAlign: "center",
                     borderRight:
-                      i < 3 ? "1px solid rgba(255,255,255,.08)" : "none",
+                      i < 3 ? "1px solid rgba(26,140,60,.12)" : "none",
                   }}
                 >
                   <div
@@ -703,11 +712,11 @@ export default function AgenciasPage() {
                   <div
                     style={{
                       fontSize: 10,
-                      color: "rgba(255,255,255,.48)",
+                      color: "#5a8a6a",
                       marginTop: 4,
                       textTransform: "uppercase",
                       letterSpacing: ".07em",
-                      fontWeight: 500,
+                      fontWeight: 600,
                     }}
                   >
                     {s.label}
@@ -720,8 +729,8 @@ export default function AgenciasPage() {
       </section>
 
       {/* ════ COLOR STRIP ════ */}
-      <div style={{ display: "flex", height: 5 }}>
-        {["#1a8c3c", "#d42b2b", "#1a4fa0", "#f5c518", "#1a8c3c"].map(
+      <div style={{ display: "flex", height: 4 }}>
+        {["#1a8c3c", "#d42b2b", "#1a4fa0", "#e8a820", "#1a8c3c"].map(
           (c, i, a) => (
             <div
               key={i}
@@ -738,11 +747,11 @@ export default function AgenciasPage() {
       <div
         style={{
           background: "#fff",
-          borderBottom: "1px solid #e5e7eb",
+          borderBottom: "1.5px solid #c8f0d8",
           position: "sticky",
           top: 68,
           zIndex: 40,
-          boxShadow: "0 2px 12px rgba(0,0,0,.06)",
+          boxShadow: "0 2px 16px rgba(26,140,60,.08)",
         }}
       >
         <div style={{ maxWidth: 1296, margin: "0 auto", padding: "14px 48px" }}>
@@ -756,7 +765,6 @@ export default function AgenciasPage() {
               flexWrap: "wrap",
             }}
           >
-            {/* Buscador */}
             <div style={{ position: "relative", flexShrink: 0 }}>
               <div
                 style={{
@@ -767,7 +775,7 @@ export default function AgenciasPage() {
                   pointerEvents: "none",
                 }}
               >
-                <FaSearch size={13} color="#aaa" />
+                <FaSearch size={13} color="#5a8a6a" />
               </div>
               <input
                 className="search-input"
@@ -777,7 +785,6 @@ export default function AgenciasPage() {
               />
             </div>
 
-            {/* Filtros */}
             <div
               style={{
                 display: "flex",
@@ -790,7 +797,7 @@ export default function AgenciasPage() {
                 style={{
                   fontSize: 11,
                   fontWeight: 700,
-                  color: "rgba(0,0,0,.4)",
+                  color: "#5a8a6a",
                   letterSpacing: ".08em",
                   textTransform: "uppercase",
                   display: "flex",
@@ -816,7 +823,7 @@ export default function AgenciasPage() {
               style={{
                 fontSize: 12,
                 fontWeight: 600,
-                color: "rgba(0,0,0,.4)",
+                color: "#5a8a6a",
                 whiteSpace: "nowrap",
               }}
             >
@@ -834,9 +841,7 @@ export default function AgenciasPage() {
         {filtered.length === 0 ? (
           <div style={{ textAlign: "center", padding: "80px 0" }}>
             <div style={{ fontSize: 48, marginBottom: 16 }}>🔍</div>
-            <p
-              style={{ fontSize: 16, fontWeight: 600, color: "rgba(0,0,0,.4)" }}
-            >
+            <p style={{ fontSize: 16, fontWeight: 600, color: "#5a8a6a" }}>
               No se encontraron agencias
             </p>
           </div>
@@ -874,7 +879,7 @@ export default function AgenciasPage() {
                       position: "absolute",
                       inset: 0,
                       background:
-                        "linear-gradient(to top,rgba(0,0,0,.45) 0%,transparent 60%)",
+                        "linear-gradient(to top, rgba(0,40,15,.50) 0%, transparent 55%)",
                     }}
                   />
                   <div className="region-badge">{agency.region}</div>
@@ -898,7 +903,7 @@ export default function AgenciasPage() {
                         fontSize: 20,
                         fontWeight: 700,
                         color: "#fff",
-                        textShadow: "0 1px 12px rgba(0,0,0,.6)",
+                        textShadow: "0 1px 12px rgba(0,0,0,.55)",
                       }}
                     >
                       {agency.city}
@@ -934,7 +939,7 @@ export default function AgenciasPage() {
                     <p
                       style={{
                         fontSize: 13,
-                        color: "rgba(0,0,0,.65)",
+                        color: "#2d5a3d",
                         lineHeight: 1.55,
                         fontWeight: 500,
                       }}
@@ -997,7 +1002,8 @@ export default function AgenciasPage() {
           className="cta-banner"
           style={{
             marginTop: 56,
-            background: "linear-gradient(135deg,#0d1117 0%,#0f2a1a 100%)",
+            background:
+              "linear-gradient(135deg, #edfaf3 0%, #d4f5e0 50%, #fef9e7 100%)",
             borderRadius: 20,
             padding: "40px 48px",
             display: "flex",
@@ -1007,19 +1013,35 @@ export default function AgenciasPage() {
             gap: 24,
             position: "relative",
             overflow: "hidden",
+            border: "2px solid #a7f3d0",
+            boxShadow: "0 8px 32px rgba(26,140,60,.10)",
           }}
         >
           <div
             style={{
               position: "absolute",
-              right: -60,
-              top: -60,
-              width: 280,
-              height: 280,
-              background: "rgba(26,140,60,.08)",
+              right: -40,
+              top: -40,
+              width: 220,
+              height: 220,
+              background:
+                "radial-gradient(circle, rgba(26,140,60,.10) 0%, transparent 70%)",
               borderRadius: "50%",
             }}
           />
+          <div
+            style={{
+              position: "absolute",
+              left: -30,
+              bottom: -30,
+              width: 160,
+              height: 160,
+              background:
+                "radial-gradient(circle, rgba(232,168,32,.10) 0%, transparent 70%)",
+              borderRadius: "50%",
+            }}
+          />
+
           <div style={{ position: "relative", zIndex: 1 }}>
             <div
               style={{
@@ -1027,7 +1049,7 @@ export default function AgenciasPage() {
                 fontWeight: 700,
                 letterSpacing: ".12em",
                 textTransform: "uppercase",
-                color: "#4ade80",
+                color: "#0f7a2e",
                 marginBottom: 8,
               }}
             >
@@ -1038,19 +1060,13 @@ export default function AgenciasPage() {
                 fontFamily: "'Playfair Display',serif",
                 fontSize: "clamp(20px,3vw,26px)",
                 fontWeight: 700,
-                color: "#fff",
+                color: "#0d2818",
                 marginBottom: 6,
               }}
             >
               Escríbenos por WhatsApp
             </h3>
-            <p
-              style={{
-                fontSize: 13,
-                color: "rgba(255,255,255,.5)",
-                lineHeight: 1.65,
-              }}
-            >
+            <p style={{ fontSize: 13, color: "#2d5a3d", lineHeight: 1.65 }}>
               Te informamos de rutas, horarios y precios desde cualquier punto
               del norte del Perú.
             </p>
