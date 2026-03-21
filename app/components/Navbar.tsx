@@ -123,7 +123,7 @@ export default function Navbar() {
           position: sticky;
           top: 0;
           z-index: 100;
-          background: var(--white);
+          background:#558B6E;
           border-bottom: 2px solid var(--green-light);
           transition: box-shadow 0.3s, background 0.3s;
           font-family: 'Outfit', sans-serif;
@@ -131,7 +131,6 @@ export default function Navbar() {
           overflow: visible;
         }
         .nb-nav.scrolled {
-          background: rgba(255,255,255,0.97);
           backdrop-filter: blur(14px);
           -webkit-backdrop-filter: blur(14px);
           box-shadow: 0 2px 24px var(--shadow-green);
@@ -506,43 +505,13 @@ export default function Navbar() {
       {/* ════ MAIN NAV ════ */}
       <nav className={`nb-nav${scrolled ? " scrolled" : ""}`}>
         <div className="nb-nav-inner">
-          {/* Logo texto SVG */}
           <div className="nb-logo-wrap">
-            <svg
-              height="44"
-              viewBox="0 0 260 44"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-label="Turismo Bus Universo"
-            >
-              <text
-                x="2"
-                y="13"
-                fontFamily="'Arial Narrow', Arial, sans-serif"
-                fontStyle="italic"
-                fontWeight="700"
-                fontSize="12"
-                letterSpacing="1.5"
-                fill="#1a8c3c"
-              >
-                TURISMO BUS
-              </text>
-              <text
-                x="0"
-                y="43"
-                fontFamily="'Arial Black', 'Arial Narrow', Arial, sans-serif"
-                fontStyle="italic"
-                fontWeight="900"
-                fontSize="34"
-                letterSpacing="-0.5"
-                fill="#d42b2b"
-                stroke="#fff"
-                strokeWidth="2"
-                paintOrder="stroke"
-              >
-                UNIVERSO
-              </text>
-            </svg>
+            <img
+              src="/logonombreuniverso.png"
+              alt=""
+              width={"160px"}
+              height={"10px"}
+            />
           </div>
 
           {/* Desktop Links */}
