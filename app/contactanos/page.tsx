@@ -1,5 +1,5 @@
 "use client";
-
+import CheckoutImplement from "../components/CheckoutImplement";
 import { useState } from "react";
 import {
   FaFacebook,
@@ -20,7 +20,6 @@ import {
   FaBox,
 } from "react-icons/fa";
 
-// ── Precios reales extraídos de manifiestos (Febrero–Marzo 2026) ─────────────
 const CITY_PRICES: Record<string, number> = {
   Trujillo: 0,
   Chao: 20,
@@ -338,8 +337,14 @@ export default function ContactanosPage() {
     return encodeURIComponent(lines.join("\n"));
   };
 
-  const canSend =
-    nombre.trim() && dni.trim() && fecha && selectedDest && pasajeros && origin;
+  const canSend = !!(
+    nombre.trim() &&
+    dni.trim() &&
+    fecha &&
+    selectedDest &&
+    pasajeros &&
+    origin
+  );
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -360,150 +365,52 @@ export default function ContactanosPage() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
         @keyframes slideUp   { from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);} }
         @keyframes pulseDot  { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.6);} }
         @keyframes pulseRing { 0%{box-shadow:0 0 0 0 rgba(37,211,102,.45);}70%{box-shadow:0 0 0 18px rgba(37,211,102,0);}100%{box-shadow:0 0 0 0 rgba(37,211,102,0);} }
         @keyframes float     { 0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);} }
         @keyframes dropIn    { from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);} }
         @keyframes slideDown { from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);} }
-
         .animate-up { animation: slideUp .65s ease forwards; }
-
-        .nav-link-mobile {
-          color: #0f7a2e; text-decoration: none; font-size: 15px;
-          font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
-          padding: 14px 24px; display: flex; align-items: center; gap: 6px;
-          border-bottom: 1px solid #c8f0d8;
-          transition: background .2s, color .2s;
-        }
+        .nav-link-mobile { color: #0f7a2e; text-decoration: none; font-size: 15px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; padding: 14px 24px; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid #c8f0d8; transition: background .2s, color .2s; }
         .nav-link-mobile:hover { background: #edfaf3; color: #1a8c3c; }
-
-        .mobile-menu {
-          display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-          background: #fff; z-index: 999; flex-direction: column;
-          animation: slideDown .25s ease forwards;
-        }
+        .mobile-menu { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #fff; z-index: 999; flex-direction: column; animation: slideDown .25s ease forwards; }
         .mobile-menu.open { display: flex; }
-
-        .contact-card {
-          background: #fff; border-radius: 20px; padding: 32px 28px;
-          border: 1.5px solid #c8f0d8;
-          transition: transform .2s, box-shadow .2s, border-color .2s;
-          cursor: pointer; text-decoration: none; color: inherit;
-          display: flex; flex-direction: column; gap: 0;
-        }
+        .contact-card { background: #fff; border-radius: 20px; padding: 32px 28px; border: 1.5px solid #c8f0d8; transition: transform .2s, box-shadow .2s, border-color .2s; cursor: pointer; text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0; }
         .contact-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(26,140,60,.12); }
-        .contact-card.fb:hover  { border-color: #1877F2; box-shadow: 0 16px 48px rgba(24,119,242,.12); }
-        .contact-card.ig:hover  { border-color: #E1306C; box-shadow: 0 16px 48px rgba(225,48,108,.12); }
+        .contact-card.fb:hover { border-color: #1877F2; box-shadow: 0 16px 48px rgba(24,119,242,.12); }
+        .contact-card.ig:hover { border-color: #E1306C; box-shadow: 0 16px 48px rgba(225,48,108,.12); }
         .contact-card.tel:hover { border-color: #1a8c3c; box-shadow: 0 16px 48px rgba(26,140,60,.15); }
-
-        .wsp-main-btn {
-          background: linear-gradient(135deg, #25D366, #128C7E);
-          color: #fff; border: none; border-radius: 14px;
-          padding: 18px 32px; font-family: 'Inter', sans-serif;
-          font-size: 15px; font-weight: 700; letter-spacing: .04em;
-          cursor: pointer; display: flex; align-items: center; gap: 12px;
-          justify-content: center; width: 100%;
-          box-shadow: 0 6px 28px rgba(37,211,102,.35);
-          transition: opacity .2s, transform .15s;
-          animation: pulseRing 2.5s ease-in-out infinite;
-          text-decoration: none;
-        }
+        .wsp-main-btn { background: linear-gradient(135deg, #25D366, #128C7E); color: #fff; border: none; border-radius: 14px; padding: 18px 32px; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: .04em; cursor: pointer; display: flex; align-items: center; gap: 12px; justify-content: center; width: 100%; box-shadow: 0 6px 28px rgba(37,211,102,.35); transition: opacity .2s, transform .15s; animation: pulseRing 2.5s ease-in-out infinite; text-decoration: none; }
         .wsp-main-btn:hover { opacity: .9; transform: translateY(-2px); }
-
-        .step-badge {
-          width: 28px; height: 28px; border-radius: 50%;
-          background: linear-gradient(135deg, #1a8c3c, #22a849);
-          color: #fff; font-size: 12px; font-weight: 800;
-          display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-        }
-
-        .copy-btn {
-          background: #edfaf3; border: 1px solid #a7f3d0; border-radius: 6px;
-          padding: 4px 10px; font-size: 11px; font-weight: 600;
-          color: #0f7a2e; cursor: pointer; transition: background .2s, color .2s;
-          font-family: 'Inter', sans-serif; letter-spacing: .04em;
-        }
+        .step-badge { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #1a8c3c, #22a849); color: #fff; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .copy-btn { background: #edfaf3; border: 1px solid #a7f3d0; border-radius: 6px; padding: 4px 10px; font-size: 11px; font-weight: 600; color: #0f7a2e; cursor: pointer; transition: background .2s, color .2s; font-family: 'Inter', sans-serif; letter-spacing: .04em; }
         .copy-btn:hover { background: #d4f5e0; color: #0d2818; }
-
-        .info-row {
-          display: flex; align-items: flex-start; gap: 14px;
-          padding: 16px 0; border-bottom: 1px solid #edfaf3;
-        }
+        .info-row { display: flex; align-items: flex-start; gap: 14px; padding: 16px 0; border-bottom: 1px solid #edfaf3; }
         .info-row:last-child { border-bottom: none; }
-
-        .map-btn {
-          background: linear-gradient(135deg, #1a4fa0, #1565c0);
-          color: #fff; border: none; border-radius: 10px;
-          padding: 13px 22px; font-family: 'Inter', sans-serif;
-          font-size: 12px; font-weight: 700; letter-spacing: .06em;
-          text-transform: uppercase; cursor: pointer; display: flex;
-          align-items: center; gap: 8px;
-          box-shadow: 0 4px 16px rgba(26,79,160,.25);
-          transition: opacity .2s, transform .1s; text-decoration: none;
-        }
+        .map-btn { background: linear-gradient(135deg, #1a4fa0, #1565c0); color: #fff; border: none; border-radius: 10px; padding: 13px 22px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(26,79,160,.25); transition: opacity .2s, transform .1s; text-decoration: none; }
         .map-btn:hover { opacity: .88; transform: translateY(-1px); }
-
-        .form-input {
-          width: 100%; border: 1.5px solid #c8f0d8; border-radius: 10px;
-          padding: 12px 14px 12px 38px; font-family: 'Inter', sans-serif;
-          font-size: 14px; font-weight: 500; color: #0d2818;
-          background: #fff; outline: none;
-          transition: border-color .2s, box-shadow .2s;
-        }
+        .form-input { width: 100%; border: 1.5px solid #c8f0d8; border-radius: 10px; padding: 12px 14px 12px 38px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; color: #0d2818; background: #fff; outline: none; transition: border-color .2s, box-shadow .2s; }
         .form-input:focus { border-color: #1a8c3c; box-shadow: 0 0 0 3px rgba(26,140,60,.12); }
         .form-input::placeholder { color: #5a8a6a; font-weight: 400; }
-
-        .dest-item {
-          display: flex; justify-content: space-between; align-items: center;
-          padding: 10px 14px; cursor: pointer; border-radius: 8px;
-          transition: background .15s;
-          font-family: 'Inter', sans-serif; font-size: 13px;
-        }
+        .dest-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; cursor: pointer; border-radius: 8px; transition: background .15s; font-family: 'Inter', sans-serif; font-size: 13px; }
         .dest-item:hover { background: #edfaf3; }
         .dest-item.selected { background: #d4f5e0; }
-
-        .dest-dropdown {
-          position: absolute; top: calc(100% + 6px); left: 0; right: 0;
-          background: #fff; border: 1.5px solid #c8f0d8; border-radius: 12px;
-          box-shadow: 0 12px 40px rgba(26,140,60,.12);
-          z-index: 50; max-height: 260px; overflow-y: auto;
-          animation: dropIn .2s ease forwards; padding: 6px;
-        }
+        .dest-dropdown { position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: #fff; border: 1.5px solid #c8f0d8; border-radius: 12px; box-shadow: 0 12px 40px rgba(26,140,60,.12); z-index: 50; max-height: 260px; overflow-y: auto; animation: dropIn .2s ease forwards; padding: 6px; }
         .dest-dropdown::-webkit-scrollbar { width: 4px; }
         .dest-dropdown::-webkit-scrollbar-thumb { background: #a7f3d0; border-radius: 2px; }
-
-        .form-step-tab {
-          flex: 1; padding: 10px; text-align: center;
-          font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700;
-          letter-spacing: .06em; text-transform: uppercase;
-          border: none; cursor: pointer; transition: background .2s, color .2s;
-        }
-
-        .preview-box {
-          background: #edfaf3; border: 1.5px solid #a7f3d0; border-radius: 12px;
-          padding: 16px 18px; font-family: 'Inter', sans-serif; font-size: 13px;
-          line-height: 1.7; color: #0d2818;
-        }
+        .form-step-tab { flex: 1; padding: 10px; text-align: center; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; border: none; cursor: pointer; transition: background .2s, color .2s; }
+        .preview-box { background: #edfaf3; border: 1.5px solid #a7f3d0; border-radius: 12px; padding: 16px 18px; font-family: 'Inter', sans-serif; font-size: 13px; line-height: 1.7; color: #0d2818; }
         .preview-box strong { color: #0f7a2e; }
-
-        .city-chip {
-          display: inline-flex; justify-content: space-between; align-items: center;
-          padding: 8px 10px; border-radius: 8px; cursor: pointer;
-          border: 1.5px solid #c8f0d8; background: #f9fdf6;
-          transition: all .15s; font-family: 'Inter',sans-serif; font-size: 12px;
-        }
+        .city-chip { display: inline-flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-radius: 8px; cursor: pointer; border: 1.5px solid #c8f0d8; background: #f9fdf6; transition: all .15s; font-family: 'Inter',sans-serif; font-size: 12px; }
         .city-chip:hover { border-color: #a7f3d0; background: #edfaf3; }
         .city-chip.selected { border-color: #1a8c3c; background: #d4f5e0; }
-
         @media (max-width: 768px) {
           .hero-pad { padding: 48px 20px 56px !important; }
           .hero-title { font-size: clamp(28px,7vw,40px) !important; }
           .main-grid { grid-template-columns: 1fr !important; }
           .cards-grid { grid-template-columns: 1fr !important; }
           .section-pad { padding: 40px 16px !important; }
-          .footer-inner { flex-direction: column !important; align-items: flex-start !important; padding: 24px 16px !important; gap: 20px !important; }
           .form-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
@@ -631,7 +538,6 @@ export default function ContactanosPage() {
             borderRadius: "50%",
           }}
         />
-
         <div
           className="hero-pad"
           style={{
@@ -782,7 +688,7 @@ export default function ContactanosPage() {
                 marginBottom: 16,
               }}
             >
-              <FaWhatsapp size={12} color="#25D366" /> Reserva rápida · 2 rutas
+              <FaWhatsapp size={12} color="#25D366" /> Reserva rápida · rutas
               disponibles
             </div>
             <h2
@@ -1099,7 +1005,6 @@ export default function ContactanosPage() {
                           fontFamily: "'Inter',sans-serif",
                           fontSize: 13,
                           fontWeight: 700,
-                          letterSpacing: ".06em",
                           cursor: "pointer",
                           display: "flex",
                           alignItems: "center",
@@ -1480,6 +1385,7 @@ export default function ContactanosPage() {
 
             {/* ── PREVIEW + BOTÓN ── */}
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+              {/* Vista previa */}
               <div
                 style={{
                   background: "#fff",
@@ -1602,6 +1508,7 @@ export default function ContactanosPage() {
                 </div>
               </div>
 
+              {/* ✅ BOTÓN WHATSAPP */}
               <a
                 className="wsp-main-btn"
                 href={
@@ -1640,6 +1547,87 @@ export default function ContactanosPage() {
                 </div>
               )}
 
+              {/* ✅ PAGO EN LÍNEA */}
+              {canSend && selectedDest && (
+                <>
+                  <div
+                    style={{ display: "flex", alignItems: "center", gap: 12 }}
+                  >
+                    <div
+                      style={{ flex: 1, height: 1, background: "#c8f0d8" }}
+                    />
+                    <span
+                      style={{
+                        fontSize: 11,
+                        fontWeight: 700,
+                        color: "#5a8a6a",
+                        letterSpacing: ".1em",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      o paga en línea
+                    </span>
+                    <div
+                      style={{ flex: 1, height: 1, background: "#c8f0d8" }}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      background: "#fff",
+                      borderRadius: 16,
+                      border: "1.5px solid #c8f0d8",
+                      padding: "22px",
+                      boxShadow: "0 8px 32px rgba(26,140,60,.08)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: 11,
+                        fontWeight: 700,
+                        letterSpacing: ".1em",
+                        textTransform: "uppercase",
+                        color: "#0f7a2e",
+                        marginBottom: 6,
+                      }}
+                    >
+                      💳 Pago en línea seguro
+                    </div>
+                    <p
+                      style={{
+                        fontSize: 12,
+                        color: "#5a8a6a",
+                        marginBottom: 16,
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      Paga tu pasaje ahora con tarjeta o Yape. Tu reserva
+                      quedará confirmada al instante.
+                    </p>
+                    <CheckoutImplement
+                      amount={totalPrice}
+                      email="pasajero@gmail.com"
+                      onSuccess={(data) => {
+                        console.log("✅ Pago exitoso:", data);
+                      }}
+                      onError={(msg) => {
+                        console.error("❌ Error de pago:", msg);
+                      }}
+                    />
+                    <p
+                      style={{
+                        fontSize: 11,
+                        color: "#a0c4b0",
+                        marginTop: 12,
+                        textAlign: "center",
+                      }}
+                    >
+                      🔒 Pago seguro procesado por Culqi · PCI DSS Compliant
+                    </p>
+                  </div>
+                </>
+              )}
+
+              {/* ¿Cómo funciona? */}
               <div
                 style={{
                   background: "#fff",
@@ -1730,7 +1718,6 @@ export default function ContactanosPage() {
         className="section-pad"
         style={{ maxWidth: 1200, margin: "0 auto", padding: "64px 48px 72px" }}
       >
-        {/* WhatsApp Card */}
         <div
           style={{
             background: "linear-gradient(135deg, #edfaf3 0%, #d4f5e0 100%)",
@@ -1765,7 +1752,6 @@ export default function ContactanosPage() {
               borderRadius: "50%",
             }}
           />
-
           <div
             className="main-grid"
             style={{
@@ -1837,7 +1823,6 @@ export default function ContactanosPage() {
               >
                 La forma más rápida de reservar tu pasaje. Escríbenos con tu
                 ruta, fecha y número de pasajeros y te confirmamos en minutos.
-                Atención todos los días.
               </p>
               <div
                 style={{
@@ -1955,7 +1940,6 @@ export default function ContactanosPage() {
           </div>
         </div>
 
-        {/* Otros canales */}
         <div style={{ marginBottom: 16 }}>
           <div
             style={{
@@ -2282,7 +2266,6 @@ export default function ContactanosPage() {
                     title: "Reserva segura",
                     desc: "Tu pasaje queda guardado hasta el día del viaje sin sorpresas.",
                   },
-
                   {
                     icon: "💬",
                     title: "Atención personalizada",
