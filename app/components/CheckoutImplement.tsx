@@ -1,14 +1,14 @@
 "use client";
-import { useEffect, useRef, useState, useCallback } from "react";
 
+import { useCallback, useEffect, useRef, useState } from "react";
+
+// Definición de tipos para Culqi
 declare global {
   interface Window {
     CulqiCheckout: new (
       publicKey: string,
       config: CulqiConfig,
     ) => CulqiInstance;
-    // ✅ FIX 2: Culqi v4 dispara un callback GLOBAL window.culqi, no una propiedad de instancia
-    culqi: () => void;
   }
 }
 
@@ -16,6 +16,7 @@ interface CulqiInstance {
   token?: { id: string };
   order?: unknown;
   error?: { user_message: string };
+  culqi: () => void;
   open: () => void;
   close: () => void;
 }
@@ -29,7 +30,9 @@ interface CulqiConfig {
     xculqirsaid: string;
     rsapublickey: string;
   };
-  client: { email: string };
+  client: {
+    email: string;
+  };
   options: {
     lang: string;
     installments: boolean;
@@ -48,44 +51,22 @@ interface CulqiConfig {
 }
 
 const CULQI_CONFIG = {
-  PUBLIC_KEY: process.env.NEXT_PUBLIC_CULQI_PUBLIC_KEY || "",
-  TITLE: "Turismo Bus Universo",
-  ORDER_ID: "",
-  RSA_ID: process.env.NEXT_PUBLIC_CULQI_RSA_ID || "",
-  RSA_PUBLIC_KEY: process.env.NEXT_PUBLIC_CULQI_RSA_PUBLIC_KEY || "",
-  PAYMENT_METHODS: {
-    tarjeta: true,
-    yape: true,
-    billetera: false,
-    bancaMovil: false,
-    agente: false,
-    cuotealo: false,
-  },
+  PUBLIC_KEY: process.env.NEXT_PUBLIC_CULQI_PUBLIC_KEY!,
+  ORDER_ID: process.env.NEXT_PUBLIC_CULQI_ORDER_ID!,
+  RSA_ID: process.env.NEXT_PUBLIC_CULQI_RSA_ID!,
+  RSA_PUBLIC_KEY: process.env.NEXT_PUBLIC_CULQI_RSA_PUBLIC_KEY!,
+  TITLE: process.env.NEXT_PUBLIC_CULQI_TITLE!,
+  PAYMENT_METHODS: { yape: true },
 };
 
-interface CheckoutProps {
-  amount: number; // en soles (ej: 80 = S/80)
-  email: string;
-  description?: string;
-  onSuccess?: (data: unknown) => void;
-  onError?: (message: string) => void;
-}
-
-const CheckoutImplement = ({
-  amount,
-  email,
-  onSuccess,
-  onError,
-}: CheckoutProps) => {
+const CheckoutImplement = () => {
+  const [amount, setAmount] = useState(10000); // 100.00
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+
   const scriptsLoadedRef = useRef<boolean>(false);
   const culqiInstanceRef = useRef<CulqiInstance | null>(null);
 
-  // Culqi trabaja en centavos
-  const amountInCentimos = Math.round(amount * 100);
-
+  // Función para crear la configuración de Culqi
   const createCulqiConfig = useCallback(
     (currentAmount: number): CulqiConfig => ({
       settings: {
@@ -96,57 +77,57 @@ const CheckoutImplement = ({
         xculqirsaid: CULQI_CONFIG.RSA_ID,
         rsapublickey: CULQI_CONFIG.RSA_PUBLIC_KEY,
       },
-      client: { email },
+      client: {
+        email: "donvoid@gmail.com",
+      },
       options: {
         lang: "auto",
-        installments: true,
-        modal: true,
+        installments: false,
+        modal: false,
         paymentMethods: CULQI_CONFIG.PAYMENT_METHODS,
         paymentMethodsSort: Object.keys(CULQI_CONFIG.PAYMENT_METHODS),
+        container: "#culqi-checkout-container", // ID del contenedor
       },
     }),
-    [email],
+    [],
   );
 
   const handleToken = useCallback(
     async (tokenId: string) => {
       try {
-        setLoading(true);
+        // culqiInstanceRef.current?.close();
+
+        // Mostrar mensaje de verificación
         setError("");
 
-        // ✅ FIX 1: la ruta correcta es /api/culqi/charger (nombre real del archivo)
-        const response = await fetch("/api/culqi/charger", {
+        const response = await fetch("/api/culqi/charge", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             token: tokenId,
-            amount: amountInCentimos,
+            amount: amount,
             currency_code: "PEN",
-            email,
+            email: "donvoid@gmail.com",
           }),
         });
 
         const data = await response.json();
 
         if (data.success) {
-          setSuccess(true);
-          onSuccess?.(data.data);
+          // Pago exitoso, crear la reserva
+          console.log("Pago exitoso:", data.data);
         } else {
-          const msg = data.message || "Error al procesar el pago";
-          setError(msg);
-          onError?.(msg);
+          setError(data.message || "Error al procesar el pago");
         }
-      } catch {
-        const msg = "Error de conexión. Intenta nuevamente.";
-        setError(msg);
-        onError?.(msg);
-      } finally {
-        setLoading(false);
+      } catch (err) {
+        console.error("Error en handleToken:", err);
+        setError("Error de conexión. Intenta nuevamente.");
       }
     },
-    [amountInCentimos, email, onSuccess, onError],
+    [amount],
   );
 
+  // Función para inicializar Culqi
   const initializeCulqi = useCallback(
     (currentAmount: number) => {
       if (!window.CulqiCheckout) return;
@@ -157,37 +138,37 @@ const CheckoutImplement = ({
         config,
       );
 
-      // ✅ FIX 2: Culqi v4 dispara window.culqi() como función global.
-      // Hay que guardar la referencia a la instancia para leerla dentro del callback.
-      culqiInstanceRef.current = instance;
-
-      window.culqi = function () {
-        const inst = culqiInstanceRef.current;
-        if (!inst) return;
-
-        if (inst.token) {
-          handleToken(inst.token.id);
-        } else if (inst.order) {
-          console.log("Orden creada:", inst.order);
-        } else if (inst.error) {
-          const msg = inst.error.user_message || "Error al procesar el pago";
-          setError(msg);
-          onError?.(msg);
+      instance.culqi = function () {
+        if (instance.token) {
+          console.log("Token creado:", instance.token.id);
+          handleToken(instance.token.id);
+        } else if (instance.order) {
+          console.log("Order creada:", instance.order);
+        } else {
+          console.log("Error:", instance.error);
+          setError(instance.error?.user_message || "Error al procesar el pago");
         }
       };
+
+      culqiInstanceRef.current = instance;
+      culqiInstanceRef.current.open();
     },
-    [createCulqiConfig, handleToken, onError],
+    [createCulqiConfig, handleToken],
   );
 
+  // Cargar scripts de Culqi
   useEffect(() => {
-    if (scriptsLoadedRef.current) {
-      // Si el script ya cargó (por ejemplo, en un re-render) solo re-inicializa
-      initializeCulqi(amountInCentimos);
-      return;
-    }
+    if (scriptsLoadedRef.current) return;
 
-    const loadScript = (src: string): Promise<void> =>
-      new Promise((resolve, reject) => {
+    const loadScript = (src: string): Promise<void> => {
+      return new Promise((resolve, reject) => {
+        // Verificar si el script ya existe
+        const existingScript = document.querySelector(`script[src="${src}"]`);
+        if (existingScript) {
+          resolve();
+          return;
+        }
+
         const script = document.createElement("script");
         script.src = src;
         script.async = true;
@@ -195,67 +176,26 @@ const CheckoutImplement = ({
         script.onerror = reject;
         document.body.appendChild(script);
       });
+    };
 
     const loadScripts = async () => {
       try {
-        await loadScript("https://checkout.culqi.com/js/v4");
+        await loadScript("https://3ds.culqi.com");
+        await loadScript("https://js.culqi.com/checkout-js");
         scriptsLoadedRef.current = true;
-        initializeCulqi(amountInCentimos);
-      } catch {
+        initializeCulqi(amount);
+      } catch (err) {
+        console.error("Error cargando scripts de Culqi:", err);
         setError("Error al cargar el sistema de pagos. Recarga la página.");
       }
     };
 
     loadScripts();
-  }, [amountInCentimos, initializeCulqi]);
-
-  if (success) {
-    return (
-      <div style={{ textAlign: "center", padding: "20px" }}>
-        <div style={{ fontSize: 40, marginBottom: 12 }}>✅</div>
-        <p style={{ fontWeight: 700, color: "#1a8c3c", fontSize: 16 }}>
-          ¡Pago exitoso! S/ {amount.toFixed(2)}
-        </p>
-        <p style={{ color: "#5a8a6a", fontSize: 13 }}>
-          Tu reserva ha sido confirmada.
-        </p>
-      </div>
-    );
-  }
+  }, [amount, initializeCulqi]);
 
   return (
-    <div>
-      {error && (
-        <p style={{ color: "#e53e3e", fontSize: 13, marginBottom: 12 }}>
-          ⚠️ {error}
-        </p>
-      )}
-      <button
-        onClick={() => {
-          if (!CULQI_CONFIG.PUBLIC_KEY) {
-            setError("Clave pública de Culqi no configurada.");
-            return;
-          }
-          culqiInstanceRef.current?.open();
-        }}
-        disabled={loading}
-        style={{
-          background: loading
-            ? "#a0c4b0"
-            : "linear-gradient(135deg, #1a8c3c, #22a849)",
-          color: "#fff",
-          border: "none",
-          borderRadius: 12,
-          padding: "14px 28px",
-          fontSize: 15,
-          fontWeight: 700,
-          cursor: loading ? "not-allowed" : "pointer",
-          width: "100%",
-          boxShadow: "0 4px 16px rgba(26,140,60,.3)",
-        }}
-      >
-        {loading ? "Procesando..." : `Pagar S/ ${amount.toFixed(2)}`}
-      </button>
+    <div className="min-w-screen h-screen flex flex-col items-center justify-center p-4">
+      <div id="culqi-checkout-container" className="w-full h-10/12" />
     </div>
   );
 };

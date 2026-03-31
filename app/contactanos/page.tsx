@@ -1603,16 +1603,7 @@ export default function ContactanosPage() {
                       Paga tu pasaje ahora con tarjeta o Yape. Tu reserva
                       quedará confirmada al instante.
                     </p>
-                    <CheckoutImplement
-                      amount={totalPrice}
-                      email="pasajero@gmail.com"
-                      onSuccess={(data) => {
-                        console.log("✅ Pago exitoso:", data);
-                      }}
-                      onError={(msg) => {
-                        console.error("❌ Error de pago:", msg);
-                      }}
-                    />
+
                     <p
                       style={{
                         fontSize: 11,
