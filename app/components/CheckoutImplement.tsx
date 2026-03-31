@@ -7,6 +7,8 @@ declare global {
       publicKey: string,
       config: CulqiConfig,
     ) => CulqiInstance;
+    // ✅ FIX 2: Culqi v4 dispara un callback GLOBAL window.culqi, no una propiedad de instancia
+    culqi: () => void;
   }
 }
 
@@ -14,7 +16,6 @@ interface CulqiInstance {
   token?: { id: string };
   order?: unknown;
   error?: { user_message: string };
-  culqi: () => void;
   open: () => void;
   close: () => void;
 }
@@ -73,7 +74,6 @@ interface CheckoutProps {
 const CheckoutImplement = ({
   amount,
   email,
-  description = "Pasaje de bus",
   onSuccess,
   onError,
 }: CheckoutProps) => {
@@ -114,7 +114,8 @@ const CheckoutImplement = ({
         setLoading(true);
         setError("");
 
-        const response = await fetch("/api/culqi/charge", {
+        // ✅ FIX 1: la ruta correcta es /api/culqi/charger (nombre real del archivo)
+        const response = await fetch("/api/culqi/charger", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -135,7 +136,7 @@ const CheckoutImplement = ({
           setError(msg);
           onError?.(msg);
         }
-      } catch (err) {
+      } catch {
         const msg = "Error de conexión. Intenta nuevamente.";
         setError(msg);
         onError?.(msg);
@@ -156,26 +157,34 @@ const CheckoutImplement = ({
         config,
       );
 
-      instance.culqi = function () {
-        if (instance.token) {
-          handleToken(instance.token.id);
-        } else if (instance.order) {
-          console.log("Orden creada:", instance.order);
-        } else {
-          const msg =
-            instance.error?.user_message || "Error al procesar el pago";
+      // ✅ FIX 2: Culqi v4 dispara window.culqi() como función global.
+      // Hay que guardar la referencia a la instancia para leerla dentro del callback.
+      culqiInstanceRef.current = instance;
+
+      window.culqi = function () {
+        const inst = culqiInstanceRef.current;
+        if (!inst) return;
+
+        if (inst.token) {
+          handleToken(inst.token.id);
+        } else if (inst.order) {
+          console.log("Orden creada:", inst.order);
+        } else if (inst.error) {
+          const msg = inst.error.user_message || "Error al procesar el pago";
           setError(msg);
           onError?.(msg);
         }
       };
-
-      culqiInstanceRef.current = instance;
     },
     [createCulqiConfig, handleToken, onError],
   );
 
   useEffect(() => {
-    if (scriptsLoadedRef.current) return;
+    if (scriptsLoadedRef.current) {
+      // Si el script ya cargó (por ejemplo, en un re-render) solo re-inicializa
+      initializeCulqi(amountInCentimos);
+      return;
+    }
 
     const loadScript = (src: string): Promise<void> =>
       new Promise((resolve, reject) => {
@@ -192,7 +201,7 @@ const CheckoutImplement = ({
         await loadScript("https://checkout.culqi.com/js/v4");
         scriptsLoadedRef.current = true;
         initializeCulqi(amountInCentimos);
-      } catch (err) {
+      } catch {
         setError("Error al cargar el sistema de pagos. Recarga la página.");
       }
     };
@@ -222,7 +231,13 @@ const CheckoutImplement = ({
         </p>
       )}
       <button
-        onClick={() => culqiInstanceRef.current?.open()}
+        onClick={() => {
+          if (!CULQI_CONFIG.PUBLIC_KEY) {
+            setError("Clave pública de Culqi no configurada.");
+            return;
+          }
+          culqiInstanceRef.current?.open();
+        }}
         disabled={loading}
         style={{
           background: loading
